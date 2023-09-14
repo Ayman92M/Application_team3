@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Application_team3</string>
+    <string name="log_in">Log In</string>
+    <string name="user_name">User name</string>
+    <string name="password">Password</string>
+    <string name="new_user">New User</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="choose_language">Choose Language</string>
+    <string name="sv">Svenska</string>
+    <string name="en">English</string>
 </resources>
