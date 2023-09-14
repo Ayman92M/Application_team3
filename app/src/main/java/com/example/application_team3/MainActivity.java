@@ -9,14 +9,13 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
-        FirebaseDatabase rootNode = FirebaseDatabase.getInstance("https://db-app-group3-default-rtdb.europe-west1.firebasedatabase.app/database");
-        DatabaseReference reference = rootNode.getReference("message");
-
-        reference.setValue("Hello World!");
+        Database db = new Database();
     }
 }
