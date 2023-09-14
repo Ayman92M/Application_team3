@@ -2,21 +2,22 @@ package com.example.application_team3;
 
 import java.util.List;
 
-public class ElderlyEntry {
+public class CaregiverEntry {
     String name, pid;
-    int pin, phoneNo;
-    String dob, country, city;
-    List<String> caregivers;
+    int password, phoneNo;
+    List<String> elderly;
 
-    public ElderlyEntry(String name, String pid, int pin, int phoneNo, String dob, String country, String city, List<String> caregivers) {
+    String dob, country, city;
+
+    public CaregiverEntry(String name, String pid, int password, int phoneNo, List<String> elderly, String dob, String country, String city) {
         this.name = name;
         this.pid = pid;
-        this.pin = pin;
+        this.password = password;
         this.phoneNo = phoneNo;
+        this.elderly = elderly;
         this.dob = dob;
         this.country = country;
         this.city = city;
-        this.caregivers = caregivers;
     }
 
     public String getName() {
@@ -35,12 +36,12 @@ public class ElderlyEntry {
         this.pid = pid;
     }
 
-    public int getPin() {
-        return pin;
+    public int getPassword() {
+        return password;
     }
 
-    public void setPin(int pin) {
-        this.pin = pin;
+    public void setPassword(int password) {
+        this.password = password;
     }
 
     public int getPhoneNo() {
@@ -75,14 +76,12 @@ public class ElderlyEntry {
         this.city = city;
     }
 
-    public List<String> getCaregivers() {
-        return caregivers;
+    public List<String> getElderly() {
+        return elderly;
     }
 
-    public void setCaregivers(List<String> caregivers) {
-        this.caregivers = caregivers;
+    public void setElderly(List<String> elderly) {
+        this.elderly = elderly;
     }
-
-
 
 }
