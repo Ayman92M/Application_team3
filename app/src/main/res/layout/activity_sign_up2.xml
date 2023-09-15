@@ -5,34 +5,54 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".Sign_up">
+    tools:context=".Sign_up2">
 
 
     <TextView
         android:id="@+id/signuptitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="25dp"
         android:gravity="center"
         android:text="Sign up"
         android:textSize="40dp"
         android:textStyle="bold|italic"
         tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="6dp"/>
+        tools:layout_editor_absoluteY="6dp" />
 
     <EditText
         android:id="@+id/username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/signuptitle"
+        android:layout_below="@+id/editTextText_name"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="17dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:background="#60B8B3B3"
         android:drawableLeft="@drawable/baseline_person_24"
         android:drawablePadding="20dp"
         android:hint="Username"
+        android:padding="20dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black" />
+
+    <EditText
+        android:id="@+id/editTextText_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/signuptitle"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="29dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="#60B8B3B3"
+        android:drawableLeft="@drawable/baseline_person_24"
+        android:drawablePadding="20dp"
+        android:hint="Name"
         android:padding="20dp"
         android:textColor="@color/black"
         android:textColorHint="@color/black" />
@@ -55,31 +75,49 @@
         android:textColorHint="@color/black" />
 
     <EditText
+        android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/password"
         android:layout_below="@+id/email"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
         android:background="#60B8B3B3"
-        android:hint="Password"
-        android:textColorHint="@color/black"
-        android:textColor="@color/black"
-        android:layout_margin="20dp"
-        android:padding="20dp"
         android:drawableLeft="@drawable/baseline_password_24"
-        android:drawablePadding="20dp"/>
+        android:drawablePadding="20dp"
+        android:hint="Password"
+        android:padding="20dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black" />
 
     <EditText
+        android:id="@+id/rewritepassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/rewritepassword"
         android:layout_below="@+id/password"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
         android:background="#60B8B3B3"
-        android:hint="Rewrite-Password"
-        android:textColorHint="@color/black"
-        android:textColor="@color/black"
-        android:layout_margin="20dp"
-        android:padding="20dp"
         android:drawableLeft="@drawable/baseline_password_24"
-        android:drawablePadding="20dp"/>
+        android:drawablePadding="20dp"
+        android:hint="Rewrite-Password"
+        android:padding="20dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/black" />
+
+    <Button
+        android:id="@+id/button_sign_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rewritepassword"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="159dp"
+        android:layout_marginTop="31dp"
+        android:layout_marginEnd="161dp"
+        android:text="Button" />
 
 </RelativeLayout>

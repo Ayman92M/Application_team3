@@ -56,7 +56,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textView_signup"
         android:layout_width="72dp"
         android:layout_height="25dp"
         android:layout_marginTop="20dp"
@@ -74,7 +74,7 @@
         android:layout_marginTop="20dp"
         android:text="New User:"
         android:textSize="15sp"
-        app:layout_constraintEnd_toStartOf="@+id/textView3"
+        app:layout_constraintEnd_toStartOf="@+id/textView_signup"
         app:layout_constraintHorizontal_bias="0.902"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button3" />
