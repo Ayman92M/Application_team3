@@ -1,8 +1,15 @@
 package com.example.application_team3;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -18,6 +25,9 @@ public class Database {
         rootNode = FirebaseDatabase.getInstance();
         caregiverRef = rootNode.getReference("Caregiver");
         elderlyRef = rootNode.getReference("Elderly");
+
+        checkLoginElderly("brimar100");
+
     }
 
     public void registerCaregiver(String name, String pid, String password, String phoneNo, String dob, String country, String city){
@@ -30,11 +40,26 @@ public class Database {
         elderlyRef.child(pid).setValue(_elderly);
     }
 
-    public void checkLoginElderly(){
+    public void checkLoginElderly(String pid){
+        elderlyRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.child(pid).exists()){
+                    Log.d("PRINT", (String) snapshot.child(pid).child("name").getValue());
+                }
+                else {
 
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
-    public void checkLoginCaregiver(){
-
+    public void checkLoginCaregiver(String pid){
+        System.out.println(caregiverRef.child(pid).getKey());
     }
 }
