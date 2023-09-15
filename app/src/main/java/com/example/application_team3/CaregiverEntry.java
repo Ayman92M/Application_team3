@@ -3,18 +3,14 @@ package com.example.application_team3;
 import java.util.List;
 
 public class CaregiverEntry {
-    String name, pid;
-    int password, phoneNo;
-    List<String> elderly;
-
+    String name, pid, password, phoneNo;
     String dob, country, city;
 
-    public CaregiverEntry(String name, String pid, int password, int phoneNo, List<String> elderly, String dob, String country, String city) {
+    public CaregiverEntry(String name, String pid, String password, String phoneNo, String dob, String country, String city) {
         this.name = name;
         this.pid = pid;
         this.password = password;
         this.phoneNo = phoneNo;
-        this.elderly = elderly;
         this.dob = dob;
         this.country = country;
         this.city = city;
@@ -36,19 +32,19 @@ public class CaregiverEntry {
         this.pid = pid;
     }
 
-    public int getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(int password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
-    public int getPhoneNo() {
+    public String getPhoneNo() {
         return phoneNo;
     }
 
-    public void setPhoneNo(int phoneNo) {
+    public void setPhoneNo(String phoneNo) {
         this.phoneNo = phoneNo;
     }
 
@@ -74,14 +70,6 @@ public class CaregiverEntry {
 
     public void setCity(String city) {
         this.city = city;
-    }
-
-    public List<String> getElderly() {
-        return elderly;
-    }
-
-    public void setElderly(List<String> elderly) {
-        this.elderly = elderly;
     }
 
 }

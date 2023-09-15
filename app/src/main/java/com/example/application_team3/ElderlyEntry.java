@@ -3,12 +3,11 @@ package com.example.application_team3;
 import java.util.List;
 
 public class ElderlyEntry {
-    String name, pid;
-    int pin, phoneNo;
+    String name, pid, phoneNo;
+    int pin;
     String dob, country, city;
-    List<String> caregivers;
 
-    public ElderlyEntry(String name, String pid, int pin, int phoneNo, String dob, String country, String city, List<String> caregivers) {
+    public ElderlyEntry(String name, String pid, int pin, String phoneNo, String dob, String country, String city) {
         this.name = name;
         this.pid = pid;
         this.pin = pin;
@@ -16,7 +15,6 @@ public class ElderlyEntry {
         this.dob = dob;
         this.country = country;
         this.city = city;
-        this.caregivers = caregivers;
     }
 
     public String getName() {
@@ -43,11 +41,11 @@ public class ElderlyEntry {
         this.pin = pin;
     }
 
-    public int getPhoneNo() {
+    public String getPhoneNo() {
         return phoneNo;
     }
 
-    public void setPhoneNo(int phoneNo) {
+    public void setPhoneNo(String phoneNo) {
         this.phoneNo = phoneNo;
     }
 
@@ -74,15 +72,6 @@ public class ElderlyEntry {
     public void setCity(String city) {
         this.city = city;
     }
-
-    public List<String> getCaregivers() {
-        return caregivers;
-    }
-
-    public void setCaregivers(List<String> caregivers) {
-        this.caregivers = caregivers;
-    }
-
 
 
 }
