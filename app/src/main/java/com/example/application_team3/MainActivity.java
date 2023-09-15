@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
         Database db = new Database();
         Button _english = findViewById(R.id.button);
+        //Button _english = findViewById(R.id.button);
 
         _english.setOnClickListener(new View.OnClickListener() {
             @Override
