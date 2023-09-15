@@ -15,6 +15,8 @@ public class UserAccountControl {
 
     private final String PIN_REGEX = "^[0-9]{4}$";
 
+    private final String PHONENUMBER_REGEX = "^0[1-9][0-9]{7,9}$";
+
 
     public boolean isValidEmail(String email) {
 
@@ -38,6 +40,10 @@ public class UserAccountControl {
     public boolean isValidName(String name){
 
         return name != null && name.matches(NAME_REGEX);
+    }
+
+    public boolean isValidPhoneNumber(String phone_num){
+        return phone_num != null && phone_num.matches(PHONENUMBER_REGEX);
     }
 
 }

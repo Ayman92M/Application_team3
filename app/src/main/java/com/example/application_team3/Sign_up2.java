@@ -8,8 +8,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class Sign_up2 extends AppCompatActivity {
+import java.util.LinkedList;
+import java.util.List;
 
+public class Sign_up2 extends AppCompatActivity {
+    Database db = new Database();
     EditText name, username, password, password2, email;
     UserAccountControl user = new UserAccountControl();
 
@@ -30,7 +33,7 @@ public class Sign_up2 extends AppCompatActivity {
                 String _pass =((EditText) findViewById(R.id.password)).getText().toString();
                 String _pass2 =((EditText) findViewById(R.id.rewritepassword)).getText().toString();
 
-                if (!user.isValidName(_name)){
+                if (!user.isValidName(_name))
                     Toast.makeText(Sign_up2.this, "invalid name", Toast.LENGTH_SHORT).show();
 
                     if (!user.isValidUsername(( (EditText) findViewById(R.id.username)).getText().toString()))
@@ -45,9 +48,14 @@ public class Sign_up2 extends AppCompatActivity {
                     }
                     else
                         Toast.makeText(Sign_up2.this, "password doesn't match", Toast.LENGTH_SHORT).show();
-                }
-                else
+
+                if (user.isValidName(_name) &&
+                        user.isValidUsername(( (EditText) findViewById(R.id.username)).getText().toString())
+                        && user.isValidEmail(_email) && _pass.matches(_pass2) && user.isValidPassword(_pass) ){
+
                     Toast.makeText(Sign_up2.this, "200", Toast.LENGTH_SHORT).show();
+                    db.registerCaregiver(_name, _user_name, _pass, null, "1999", "country", "city");
+                }
 
             }
         });

@@ -79,4 +79,16 @@ public class ExampleUnitTest {
 
         assertFalse(obj.isValidName("John@Doe"));
     }
+
+    @Test
+    public void testValidPhoneNumber() {
+        assertTrue(obj.isValidPhoneNumber("0700300400"));
+    }
+
+    @Test
+    public void testInvalidPhoneNumber() {
+        assertFalse(obj.isValidPhoneNumber("12345"));
+        assertFalse(obj.isValidPhoneNumber(null));
+    }
+
 }
