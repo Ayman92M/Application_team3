@@ -36,17 +36,17 @@ public class Sign_up2 extends AppCompatActivity {
                 if (!user.isValidName(_name))
                     Toast.makeText(Sign_up2.this, "invalid name", Toast.LENGTH_SHORT).show();
 
-                    if (!user.isValidUsername(( (EditText) findViewById(R.id.username)).getText().toString()))
+                if (!user.isValidUsername(( (EditText) findViewById(R.id.username)).getText().toString()))
                         Toast.makeText(Sign_up2.this, "invalid user name", Toast.LENGTH_SHORT).show();
 
-                    if(!user.isValidEmail(_email))
+                if(!user.isValidEmail(_email))
                         Toast.makeText(Sign_up2.this, "invalid Email", Toast.LENGTH_SHORT).show();
 
-                    if(_pass.matches(_pass2)){
+                if(_pass.matches(_pass2)){
                         if(!user.isValidPassword(_pass))
                             Toast.makeText(Sign_up2.this, "invalid Password", Toast.LENGTH_SHORT).show();
-                    }
-                    else
+                }
+                else
                         Toast.makeText(Sign_up2.this, "password doesn't match", Toast.LENGTH_SHORT).show();
 
                 if (user.isValidName(_name) &&
@@ -54,7 +54,7 @@ public class Sign_up2 extends AppCompatActivity {
                         && user.isValidEmail(_email) && _pass.matches(_pass2) && user.isValidPassword(_pass) ){
 
                     Toast.makeText(Sign_up2.this, "200", Toast.LENGTH_SHORT).show();
-                    db.registerCaregiver(_name, _user_name, _pass, null, "1999", "country", "city");
+                    db.registerCaregiver(_name, _user_name, _pass, null, "1999", "country");
                 }
 
             }

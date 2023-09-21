@@ -57,14 +57,24 @@ public class Database {
         return loginSuccess;
     }
 
-    public boolean checkLoginCaregiver(String pid, String password){
+    public boolean getLoginSuccess(){
+        return loginSuccess;
+    }
+    public void setLoginSuccess(){
+        loginSuccess=true;
+    }
+
+    public void checkLoginCaregiver(String pid, String password){
         loginSuccess=false;
         caregiverRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.child(pid).exists()){
-                    if(Objects.equals(snapshot.child(pid).child("pin").getValue(), password)){
-                        loginSuccess = true;
+                    System.out.println(snapshot.child(pid).getValue());
+                    System.out.println("1" + loginSuccess);
+                    if(Objects.equals(snapshot.child(pid).child("password").getValue(), password)){
+                        setLoginSuccess();
+                        System.out.println("2" +loginSuccess);
                     }
                 }
             }
@@ -73,7 +83,7 @@ public class Database {
 
             }
         });
+        System.out.println("3" + loginSuccess);
 
-        return loginSuccess;
     }
 }
