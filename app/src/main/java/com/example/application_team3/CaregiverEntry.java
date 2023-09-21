@@ -7,14 +7,11 @@ public class CaregiverEntry {
     String name, pid, password, phoneNo;
     String birthday, address;
     List<String> elderly = new LinkedList<>();
-    public CaregiverEntry(String name, String pid, String password, String phoneNo, String birthday, String address, String elderly) {
+    public CaregiverEntry(String name, String pid, String password, String phoneNo) {
         this.name = name;
         this.pid = pid;
         this.password = password;
         this.phoneNo = phoneNo;
-        this.birthday = birthday;
-        this.address = address;
-        this.elderly.add(elderly);
     }
 
     public String getName() {
