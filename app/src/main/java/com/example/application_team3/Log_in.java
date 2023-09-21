@@ -18,6 +18,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Objects;
 
 public class Log_in extends AppCompatActivity {
+    UserAccountControl user = new UserAccountControl();
     TextView signup_bt;
     Database db = new Database();
 
@@ -43,22 +44,27 @@ public class Log_in extends AppCompatActivity {
                 String _user_name = ( (EditText) findViewById(R.id.editTextText)).getText().toString();
                 String _pass =((EditText) findViewById(R.id.editTextNumberPassword)).getText().toString();
 
-                db.checkLoginCaregiver(_user_name, _pass, new MyCallback() {
-                    @Override
-                    public void onCallback(Object value) {
-                        if((boolean) value){
-                            Toast.makeText(Log_in.this, "True", Toast.LENGTH_SHORT).show();
+                if (!user.isValidUsername(_user_name) || !user.isValidPassword(_pass))
+                    Toast.makeText(Log_in.this, "invalid user name or password", Toast.LENGTH_SHORT).show();
+                else{
+                    db.checkLoginCaregiver(_user_name, _pass, new MyCallback() {
+                        @Override
+                        public void onCallback(Object value) {
+                            if((boolean) value){
+                                Toast.makeText(Log_in.this, "True", Toast.LENGTH_SHORT).show();
 
-                            Intent page1 = new Intent(Log_in.this, Caregiver_dash.class);
-                            //db._caregiver.getName();
-                            page1.putExtra("key", _user_name);
-                            startActivity(page1);
+                                Intent page1 = new Intent(Log_in.this, Caregiver_dash.class);
+                                //db._caregiver.getName();
+                                page1.putExtra("key", _user_name);
+                                startActivity(page1);
+                            }
+                            else {
+                                Toast.makeText(Log_in.this, "False", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                        else {
-                            Toast.makeText(Log_in.this, "False", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
+                    });
+                }
+
             }
         });
     }

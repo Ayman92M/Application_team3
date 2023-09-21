@@ -18,13 +18,10 @@ public class List_viewer extends AppCompatActivity {
         setContentView(R.layout.activity_list_viewer);
 
         listView = findViewById(R.id.listView);
-
-        // Skapa en array med data (här används bara strängar som exempel)
         String[] data = {
                 "User 1, Subitem 1",
                 "User 2, Subitem 21",
                 "User 3, Subitem 31",
-
         };
 
         /*
