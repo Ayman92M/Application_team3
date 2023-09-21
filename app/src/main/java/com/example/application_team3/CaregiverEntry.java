@@ -1,19 +1,20 @@
 package com.example.application_team3;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class CaregiverEntry {
     String name, pid, password, phoneNo;
-    String dob, country, city;
-
-    public CaregiverEntry(String name, String pid, String password, String phoneNo, String dob, String country, String city) {
+    String birthday, address;
+    List<String> elderly = new LinkedList<>();
+    public CaregiverEntry(String name, String pid, String password, String phoneNo, String birthday, String address, String elderly) {
         this.name = name;
         this.pid = pid;
         this.password = password;
         this.phoneNo = phoneNo;
-        this.dob = dob;
-        this.country = country;
-        this.city = city;
+        this.birthday = birthday;
+        this.address = address;
+        this.elderly.add(elderly);
     }
 
     public String getName() {
@@ -48,28 +49,31 @@ public class CaregiverEntry {
         this.phoneNo = phoneNo;
     }
 
-    public String getDob() {
-        return dob;
+    public String getBirthday() {
+        return birthday;
     }
 
-    public void setDob(String dob) {
-        this.dob = dob;
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
     }
 
-    public String getCountry() {
-        return country;
+    public String getAddress() {
+        return address;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getCity() {
-        return city;
+    public List<String> getElderly(){
+        return this.elderly;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void addElderly(String elderly){
+        this.elderly.add(elderly);
     }
 
+    public void removeElderly(String elderly){
+        this.elderly.remove(elderly);
+    }
 }
