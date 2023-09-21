@@ -13,7 +13,7 @@
         android:theme="@style/Theme.Application_team3"
         tools:targetApi="31">
         <activity
-            android:name=".activity_caregiverdash"
+            android:name=".Caregiver_dash"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

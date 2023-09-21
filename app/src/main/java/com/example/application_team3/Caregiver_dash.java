@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class activity_caregiverdash extends AppCompatActivity {
+public class Caregiver_dash extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
