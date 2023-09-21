@@ -10,14 +10,11 @@ public class ElderlyEntry {
 
     List<String> caregivers = new LinkedList<>();
 
-    public ElderlyEntry(String name, String pid, int pin, String phoneNo, String birthday, String address, String caregiver) {
+    public ElderlyEntry(String name, String pid, int pin, String phoneNo) {
         this.name = name;
         this.pid = pid;
         this.pin = pin;
         this.phoneNo = phoneNo;
-        this.birthday = birthday;
-        this.address = address;
-        this.caregivers.add(caregiver);
     }
 
     public String getName() {
