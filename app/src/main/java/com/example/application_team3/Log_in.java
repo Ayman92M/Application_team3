@@ -21,6 +21,7 @@ public class Log_in extends AppCompatActivity {
     TextView signup_bt;
     Database db = new Database();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,11 +43,27 @@ public class Log_in extends AppCompatActivity {
                 String _user_name = ( (EditText) findViewById(R.id.editTextText)).getText().toString();
                 String _pass =((EditText) findViewById(R.id.editTextNumberPassword)).getText().toString();
 
-                test(_user_name, _pass);
+                db.checkLoginCaregiver(_user_name, _pass, new MyCallback() {
+                    @Override
+                    public void onCallback(Object value) {
+                        if((boolean) value){
+                            Toast.makeText(Log_in.this, "True", Toast.LENGTH_SHORT).show();
+
+                            Intent page1 = new Intent(Log_in.this, Caregiver_dash.class);
+                            //db._caregiver.getName();
+                            page1.putExtra("key", _user_name);
+                            startActivity(page1);
+                        }
+                        else {
+                            Toast.makeText(Log_in.this, "False", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
         });
     }
 
+    /*
     void test(String _user_name, String _pass){
         db.caregiverRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -58,6 +75,8 @@ public class Log_in extends AppCompatActivity {
                         Toast.makeText(Log_in.this, "True", Toast.LENGTH_SHORT).show();
 
                         Intent page1 = new Intent(Log_in.this, Caregiver_dash.class);
+                        String _name1 =  snapshot.child(_user_name).child("name").getValue().toString();
+                        page1.putExtra("key", _name1);
                         startActivity(page1);
                     }
                     else{
@@ -75,5 +94,7 @@ public class Log_in extends AppCompatActivity {
             }
         });
     }
+
+     */
 
 }

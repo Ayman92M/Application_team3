@@ -27,7 +27,7 @@
         android:layout_marginTop="232dp"
         android:background="@drawable/button_square"
         android:backgroundTint="#A2A5A2"
-        android:text="Button4"
+        android:text="@string/list"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

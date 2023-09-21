@@ -65,7 +65,6 @@ public class Database {
             }
         });
 
-
     }
 
     public void checkLoginCaregiver(String pid, String password, MyCallback callback){
