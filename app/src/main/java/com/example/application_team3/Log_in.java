@@ -18,7 +18,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Objects;
 
 public class Log_in extends AppCompatActivity {
-    TextView signup_bt; boolean loginSuccess;
+    TextView signup_bt;
     Database db = new Database();
 
     @Override
@@ -41,37 +41,37 @@ public class Log_in extends AppCompatActivity {
             public void onClick(View view) {
                 String _user_name = ( (EditText) findViewById(R.id.editTextText)).getText().toString();
                 String _pass =((EditText) findViewById(R.id.editTextNumberPassword)).getText().toString();
-              /*  db.caregiverRef.addValueEventListener(new ValueEventListener() {
 
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if(snapshot.child(_user_name).exists()){
-                            System.out.println(snapshot.child(_user_name).getValue());
-                            System.out.println("1" + loginSuccess);
-                            if(Objects.equals(snapshot.child(_user_name).child("password").getValue(), _pass)){
-                                loginSuccess = true;
-                                System.out.println("2" +loginSuccess);
-                                Toast.makeText(Log_in.this, "True", Toast.LENGTH_SHORT).show();
-                            }
-                            else{
-                                Toast.makeText(Log_in.this, "False", Toast.LENGTH_SHORT).show();
-                            }
-                        }
+                test(_user_name, _pass);
+            }
+        });
+    }
+
+    void test(String _user_name, String _pass){
+        db.caregiverRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.child(_user_name).exists()){
+                    System.out.println(snapshot.child(_user_name).getValue());
+
+                    if(Objects.equals(snapshot.child(_user_name).child("password").getValue(), _pass)){
+                        Toast.makeText(Log_in.this, "True", Toast.LENGTH_SHORT).show();
+
+                        Intent page1 = new Intent(Log_in.this, Caregiver_dash.class);
+                        startActivity(page1);
                     }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
+                    else{
+                        Toast.makeText(Log_in.this, "False password", Toast.LENGTH_SHORT).show();
                     }
-                });
+                }
+                else{
+                    Toast.makeText(Log_in.this, "False username", Toast.LENGTH_SHORT).show();
+                }
+            }
 
-               */
-                db.checkLoginCaregiver(_user_name, _pass);
-                if(db.getLoginSuccess())
-                    Toast.makeText(Log_in.this, "True", Toast.LENGTH_SHORT).show();
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
-               else
-                   Toast.makeText(Log_in.this, "False", Toast.LENGTH_SHORT).show();
             }
         });
     }

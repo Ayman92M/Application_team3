@@ -54,7 +54,7 @@ public class Sign_up2 extends AppCompatActivity {
                         && user.isValidEmail(_email) && _pass.matches(_pass2) && user.isValidPassword(_pass) ){
 
                     Toast.makeText(Sign_up2.this, "200", Toast.LENGTH_SHORT).show();
-                    db.registerCaregiver(_name, _user_name, _pass, null, "1999", "country", "city");
+                    db.registerCaregiver(_name, _user_name, _pass, null, "1999", "country");
                 }
 
             }
