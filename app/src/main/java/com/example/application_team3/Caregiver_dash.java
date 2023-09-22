@@ -33,5 +33,14 @@ public class Caregiver_dash extends AppCompatActivity {
             }
         });
 
+        Button extra_bt = findViewById(R.id.button5);
+        extra_bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent page = new Intent(Caregiver_dash.this, Extra_dashboard.class);
+                startActivity(page);
+            }
+        });
+
     }
 }

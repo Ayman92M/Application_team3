@@ -13,7 +13,7 @@
         android:src="@drawable/ic_launcher_foreground" />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/textView_list_username"
         android:textSize="26dp"
         android:textStyle="bold"
         android:layout_width="wrap_content"
@@ -22,7 +22,7 @@
         android:text="Component 1" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textView_list_subitem"
         android:textSize="14dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

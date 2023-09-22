@@ -28,13 +28,13 @@ public class List_viewer extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.activity_list_item, R.id.textView1, data);
         listView.setAdapter(adapter);
         */
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.activity_list_item, R.id.textView1, data){
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.activity_list_item, R.id.textView_list_username, data){
             @Override
             public View getView(int position, View convertView, ViewGroup parent){
                 View row = super.getView(position, convertView, parent);
                 String[] itemParts = getItem(position).split(", ");
-                TextView textView1 = row.findViewById(R.id.textView1);
-                TextView textView2 = row.findViewById(R.id.textView2);
+                TextView textView1 = row.findViewById(R.id.textView_list_username);
+                TextView textView2 = row.findViewById(R.id.textView_list_subitem);
 
                 textView1.setText(itemParts[0]); // Huvudtext (item)
                 textView2.setText(itemParts[1]); // Undertext (subitem)

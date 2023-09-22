@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Application_team3"
         tools:targetApi="31">
         <activity
+            android:name=".Extra_dashboard"
+            android:exported="false" />
+        <activity
             android:name=".List_viewer"
             android:exported="false" />
         <activity
