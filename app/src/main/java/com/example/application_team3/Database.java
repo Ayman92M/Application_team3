@@ -11,6 +11,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Database {
@@ -167,6 +168,10 @@ public class Database {
 
     public interface NameCallback {
         void onNameFetched(String name);
+    }
+
+    public interface ListCallback {
+        void onPidValuesFetched(List<String> pidList);
     }
 
 }
