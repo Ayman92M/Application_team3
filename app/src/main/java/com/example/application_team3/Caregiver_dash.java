@@ -28,8 +28,6 @@ public class Caregiver_dash extends AppCompatActivity {
                 Intent page = new Intent(Caregiver_dash.this, List_viewer.class);
                 startActivity(page);
 
-
-
             }
         });
 

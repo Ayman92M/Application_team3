@@ -18,6 +18,7 @@ public class Database {
     DatabaseReference elderlyRef;
     ElderlyEntry _elderly;
     CaregiverEntry _caregiver;
+    int x = 100;
 
     public Database() {
         rootNode = FirebaseDatabase.getInstance();

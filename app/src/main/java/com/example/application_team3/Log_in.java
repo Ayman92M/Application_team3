@@ -41,8 +41,9 @@ public class Log_in extends AppCompatActivity {
         button_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String _user_name = ( (EditText) findViewById(R.id.editTextText)).getText().toString();
-                String _pass =((EditText) findViewById(R.id.editTextNumberPassword)).getText().toString();
+                //String _user_name = ( (EditText) findViewById(R.id.editTextText)).getText().toString();
+                String _user_name = getEditTextValue(R.id.editTextText);
+                String _pass = getEditTextValue(R.id.editTextNumberPassword);
 
                 if (!user.isValidUsername(_user_name) || !user.isValidPassword(_pass))
                     Toast.makeText(Log_in.this, "invalid user name or password", Toast.LENGTH_SHORT).show();
@@ -69,38 +70,10 @@ public class Log_in extends AppCompatActivity {
         });
     }
 
-    /*
-    void test(String _user_name, String _pass){
-        db.caregiverRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.child(_user_name).exists()){
-                    System.out.println(snapshot.child(_user_name).getValue());
-
-                    if(Objects.equals(snapshot.child(_user_name).child("password").getValue(), _pass)){
-                        Toast.makeText(Log_in.this, "True", Toast.LENGTH_SHORT).show();
-
-                        Intent page1 = new Intent(Log_in.this, Caregiver_dash.class);
-                        String _name1 =  snapshot.child(_user_name).child("name").getValue().toString();
-                        page1.putExtra("key", _name1);
-                        startActivity(page1);
-                    }
-                    else{
-                        Toast.makeText(Log_in.this, "False password", Toast.LENGTH_SHORT).show();
-                    }
-                }
-                else{
-                    Toast.makeText(Log_in.this, "False username", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+    private String getEditTextValue(int editTextId) {
+        EditText editText = findViewById(editTextId);
+        String value = editText.getText().toString();
+        return value;
     }
-
-     */
 
 }
