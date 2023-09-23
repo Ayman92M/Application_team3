@@ -1,6 +1,8 @@
 package com.example.application_team3;
 
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.firebase.database.DataSnapshot;
@@ -18,7 +20,6 @@ public class Database {
     DatabaseReference elderlyRef;
     ElderlyEntry _elderly;
     CaregiverEntry _caregiver;
-    int x = 100;
 
     public Database() {
         rootNode = FirebaseDatabase.getInstance();
@@ -26,7 +27,6 @@ public class Database {
         elderlyRef = rootNode.getReference("Elderly");
 
         //test();
-
     }
 
     public void test(){
@@ -76,6 +76,8 @@ public class Database {
                     if(Objects.equals(snapshot.child(pid).child("password").getValue(), password)){
                         callback.onCallback(true);
                     }
+                    else
+                        callback.onCallback(false);
                 }
             }
 
@@ -84,7 +86,87 @@ public class Database {
 
             }
         });
+    }
 
+    public void checkLoginCaregiver(String pid, MyCallback callback){
+        caregiverRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.child(pid).exists())
+                        callback.onCallback(true);
+                else
+                    callback.onCallback(false);
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void checkUsername(String user_name, MyCallback callback){
+        checkLoginCaregiver(user_name, new MyCallback() {
+            @Override
+            public void onCallback(Object value) {
+                if((boolean) value)
+                    callback.onCallback(true);
+
+                else
+                    callback.onCallback(false);
+
+            }
+        });
+    }
+
+    public String getCaregiverName(String pid, NameCallback callback){
+        caregiverRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.child(pid).exists()){
+                    String name = snapshot.child(pid).child("name").getValue(String.class);
+                    callback.onNameFetched(name);
+                }
+                else {
+                    callback.onNameFetched(null);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        return null;
+    }
+
+    public CaregiverEntry getCaregiverEntry(String pid, CaregiverEntryCallback callback) {
+        caregiverRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.child(pid).exists()){
+                    String name = snapshot.child(pid).child("name").getValue(String.class);
+                    String password = snapshot.child(pid).child("password").getValue(String.class);
+                    String phoneNo = snapshot.child(pid).child("phoneNo").getValue(String.class);
+
+                    CaregiverEntry caregiverEntry = new CaregiverEntry(name, pid, password, phoneNo);
+                    callback.onEntryFetched(caregiverEntry);
+                }
+                else{
+                    callback.onEntryFetched(null);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        return null;
+    }
+
+    public interface NameCallback {
+        void onNameFetched(String name);
     }
 
 }
