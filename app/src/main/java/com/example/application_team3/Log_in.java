@@ -121,7 +121,7 @@ public class Log_in extends AppCompatActivity {
         });
     }
 
-    public void testList(String pid){
+    private void testList(String pid){
         db.getCaregiverList(pid, new Database.ListCallback() {
             @Override
             public void onListValuesFetched(List<CaregiverEntry> CaregiverList) {

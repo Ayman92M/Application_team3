@@ -9,8 +9,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class List_viewer extends AppCompatActivity {
     private ListView listView;
+    Database db = new Database();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +22,7 @@ public class List_viewer extends AppCompatActivity {
         setContentView(R.layout.activity_list_viewer);
 
         listView = findViewById(R.id.listView);
+        testList("ale1001");
         String[] data = {
                 "User 1, Subitem 1",
                 "User 2, Subitem 21",
@@ -28,7 +33,9 @@ public class List_viewer extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.activity_list_item, R.id.textView1, data);
         listView.setAdapter(adapter);
         */
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.activity_list_item, R.id.textView_list_username, data){
+        /*
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.activity_list_item,
+                R.id.textView_list_username, data){
             @Override
             public View getView(int position, View convertView, ViewGroup parent){
                 View row = super.getView(position, convertView, parent);
@@ -43,6 +50,85 @@ public class List_viewer extends AppCompatActivity {
             }
         };
         listView.setAdapter(adapter);
+        */
+    }
 
+    /*
+    private void testList(String pid){
+        List<CaregiverEntry> caregiverList = new ArrayList<>();
+        List<String> caregiverStrings = new ArrayList<>();
+
+        db.getCaregiverList(pid, new Database.ListCallback() {
+            @Override
+            public void onListValuesFetched(List<CaregiverEntry> CaregiverList) {
+                if (CaregiverList != null){
+                    for (CaregiverEntry entry : CaregiverList) {
+                        String caregiverString = "Name: " + entry.getName() + ", PID: " + entry.getPid();
+                        caregiverStrings.add(caregiverString);
+
+                    }
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.activity_list_item,
+                            R.id.textView_list_username, caregiverStrings){
+                        @Override
+                        public View getView(int position, View convertView, ViewGroup parent){
+                            View row = super.getView(position, convertView, parent);
+                            String[] itemParts = getItem(position).split(", ");
+                            TextView textView1 = row.findViewById(R.id.textView_list_username);
+                            TextView textView2 = row.findViewById(R.id.textView_list_subitem);
+
+                            textView1.setText(itemParts[0]); // Huvudtext (item)
+                            textView2.setText(itemParts[1]); // Undertext (subitem)
+
+                            return row;
+                        }
+                    };
+                    listView.setAdapter(adapter);
+                }
+                else {
+                    System.out.println("Ingen matchande vårdgivare hittades.");
+                }
+            }
+        });
+    }
+    */
+    private void testList(String pid) {
+        List<CaregiverEntry> caregiverList = new ArrayList<>();
+        List<String> caregiverStrings = new ArrayList<>();
+
+        db.getCaregiverList(pid, new Database.ListCallback() {
+            @Override
+            public void onListValuesFetched(List<CaregiverEntry> CaregiverList) {
+                if (CaregiverList != null) {
+                    for (CaregiverEntry entry : CaregiverList) {
+                        String caregiverString =  entry.getName() + ", " + entry.getPid();
+                        caregiverStrings.add(caregiverString);
+                    }
+
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                            getApplicationContext(), // Använd den aktuella kontexten
+                            R.layout.activity_list_item,
+                            R.id.textView_list_username,
+                            caregiverStrings
+                    ) {
+                        @Override
+                        public View getView(int position, View convertView, ViewGroup parent) {
+                            View row = super.getView(position, convertView, parent);
+                            String[] itemParts = getItem(position).split(", ");
+                            TextView textView1 = row.findViewById(R.id.textView_list_username);
+                            TextView textView2 = row.findViewById(R.id.textView_list_subitem);
+
+                            textView1.setText(itemParts[0]); // Huvudtext (item)
+                            textView2.setText(itemParts[1]); // Undertext (subitem)
+
+                            return row;
+                        }
+                    };
+
+                    listView.setAdapter(adapter);
+                } else {
+                    System.out.println("Ingen matchande vårdgivare hittades.");
+                }
+            }
+        });
     }
 }

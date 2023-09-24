@@ -176,7 +176,8 @@ public class Database {
                for (DataSnapshot childSnapshot : snapshot.getChildren()){
 
                    if(Objects.equals(snapshot.child(pid).child("phoneNo").getValue(), "null") ||
-                           snapshot.child(pid).child("phoneNo").getValue() == null){
+                           snapshot.child(pid).child("phoneNo").getValue() == null)
+                   {
 
                        String pid = childSnapshot.getKey();
                        String name = childSnapshot.child("name").getValue(String.class);
