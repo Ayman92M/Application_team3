@@ -51,7 +51,7 @@ public class Signup_elderly extends AppCompatActivity {
             notis("invalid user name");
 
         else{
-            db.checkUsername(_user_name, new MyCallback() {
+            db.checkUsernameElderly(_user_name, new MyCallback() {
                 @Override
                 public void onCallback(Object value) {
                     if((boolean) value){

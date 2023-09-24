@@ -96,6 +96,24 @@ public class Database {
 
     }
 
+    public void checkLoginElderly(String pid, MyCallback callback){
+        elderlyRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.child(pid).exists()){
+                        callback.onCallback(true);
+                }
+                else
+                    callback.onCallback(false);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
     public void checkLoginCaregiver(String pid, String password, MyCallback callback){
         caregiverRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -135,6 +153,20 @@ public class Database {
 
     public void checkUsername(String user_name, MyCallback callback){
         checkLoginCaregiver(user_name, new MyCallback() {
+            @Override
+            public void onCallback(Object value) {
+                if((boolean) value)
+                    callback.onCallback(true);
+
+                else
+                    callback.onCallback(false);
+
+            }
+        });
+    }
+
+    public void checkUsernameElderly(String user_name, MyCallback callback){
+        checkLoginElderly(user_name, new MyCallback() {
             @Override
             public void onCallback(Object value) {
                 if((boolean) value)
