@@ -2,6 +2,7 @@ package com.example.application_team3;
 
 import java.util.HashMap;
 
+
 public class CaregiverEntry {
     private String name;
     private String pid;
@@ -71,8 +72,8 @@ public class CaregiverEntry {
         return elderly;
     }
 
-    public void addElderly(String pid){
-        elderly.put(pid, pid);
+    public void addElderly(String pid, String name){
+        elderly.put(pid, name);
     }
 
     public void removeElderly(String pid){
