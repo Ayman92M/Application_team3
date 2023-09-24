@@ -20,78 +20,21 @@ public class List_viewer extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_viewer);
-
+        
+        /*
+        Intent get_user_name = getIntent();
+        String message = get_user_name.getStringExtra("key");
+        ( (TextView) findViewById(R.id.textView5)).setText("Welcome " + message);
+        */
+        
         listView = findViewById(R.id.listView);
-        testList("ale1001");
-        String[] data = {
-                "User 1, Subitem 1",
-                "User 2, Subitem 21",
-                "User 3, Subitem 31",
-        };
-
-        /*
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.activity_list_item, R.id.textView1, data);
-        listView.setAdapter(adapter);
-        */
-        /*
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.activity_list_item,
-                R.id.textView_list_username, data){
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent){
-                View row = super.getView(position, convertView, parent);
-                String[] itemParts = getItem(position).split(", ");
-                TextView textView1 = row.findViewById(R.id.textView_list_username);
-                TextView textView2 = row.findViewById(R.id.textView_list_subitem);
-
-                textView1.setText(itemParts[0]); // Huvudtext (item)
-                textView2.setText(itemParts[1]); // Undertext (subitem)
-
-                return row;
-            }
-        };
-        listView.setAdapter(adapter);
-        */
+        showList("ggg12");
+        
+        
     }
 
-    /*
-    private void testList(String pid){
-        List<CaregiverEntry> caregiverList = new ArrayList<>();
-        List<String> caregiverStrings = new ArrayList<>();
-
-        db.getCaregiverList(pid, new Database.ListCallback() {
-            @Override
-            public void onListValuesFetched(List<CaregiverEntry> CaregiverList) {
-                if (CaregiverList != null){
-                    for (CaregiverEntry entry : CaregiverList) {
-                        String caregiverString = "Name: " + entry.getName() + ", PID: " + entry.getPid();
-                        caregiverStrings.add(caregiverString);
-
-                    }
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.activity_list_item,
-                            R.id.textView_list_username, caregiverStrings){
-                        @Override
-                        public View getView(int position, View convertView, ViewGroup parent){
-                            View row = super.getView(position, convertView, parent);
-                            String[] itemParts = getItem(position).split(", ");
-                            TextView textView1 = row.findViewById(R.id.textView_list_username);
-                            TextView textView2 = row.findViewById(R.id.textView_list_subitem);
-
-                            textView1.setText(itemParts[0]); // Huvudtext (item)
-                            textView2.setText(itemParts[1]); // Undertext (subitem)
-
-                            return row;
-                        }
-                    };
-                    listView.setAdapter(adapter);
-                }
-                else {
-                    System.out.println("Ingen matchande vårdgivare hittades.");
-                }
-            }
-        });
-    }
-    */
-    private void testList(String pid) {
+   
+    private void showList(String pid) {
         List<CaregiverEntry> caregiverList = new ArrayList<>();
         List<String> caregiverStrings = new ArrayList<>();
 
@@ -131,4 +74,33 @@ public class List_viewer extends AppCompatActivity {
             }
         });
     }
+    
+    
+    /*      
+        String[] data = {
+                "User 1, Subitem 1",
+                "User 2, Subitem 21",
+                "User 3, Subitem 31",
+        };
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.activity_list_item, R.id.textView1, data);
+        listView.setAdapter(adapter);
+        */
+        /*
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.activity_list_item,
+                R.id.textView_list_username, data){
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent){
+                View row = super.getView(position, convertView, parent);
+                String[] itemParts = getItem(position).split(", ");
+                TextView textView1 = row.findViewById(R.id.textView_list_username);
+                TextView textView2 = row.findViewById(R.id.textView_list_subitem);
+
+                textView1.setText(itemParts[0]); // Huvudtext (item)
+                textView2.setText(itemParts[1]); // Undertext (subitem)
+
+                return row;
+            }
+        };
+        listView.setAdapter(adapter);
+        */
 }
