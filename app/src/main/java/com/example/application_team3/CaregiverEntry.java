@@ -4,9 +4,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class CaregiverEntry {
-    String name, pid, password, phoneNo;
-    String birthday, address;
-    List<String> elderly = new LinkedList<>();
+    private String name;
+    private String pid;
+    private String password;
+    private String phoneNo;
+    private String birthday;
+    private String address;
+
+    private CaregiverEntry() {}
     public CaregiverEntry(String name, String pid, String password, String phoneNo) {
         this.name = name;
         this.pid = pid;
@@ -62,15 +67,4 @@ public class CaregiverEntry {
         this.address = address;
     }
 
-    public List<String> getElderly(){
-        return this.elderly;
-    }
-
-    public void addElderly(String elderly){
-        this.elderly.add(elderly);
-    }
-
-    public void removeElderly(String elderly){
-        this.elderly.remove(elderly);
-    }
 }

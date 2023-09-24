@@ -28,6 +28,33 @@ public class Database {
 
     }
 
+    public void fetchTest(){
+        fetchCaregiver("ggg12", new CaregiverCallback() {
+            @Override
+            public void onCallback(CaregiverEntry caregiver) {
+                System.out.println(caregiver.getName());
+                System.out.println(caregiver.getPid() + " " + caregiver.getPassword());
+            }
+        });
+    }
+
+    public void fetchCaregiver(String pid, CaregiverCallback callback){
+        caregiverRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.child(pid).exists())
+                {
+                    callback.onCallback(snapshot.child(pid).getValue(CaregiverEntry.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     public void test(){
         checkLoginCaregiver("ggg12", "123456Aa", new MyCallback() {
             @Override
