@@ -1,7 +1,6 @@
 package com.example.application_team3;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashMap;
 
 public class CaregiverEntry {
     private String name;
@@ -10,6 +9,7 @@ public class CaregiverEntry {
     private String phoneNo;
     private String birthday;
     private String address;
+    private final HashMap<String, String> elderly = new HashMap<>();
 
     private CaregiverEntry() {}
     public CaregiverEntry(String name, String pid, String password, String phoneNo) {
@@ -65,6 +65,18 @@ public class CaregiverEntry {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public HashMap<String, String> getElderly(){
+        return elderly;
+    }
+
+    public void addElderly(String pid){
+        elderly.put(pid, pid);
+    }
+
+    public void removeElderly(String pid){
+        elderly.remove(pid);
     }
 
 }

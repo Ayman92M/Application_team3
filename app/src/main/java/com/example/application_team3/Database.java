@@ -34,6 +34,7 @@ public class Database {
             public void onCallback(CaregiverEntry caregiver) {
                 System.out.println(caregiver.getName());
                 System.out.println(caregiver.getPid() + " " + caregiver.getPassword());
+                System.out.println(caregiver.getElderly());
             }
         });
     }
