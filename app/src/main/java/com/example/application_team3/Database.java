@@ -1,8 +1,6 @@
 package com.example.application_team3;
 
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.google.firebase.database.DataSnapshot;
@@ -11,6 +9,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -166,12 +165,46 @@ public class Database {
         return null;
     }
 
+
+    public CaregiverEntry getCaregiverList(String pid, ListCallback callback) {
+        List<CaregiverEntry> caregiverList = new ArrayList<>();
+
+        caregiverRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                caregiverList.clear();
+               for (DataSnapshot childSnapshot : snapshot.getChildren()){
+
+                   if(Objects.equals(snapshot.child(pid).child("phoneNo").getValue(), "null") ||
+                           snapshot.child(pid).child("phoneNo").getValue() == null){
+
+                       String pid = childSnapshot.getKey();
+                       String name = childSnapshot.child("name").getValue(String.class);
+                       String password = childSnapshot.child("password").getValue(String.class);
+                       String phoneNo = childSnapshot.child("phoneNo").getValue(String.class);
+                       CaregiverEntry caregiverEntry = new CaregiverEntry(name, pid, password, phoneNo);
+
+                       caregiverList.add(caregiverEntry);
+                   }
+               }
+                callback.onListValuesFetched(caregiverList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        return null;
+    }
+
+
     public interface NameCallback {
         void onNameFetched(String name);
     }
 
     public interface ListCallback {
-        void onPidValuesFetched(List<String> pidList);
+        void onListValuesFetched(List<CaregiverEntry> CaregiverList);
     }
 
 }

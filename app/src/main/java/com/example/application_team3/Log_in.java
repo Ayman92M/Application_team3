@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+
 public class Log_in extends AppCompatActivity {
     UserAccountControl user = new UserAccountControl();
     TextView signup_bt;
@@ -23,6 +25,8 @@ public class Log_in extends AppCompatActivity {
 
         signUp_button();
         logIn_button();
+
+
     }
 
     private void signUp_button(){
@@ -62,6 +66,7 @@ public class Log_in extends AppCompatActivity {
                         notis("success");
 
                         Intent page1 = new Intent(Log_in.this, Caregiver_dash.class);
+                        testList(_user_name);
                         //db._caregiver.getName();
                         db.getCaregiverName(_user_name, new Database.NameCallback() {
                             @Override
@@ -111,6 +116,25 @@ public class Log_in extends AppCompatActivity {
                     System.out.println("Telefonnummer: " + entry.getPhoneNo());
                 } else {
                     System.out.println("Ingen vårdgivare hittades för den angivna pid.");
+                }
+            }
+        });
+    }
+
+    public void testList(String pid){
+        db.getCaregiverList(pid, new Database.ListCallback() {
+            @Override
+            public void onListValuesFetched(List<CaregiverEntry> CaregiverList) {
+                if (CaregiverList != null){
+                    for (CaregiverEntry entry : CaregiverList) {
+                        System.out.println("Namn: " + entry.getName());
+                        System.out.println("PID: " + entry.getPid());
+                        System.out.println("Lösenord: " + entry.getPassword());
+                        System.out.println("Telefonnummer: " + entry.getPhoneNo());
+                    }
+                }
+                else {
+                    System.out.println("Ingen matchande vårdgivare hittades.");
                 }
             }
         });
