@@ -51,12 +51,24 @@ public class Signup_elderly extends AppCompatActivity {
             notis("invalid user name");
 
         else{
-            if (user.isValidName(_name) &&
-                    _pin.matches(_pin2) && user.isValidPassword(_pin) ){
-                notis("200");
-                db.registerElderly(_name, _user_name, Integer.parseInt(_pin), null);
+            db.checkUsername(_user_name, new MyCallback() {
+                @Override
+                public void onCallback(Object value) {
+                    if((boolean) value){
+                        notis("User name is already exists, use a different user name");
+                    }
+                    else
+                    {
+                        if (user.isValidName(_name) &&
+                                _pin.matches(_pin2) && user.isValidPin(_pin) ){
+                            notis("200");
+                            db.registerElderly(_name, _user_name, Integer.parseInt(_pin), null);
 
-            }
+                        }
+                    }
+
+                }
+            });
 
         }
 
