@@ -2,6 +2,7 @@ package com.example.application_team3;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,13 +20,13 @@ public class List_viewer extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_viewer);
+        setContentView(R.layout.activity_list_viewer2);
         
-        /*
+
         Intent get_user_name = getIntent();
         String message = get_user_name.getStringExtra("key");
         ( (TextView) findViewById(R.id.textView5)).setText("Welcome " + message);
-        */
+
         
         listView = findViewById(R.id.listView);
         showList("ggg12");

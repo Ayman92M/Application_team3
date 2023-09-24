@@ -6,10 +6,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Caregiver_dash extends AppCompatActivity {
-
+    UserAccountControl user = new UserAccountControl();
+    Database db = new Database();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,5 +44,16 @@ public class Caregiver_dash extends AppCompatActivity {
             }
         });
 
+        Button addElderly = findViewById(R.id.button6);
+        addElderly.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent page = new Intent(Caregiver_dash.this, Signup_elderly.class);
+                startActivity(page);
+            }
+        });
+
     }
+
+
 }
