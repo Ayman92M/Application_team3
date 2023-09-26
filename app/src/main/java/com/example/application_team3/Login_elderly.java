@@ -25,7 +25,7 @@ public class Login_elderly extends AppCompatActivity {
         button_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                logIn_process();
+                logIn_process(); db.test1();
             }
         });
     }
@@ -42,14 +42,28 @@ public class Login_elderly extends AppCompatActivity {
                 @Override
                 public void onCallback(Object value) {
                     if((boolean) value){
-                        Toast.makeText(Login_elderly.this, "Trueeeeeeeee", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Login_elderly.this, "Success", Toast.LENGTH_SHORT).show();
                         Intent page1 = new Intent(Login_elderly.this, Elderly_home_test.class);
+                        db.getElderlyName(_user_name, new Database.NameCallback() {
+                            @Override
+                            public void onNameFetched(String name) {
+                                if (name != null){
+                                    page1.putExtra("key", name);
+                                    startActivity(page1);
+                                }
+                                else{
+                                    page1.putExtra("key", _user_name);
+                                    startActivity(page1);
+                                }
+                            }
+                        });
+
                         page1.putExtra("key", _user_name);
 
                         startActivity(page1);
                     }
                     else {
-                        Toast.makeText(Login_elderly.this, "Falseeeeee", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Login_elderly.this, "Username or password is incorrect", Toast.LENGTH_SHORT).show();
                     }
                 }
             });

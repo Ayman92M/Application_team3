@@ -36,12 +36,12 @@ public class Database {
     }
 
     public void test1(){
-        checkLoginElderly("eee12", "1234", value -> {
+        checkLoginElderly("use12", "1234", value -> {
             if((boolean) value){
                 System.out.println("Continue");
             }
             else
-                System.out.println("xxxxxxxxxxxxxxxxx");
+                System.out.println("xxxxxxxxxxxx");
         });
     }
     // Example of how to use the fetch methods in the database
@@ -107,12 +107,17 @@ public class Database {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.child(pid).exists()){
+
                     if(Objects.equals(snapshot.child(pid).child("pin").getValue(), pin)){
                         callback.onCallback(true);
                     }
-                    else
-                        callback.onCallback(false);
+                    else{
+                        callback.onCallback(false); //in case. Wrong Password
+                    }
+
                 }
+                else
+                    callback.onCallback(false); //in case. Wrong username
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -162,7 +167,11 @@ public class Database {
                     if(Objects.equals(snapshot.child(pid).child("password").getValue(), password)){
                         callback.onCallback(true);
                     }
+                    else
+                        callback.onCallback(false);
                 }
+                else
+                    callback.onCallback(false);
             }
 
             @Override

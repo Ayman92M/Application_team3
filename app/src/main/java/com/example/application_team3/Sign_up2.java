@@ -50,7 +50,7 @@ public class Sign_up2 extends AppCompatActivity {
 
         if(_pass.matches(_pass2)){
             if(!user.isValidPassword(_pass))
-                notis("invalid Password");
+                notis("password must be at least 8 characters and include a number a capital letter and a lowercase letter");
 
         }
         else
@@ -70,7 +70,7 @@ public class Sign_up2 extends AppCompatActivity {
                     {
                         if (user.isValidName(_name) &&
                                 user.isValidEmail(_email) && _pass.matches(_pass2) && user.isValidPassword(_pass) ){
-                            notis("200");
+                            notis("Your account has been successfully created.");
                             db.registerCaregiver(_name, _user_name, _pass, null);
 
                         }

@@ -87,6 +87,7 @@
         android:drawableLeft="@drawable/baseline_password_24"
         android:drawablePadding="20dp"
         android:hint="Password"
+        android:inputType="textPassword"
         android:padding="20dp"
         android:textColor="@color/black"
         android:textColorHint="@color/black" />
@@ -104,6 +105,7 @@
         android:drawableLeft="@drawable/baseline_password_24"
         android:drawablePadding="20dp"
         android:hint="Rewrite-Password"
+        android:inputType="textPassword"
         android:padding="20dp"
         android:textColor="@color/black"
         android:textColorHint="@color/black" />
@@ -119,6 +121,6 @@
         android:layout_marginTop="31dp"
         android:layout_marginEnd="161dp"
         android:onClick="signup_function"
-        android:text="Button" />
+        android:text="Sign UP" />
 
 </RelativeLayout>

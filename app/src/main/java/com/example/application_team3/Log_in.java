@@ -63,7 +63,7 @@ public class Log_in extends AppCompatActivity {
                 @Override
                 public void onCallback(Object value) {
                     if((boolean) value){
-                        notis("success");
+                        notis("Success");
 
                         Intent page1 = new Intent(Log_in.this, Caregiver_dash.class);
                         testList(_user_name);
@@ -86,7 +86,7 @@ public class Log_in extends AppCompatActivity {
                         //startActivity(page1);
                     }
                     else
-                        notis("False");
+                        notis("Username or password is incorrect");
 
                 }
             });
