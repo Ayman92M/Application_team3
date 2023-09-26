@@ -1,15 +1,18 @@
 package com.example.application_team3;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashMap;
 
 public class ElderlyEntry {
-    String name, pid, phoneNo;
-    int pin;
-    String birthday, address;
+    private String name;
+    private String pid;
+    private String phoneNo;
+    private int pin;
+    private String birthday;
+    private String address;
 
-    List<String> caregivers = new LinkedList<>();
+    HashMap<String, String> caregivers = new HashMap<>();
 
+        private ElderlyEntry() {}
     public ElderlyEntry(String name, String pid, int pin, String phoneNo) {
         this.name = name;
         this.pid = pid;
@@ -65,12 +68,12 @@ public class ElderlyEntry {
         this.address = address;
     }
 
-    public List<String> getCaregivers() {
+    public HashMap<String, String> getCaregivers() {
         return caregivers;
     }
 
-    public void addCaregiver(String caregiver) {
-        this.caregivers.add(caregiver);
+    public void addCaregiver(String caregiver_pid, String caregiver_name) {
+        this.caregivers.put(caregiver_pid, caregiver_name);
     }
 
     public void removeCaregiver(String caregiver){

@@ -23,18 +23,25 @@ public class Database {
         rootNode = FirebaseDatabase.getInstance();
         caregiverRef = rootNode.getReference("Caregiver");
         elderlyRef = rootNode.getReference("Elderly");
-
-        //test();
-
     }
-
+    // Example of how to use checkLogin methods in database
+    public void test(){
+        checkLoginCaregiver("ggg12", "123456Aa", value -> {
+            if((boolean) value){
+                System.out.println("Continue");
+            }
+        });
+    }
+    // Example of how to use the fetch methods in the database
     public void fetchTest(){
-        fetchCaregiver("ggg12", new CaregiverCallback() {
-            @Override
-            public void onCallback(CaregiverEntry caregiver) {
-                System.out.println(caregiver.getName());
-                System.out.println(caregiver.getPid() + " " + caregiver.getPassword());
-                System.out.println(caregiver.getElderly());
+        fetchCaregiver("ggg12", caregiver -> {
+            System.out.println(caregiver.getName());
+            System.out.println(caregiver.getPid() + " " + caregiver.getPassword());
+            System.out.println(caregiver.getElderly());
+            // Example of how to fetch elderly related to caregiver
+            for(String pid : caregiver.getElderly().keySet())
+            {
+                fetchElderly(pid, elderly -> System.out.println(elderly.getName()));
             }
         });
     }
@@ -56,16 +63,24 @@ public class Database {
         });
     }
 
-    public void test(){
-        checkLoginCaregiver("ggg12", "123456Aa", new MyCallback() {
+    public void fetchElderly(String pid, ElderlyCallback callback){
+        elderlyRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onCallback(Object value) {
-                if((boolean) value){
-                    System.out.println("Continue");
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.child(pid).exists())
+                {
+                    callback.onCallback(snapshot.child(pid).getValue(ElderlyEntry.class));
                 }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }
+
+
 
     public void registerCaregiver(String name, String pid, String password, String phoneNo){
         _caregiver = new CaregiverEntry(name, pid, password, phoneNo);
