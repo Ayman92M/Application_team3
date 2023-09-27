@@ -8,7 +8,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class Sign_up2 extends AppCompatActivity {
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.database.DataSnapshot;
+
+public class Signup_caregiver extends AppCompatActivity {
     Database db = new Database();
     EditText name, username, password, password2, email;
     boolean valid_username = false;
@@ -18,7 +22,7 @@ public class Sign_up2 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up2);
+        setContentView(R.layout.activity_signup_caregiver);
 
         signUp_button();
     }
@@ -40,7 +44,6 @@ public class Sign_up2 extends AppCompatActivity {
         String _pass = getEditTextValue(R.id.password);
         String _pass2 = getEditTextValue(R.id.rewritepassword);
         String _user_name = getEditTextValue(R.id.username);
-        //String _user_name = ( (EditText) findViewById(R.id.username)).getText().toString();
 
         if (!user.isValidName(_name))
             notis("invalid name");
@@ -50,7 +53,7 @@ public class Sign_up2 extends AppCompatActivity {
 
         if(_pass.matches(_pass2)){
             if(!user.isValidPassword(_pass))
-                notis("password must be at least 8 characters and include a number a capital letter and a lowercase letter");
+                notis("invalid Password");
 
         }
         else
@@ -60,28 +63,22 @@ public class Sign_up2 extends AppCompatActivity {
             notis("invalid user name");
 
         else{
-            db.checkUsername(_user_name, new MyCallback() {
-                @Override
-                public void onCallback(Object value) {
-                    if((boolean) value){
-                        notis("User name is already exists, use a different user name");
-                    }
-                    else
-                    {
-                        if (user.isValidName(_name) &&
-                                user.isValidEmail(_email) && _pass.matches(_pass2) && user.isValidPassword(_pass) ){
-                            notis("Your account has been successfully created.");
-                            db.registerCaregiver(_name, _user_name, _pass, null);
+            Task<DataSnapshot> caregiverDB = db.fetchCaregiverDB();
 
-                        }
-                    }
+            Tasks.whenAll(caregiverDB).addOnCompleteListener(task -> {
+                if(caregiverDB.getResult().child(_user_name).exists()){
+                    notis("User name is already exists, use a different user name");
+                }
+                else {
+                    if (user.isValidName(_name) &&
+                            user.isValidEmail(_email) && _pass.matches(_pass2) && user.isValidPassword(_pass) ){
+                        notis("200");
+                        db.registerCaregiver(_name, _user_name, _pass, null);
 
+                    }
                 }
             });
-
         }
-
-
     }
 
     private String create_username(String name){
@@ -95,7 +92,7 @@ public class Sign_up2 extends AppCompatActivity {
     }
 
     private void notis(String msg){
-        Toast.makeText(Sign_up2.this, msg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(Signup_caregiver.this, msg, Toast.LENGTH_SHORT).show();
     }
 
 }

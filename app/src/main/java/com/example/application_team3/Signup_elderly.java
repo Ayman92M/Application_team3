@@ -8,6 +8,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
+
 public class Signup_elderly extends AppCompatActivity {
     Database db = new Database();
     UserAccountControl user = new UserAccountControl();
@@ -32,7 +36,6 @@ public class Signup_elderly extends AppCompatActivity {
         String _pin = getEditTextValue(R.id.editTextText10);
         String _pin2 = getEditTextValue(R.id.editTextText11);
         String _user_name = getEditTextValue(R.id.editTextText9);
-        //String _user_name = ( (EditText) findViewById(R.id.username)).getText().toString();
 
         if (!user.isValidName(_name))
             notis("invalid name");
@@ -51,23 +54,22 @@ public class Signup_elderly extends AppCompatActivity {
             notis("invalid user name");
 
         else{
-            db.checkUsernameElderly(_user_name, new MyCallback() {
-                @Override
-                public void onCallback(Object value) {
-                    if((boolean) value){
-                        notis("User name is already exists, use a different user name");
-                    }
-                    else
-                    {
-                        if (user.isValidName(_name) &&
-                                _pin.matches(_pin2) && user.isValidPin(_pin) ){
-                            notis("200");
-                            db.registerElderly(_name, _user_name, Integer.parseInt(_pin), null);
+            Task<DataSnapshot> elderlyDB = db.fetchElderlyDB();
 
-                        }
-                    }
-
+            Tasks.whenAll(elderlyDB).addOnCompleteListener(task -> {
+                DataSnapshot snapshot = elderlyDB.getResult();
+                if(snapshot.child(_user_name).exists()){
+                    notis("User name is already exists, use a different user name");
                 }
+                else {
+                    if (user.isValidName(_name) &&
+                            _pin.matches(_pin2) && user.isValidPin(_pin) ){
+                        notis("200");
+                        db.registerElderly(_name, _user_name, _pin, null);
+
+                    }
+                }
+
             });
 
         }

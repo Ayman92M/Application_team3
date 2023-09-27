@@ -6,14 +6,14 @@ public class ElderlyEntry {
     private String name;
     private String pid;
     private String phoneNo;
-    private int pin;
+    private String pin;
     private String birthday;
     private String address;
 
     HashMap<String, String> caregivers = new HashMap<>();
 
         private ElderlyEntry() {}
-    public ElderlyEntry(String name, String pid, int pin, String phoneNo) {
+    public ElderlyEntry(String name, String pid, String pin, String phoneNo) {
         this.name = name;
         this.pid = pid;
         this.pin = pin;
@@ -36,11 +36,11 @@ public class ElderlyEntry {
         this.pid = pid;
     }
 
-    public int getPin() {
+    public String getPin() {
         return pin;
     }
 
-    public void setPin(int pin) {
+    public void setPin(String pin) {
         this.pin = pin;
     }
 

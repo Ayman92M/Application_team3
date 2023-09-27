@@ -10,7 +10,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.List;
+import com.google.android.gms.tasks.Task;
+
+import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.database.DataSnapshot;
+
 
 public class Log_in extends AppCompatActivity {
     UserAccountControl user = new UserAccountControl();
@@ -34,7 +38,7 @@ public class Log_in extends AppCompatActivity {
         signup_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent page = new Intent(Log_in.this, Sign_up2.class);
+                Intent page = new Intent(Log_in.this, Signup_caregiver.class);
                 startActivity(page);
             }
         });
@@ -59,36 +63,31 @@ public class Log_in extends AppCompatActivity {
         if (!user.isValidUsername(_user_name) || !user.isValidPassword(_pass))
             Toast.makeText(Log_in.this, "invalid user name or password", Toast.LENGTH_SHORT).show();
         else{
-            db.checkLoginCaregiver(_user_name, _pass, new MyCallback() {
-                @Override
-                public void onCallback(Object value) {
-                    if((boolean) value){
-                        notis("Success");
+            Task<Boolean> checkLogin = db.checkLoginCaregiver(_user_name, _pass);
+            Task<DataSnapshot> caregiverTask = db.fetchCaregiver(_user_name);
 
-                        Intent page1 = new Intent(Log_in.this, Caregiver_dash.class);
-                        testList(_user_name);
-                        //db._caregiver.getName();
-                        db.getCaregiverName(_user_name, new Database.NameCallback() {
-                            @Override
-                            public void onNameFetched(String name) {
-                                if (name != null){
-                                    page1.putExtra("key", name);
-                                    test_struct(_user_name);
-                                    startActivity(page1);
-                                }
-                                else{
-                                    page1.putExtra("key", _user_name);
-                                    startActivity(page1);
-                                }
-                            }
-                        });
-                        //page1.putExtra("key", _user_name);
-                        //startActivity(page1);
+            Tasks.whenAll(checkLogin, caregiverTask).addOnCompleteListener(task-> {
+                if(checkLogin.getResult()){
+                    notis("success");
+
+                    Intent page1 = new Intent(Log_in.this, Caregiver_dash.class);
+
+                    CaregiverEntry caregiver = caregiverTask.getResult().getValue(CaregiverEntry.class);
+
+                    if (caregiver != null){
+                        String name = caregiver.getName();
+                        page1.putExtra("key", name);
+                        startActivity(page1);
                     }
-                    else
-                        notis("Username or password is incorrect");
-
+                    else{
+                        page1.putExtra("key", _user_name);
+                        startActivity(page1);
+                    }
                 }
+                else{
+                    notis("False");
+                }
+
             });
         }
 
@@ -104,41 +103,6 @@ public class Log_in extends AppCompatActivity {
         return value;
     }
 
-    private void test_struct(String pid){
-        db.getCaregiverEntry(pid, new CaregiverEntryCallback() {
-            @Override
-            public void onEntryFetched(CaregiverEntry entry) {
-                if (entry != null) {
-
-                    System.out.println("Namn: " + entry.getName());
-                    System.out.println("PID: " + entry.getPid());
-                    System.out.println("Lösenord: " + entry.getPassword());
-                    System.out.println("Telefonnummer: " + entry.getPhoneNo());
-                } else {
-                    System.out.println("Ingen vårdgivare hittades för den angivna pid.");
-                }
-            }
-        });
-    }
-
-    private void testList(String pid){
-        db.getCaregiverList(pid, new Database.ListCallback() {
-            @Override
-            public void onListValuesFetched(List<CaregiverEntry> CaregiverList) {
-                if (CaregiverList != null){
-                    for (CaregiverEntry entry : CaregiverList) {
-                        System.out.println("Namn: " + entry.getName());
-                        System.out.println("PID: " + entry.getPid());
-                        System.out.println("Lösenord: " + entry.getPassword());
-                        System.out.println("Telefonnummer: " + entry.getPhoneNo());
-                    }
-                }
-                else {
-                    System.out.println("Ingen matchande vårdgivare hittades.");
-                }
-            }
-        });
-    }
 
 
 }
