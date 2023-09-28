@@ -1,5 +1,8 @@
 package com.example.application_team3;
 
+import android.view.View;
+import android.widget.EditText;
+
 public class UserAccountControl {
     // Definiera reguljärt uttryck för e-postadress
     private final String EMAIL_REGEX =
@@ -45,5 +48,6 @@ public class UserAccountControl {
     public boolean isValidPhoneNumber(String phone_num){
         return phone_num != null && phone_num.matches(PHONENUMBER_REGEX);
     }
+
 
 }

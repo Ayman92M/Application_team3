@@ -4,13 +4,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
+
 import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.database.DataSnapshot;
+
 
 public class Log_in extends AppCompatActivity {
     UserAccountControl user = new UserAccountControl();
@@ -23,72 +27,82 @@ public class Log_in extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
 
+        signUp_button();
+        logIn_button();
+
+
+    }
+
+    private void signUp_button(){
         signup_bt = findViewById(R.id.textView_signup);
-        signup_bt.setOnClickListener(view -> {
-            Intent page = new Intent(Log_in.this, Sign_up2.class);
-            startActivity(page);
-        });
-
-        Button button_login = findViewById(R.id.button3);
-        button_login.setOnClickListener(view -> {
-            String _user_name = ( (EditText) findViewById(R.id.editTextText)).getText().toString();
-            String _pass =((EditText) findViewById(R.id.editTextNumberPassword)).getText().toString();
-
-            Task<Boolean> loginCheck = db.checkLoginElderly(_user_name, _pass);
-
-            if (!user.isValidUsername(_user_name) || !user.isValidPassword(_pass))
-                Toast.makeText(Log_in.this, "invalid user name or password", Toast.LENGTH_SHORT).show();
-            else{
-                Tasks.whenAll(loginCheck).addOnCompleteListener(task -> {
-                    if(loginCheck.getResult()){
-                        Toast.makeText(Log_in.this, "True", Toast.LENGTH_SHORT).show();
-
-                        Intent page1 = new Intent(Log_in.this, Caregiver_dash.class);
-                        //db._caregiver.getName();
-                        page1.putExtra("key", _user_name);
-                        startActivity(page1);
-                    }
-                    else {
-                        Toast.makeText(Log_in.this, "False", Toast.LENGTH_SHORT).show();
-                    }
-                });
+        signup_bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent page = new Intent(Log_in.this, Signup_caregiver.class);
+                startActivity(page);
             }
-
         });
     }
 
-    /*
-    void test(String _user_name, String _pass){
-        db.caregiverRef.addValueEventListener(new ValueEventListener() {
+    private void logIn_button(){
+        Button button_login = findViewById(R.id.button3);
+        button_login.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.child(_user_name).exists()){
-                    System.out.println(snapshot.child(_user_name).getValue());
+            public void onClick(View view) {
+                logIn_process();
+            }
+        });
+    }
 
-                    if(Objects.equals(snapshot.child(_user_name).child("password").getValue(), _pass)){
-                        Toast.makeText(Log_in.this, "True", Toast.LENGTH_SHORT).show();
+    private void logIn_process(){
+        //String _user_name = ( (EditText) findViewById(R.id.editTextText)).getText().toString();
+        String _user_name = getEditTextValue(R.id.editTextText);
+        String _pass = getEditTextValue(R.id.editTextNumberPassword);
 
-                        Intent page1 = new Intent(Log_in.this, Caregiver_dash.class);
-                        String _name1 =  snapshot.child(_user_name).child("name").getValue().toString();
-                        page1.putExtra("key", _name1);
+
+        if (!user.isValidUsername(_user_name) || !user.isValidPassword(_pass))
+            Toast.makeText(Log_in.this, "invalid user name or password", Toast.LENGTH_SHORT).show();
+        else{
+            Task<Boolean> checkLogin = db.checkLoginCaregiver(_user_name, _pass);
+            Task<DataSnapshot> caregiverTask = db.fetchCaregiver(_user_name);
+
+            Tasks.whenAll(checkLogin, caregiverTask).addOnCompleteListener(task-> {
+                if(checkLogin.getResult()){
+                    notis("success");
+
+                    Intent page1 = new Intent(Log_in.this, Caregiver_dash.class);
+
+                    CaregiverEntry caregiver = caregiverTask.getResult().getValue(CaregiverEntry.class);
+
+                    if (caregiver != null){
+                        String name = caregiver.getName();
+                        page1.putExtra("key", name);
                         startActivity(page1);
                     }
                     else{
-                        Toast.makeText(Log_in.this, "False password", Toast.LENGTH_SHORT).show();
+                        page1.putExtra("key", _user_name);
+                        startActivity(page1);
                     }
                 }
                 else{
-                    Toast.makeText(Log_in.this, "False username", Toast.LENGTH_SHORT).show();
+                    notis("False");
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            });
+        }
 
-            }
-        });
     }
 
-     */
+    private void notis(String msg){
+        Toast.makeText(Log_in.this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    private String getEditTextValue(int editTextId) {
+        EditText editText = findViewById(editTextId);
+        String value = editText.getText().toString();
+        return value;
+    }
+
+
 
 }

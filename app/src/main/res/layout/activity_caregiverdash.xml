@@ -50,7 +50,7 @@
         android:layout_height="130dp"
         android:background="@drawable/button_square"
         android:backgroundTint="#A2A5A2"
-        android:text="Button6"
+        android:text="Add elderly"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button7"
         app:layout_constraintHorizontal_bias="0.433"
