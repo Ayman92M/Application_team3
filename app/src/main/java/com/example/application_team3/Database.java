@@ -62,7 +62,6 @@ public class Database {
     public void registerMeal(String pid, String date, String mealType, String time, String note){
         mealPlanRef.child(pid).child(date).child(mealType).child("time").setValue(time);
         mealPlanRef.child(pid).child(date).child(mealType).child("note").setValue(note);
-        mealPlanRef.child(pid).child(date);
     }
 
     public Task<DataSnapshot> fetchMealPlan(String pid){
