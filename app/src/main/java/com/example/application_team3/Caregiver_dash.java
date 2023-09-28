@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Message;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -67,6 +68,22 @@ public class Caregiver_dash extends AppCompatActivity {
             };
 
             listView.setAdapter(adapter);
+
+            String[] elderlyArray = elderlyStrings.toArray(new String[elderlyStrings.size()]);
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    // Här kan du hantera klickhändelsen för det valda elementet
+                    String selectedItem = elderlyArray[position]; // Använd den omvandlade arrayen här
+                    Intent page1 = new Intent(Caregiver_dash.this, Elderly_home_test.class);
+                    String elderly_name = elderlyArray[position];
+                    String[] nameParts = elderly_name.split(", ");
+                    page1.putExtra("key", nameParts[0]);
+                    startActivity(page1);
+                    // Gör något med det valda objektet, t.ex. visa det eller starta en ny aktivitet.
+                }
+            });
         });
 
         TextView addElderly = findViewById(R.id.TextView_addElderly);
@@ -77,16 +94,7 @@ public class Caregiver_dash extends AppCompatActivity {
                 startActivity(page);
             }
         });
-    /*
-         ConstraintLayout itemElderly = findViewById(R.id.item);
-        itemElderly.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent page1 = new Intent(Caregiver_dash.this, Elderly_home_test.class);
-                startActivity(page1);
-            }
-        });
-     */
+
 
     }
 
