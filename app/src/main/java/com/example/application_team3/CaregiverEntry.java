@@ -10,7 +10,7 @@ public class CaregiverEntry {
     private String phoneNo;
     private String birthday;
     private String address;
-    private final HashMap<String, String> elderly = new HashMap<>();
+    private HashMap<String, String> elderly = new HashMap<>();
 
     private CaregiverEntry() {}
     public CaregiverEntry(String name, String pid, String password, String phoneNo) {
@@ -70,6 +70,9 @@ public class CaregiverEntry {
 
     public HashMap<String, String> getElderly(){
         return elderly;
+    }
+    public void setElderly(HashMap<String, String> elderly){
+        this.elderly = elderly;
     }
 
     public void addElderly(String pid, String name){

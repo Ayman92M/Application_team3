@@ -13,11 +13,15 @@ public class ElderlyEntry {
     HashMap<String, String> caregivers = new HashMap<>();
 
         private ElderlyEntry() {}
-    public ElderlyEntry(String name, String pid, String pin, String phoneNo) {
+    public ElderlyEntry(String name, String pid, String pin, String phoneNo, String caregiver) {
         this.name = name;
         this.pid = pid;
         this.pin = pin;
         this.phoneNo = phoneNo;
+        if(caregiver != null){
+            addCaregiver(caregiver, null);
+        }
+
     }
 
     public String getName() {
@@ -70,6 +74,9 @@ public class ElderlyEntry {
 
     public HashMap<String, String> getCaregivers() {
         return caregivers;
+    }
+    public void setCaregiver(HashMap<String, String> caregivers){
+        this.caregivers = caregivers;
     }
 
     public void addCaregiver(String caregiver_pid, String caregiver_name) {

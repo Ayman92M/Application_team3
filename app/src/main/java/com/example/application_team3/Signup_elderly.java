@@ -65,7 +65,7 @@ public class Signup_elderly extends AppCompatActivity {
                     if (user.isValidName(_name) &&
                             _pin.matches(_pin2) && user.isValidPin(_pin) ){
                         notis("200");
-                        db.registerElderly(_name, _user_name, _pin, null);
+                        db.registerElderly(_name, _user_name, _pin, null, null);
 
                     }
                 }
