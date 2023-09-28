@@ -29,7 +29,7 @@ public class Caregiver_dash extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent page = new Intent(Caregiver_dash.this, List_viewer.class);
-                page.putExtra("key", message);
+                //page.putExtra("key", message);
                 startActivity(page);
 
             }
