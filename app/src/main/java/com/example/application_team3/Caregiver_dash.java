@@ -1,17 +1,16 @@
 package com.example.application_team3;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -32,13 +31,14 @@ public class Caregiver_dash extends AppCompatActivity {
 
         Intent get_user_name = getIntent();
         String message = get_user_name.getStringExtra("key");
+        String pid = get_user_name.getStringExtra("pid");
         ( (TextView) findViewById(R.id.textView_Welcome)).setText("Welcome " + message);
 
         listView = findViewById(R.id.listView);
 
         TextView add_elderly = findViewById(R.id.TextView_addElderly);
 
-        Task<List<ElderlyEntry>> elderlyListTask = db.ElderlyList("ggg12");
+        Task<List<ElderlyEntry>> elderlyListTask = db.ElderlyList(pid);
         Tasks.whenAll(elderlyListTask).addOnCompleteListener(task -> {
             List<ElderlyEntry> elderlyList = elderlyListTask.getResult();
             elderlyStrings.clear();
@@ -57,7 +57,7 @@ public class Caregiver_dash extends AppCompatActivity {
                     View row = super.getView(position, convertView, parent);
                     String[] itemParts = getItem(position).split(", ");
                     TextView textView1 = row.findViewById(R.id.textView_list_username);
-                    TextView textView2 = row.findViewById(R.id.textView_list_subitem);
+                    TextView textView2 = row.findViewById(R.id.textView_list_pid);
 
                     textView1.setText(itemParts[0]); // Huvudtext (item)
                     textView2.setText(itemParts[1]); // Undertext (subitem)
@@ -77,6 +77,16 @@ public class Caregiver_dash extends AppCompatActivity {
                 startActivity(page);
             }
         });
+    /*
+         ConstraintLayout itemElderly = findViewById(R.id.item);
+        itemElderly.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent page1 = new Intent(Caregiver_dash.this, Elderly_home_test.class);
+                startActivity(page1);
+            }
+        });
+     */
 
     }
 

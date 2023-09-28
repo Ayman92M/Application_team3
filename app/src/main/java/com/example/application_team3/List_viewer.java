@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -54,7 +53,7 @@ public class List_viewer extends AppCompatActivity {
                     View row = super.getView(position, convertView, parent);
                     String[] itemParts = getItem(position).split(", ");
                     TextView textView1 = row.findViewById(R.id.textView_list_username);
-                    TextView textView2 = row.findViewById(R.id.textView_list_subitem);
+                    TextView textView2 = row.findViewById(R.id.textView_list_pid);
 
                     textView1.setText(itemParts[0]); // Huvudtext (item)
                     textView2.setText(itemParts[1]); // Undertext (subitem)

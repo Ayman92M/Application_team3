@@ -76,7 +76,9 @@ public class Log_in extends AppCompatActivity {
 
                     if (caregiver != null){
                         String name = caregiver.getName();
+                        String _user = caregiver.getPid();
                         page1.putExtra("key", name);
+                        page1.putExtra("pid", _user);
                         startActivity(page1);
                     }
                     else{
