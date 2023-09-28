@@ -70,7 +70,7 @@ public class Log_in extends AppCompatActivity {
                 if(checkLogin.getResult()){
                     notis("success");
 
-                    Intent page1 = new Intent(Log_in.this, List_viewer.class);
+                    Intent page1 = new Intent(Log_in.this, Caregiver_dash.class);
 
                     CaregiverEntry caregiver = caregiverTask.getResult().getValue(CaregiverEntry.class);
 

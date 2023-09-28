@@ -22,9 +22,6 @@
             android:name=".Signup_elderly"
             android:exported="false" />
         <activity
-            android:name=".Extra_dashboard"
-            android:exported="false" />
-        <activity
             android:name=".List_viewer"
             android:exported="false" />
         <activity
