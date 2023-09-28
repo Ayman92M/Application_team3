@@ -5,12 +5,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Caregiver_dash extends AppCompatActivity {
+    private ListView listView;
+    String elderlyString;
+    List<String> elderlyStrings = new ArrayList<>();
     UserAccountControl user = new UserAccountControl();
     Database db = new Database();
     @Override
@@ -20,31 +32,44 @@ public class Caregiver_dash extends AppCompatActivity {
 
         Intent get_user_name = getIntent();
         String message = get_user_name.getStringExtra("key");
-
         ( (TextView) findViewById(R.id.textView_Welcome)).setText("Welcome " + message);
 
+        listView = findViewById(R.id.listView);
 
-        Button list_bt = findViewById(R.id.button4);
-        list_bt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent page = new Intent(Caregiver_dash.this, List_viewer.class);
-                page.putExtra("key", message);
-                startActivity(page);
+        TextView add_elderly = findViewById(R.id.TextView_addElderly);
 
+        Task<List<ElderlyEntry>> elderlyListTask = db.ElderlyList("ggg12");
+        Tasks.whenAll(elderlyListTask).addOnCompleteListener(task -> {
+            List<ElderlyEntry> elderlyList = elderlyListTask.getResult();
+            elderlyStrings.clear();
+            for(ElderlyEntry elderly : elderlyList){
+                elderlyString = elderly.getName() +", " + elderly.getPid();
+                elderlyStrings.add(elderlyString);
             }
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                    getApplicationContext(), // Använd den aktuella kontexten
+                    R.layout.activity_list_item,
+                    R.id.textView_list_username,
+                    elderlyStrings
+            ) {
+                @Override
+                public View getView(int position, View convertView, ViewGroup parent) {
+                    View row = super.getView(position, convertView, parent);
+                    String[] itemParts = getItem(position).split(", ");
+                    TextView textView1 = row.findViewById(R.id.textView_list_username);
+                    TextView textView2 = row.findViewById(R.id.textView_list_subitem);
+
+                    textView1.setText(itemParts[0]); // Huvudtext (item)
+                    textView2.setText(itemParts[1]); // Undertext (subitem)
+
+                    return row;
+                }
+            };
+
+            listView.setAdapter(adapter);
         });
 
-        Button extra_bt = findViewById(R.id.button5);
-        extra_bt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent page = new Intent(Caregiver_dash.this, Extra_dashboard.class);
-                startActivity(page);
-            }
-        });
-
-        Button addElderly = findViewById(R.id.button6);
+        TextView addElderly = findViewById(R.id.TextView_addElderly);
         addElderly.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

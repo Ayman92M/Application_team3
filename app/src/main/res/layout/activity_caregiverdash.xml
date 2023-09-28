@@ -1,76 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Caregiver_dash">
+    android:padding="16dp"
+    tools:context=".MainActivity">
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView_Welcome"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="80dp"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="62dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="12dp"
+        android:background="@color/green"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/TextView_addElderly"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:drawableStart="@drawable/baseline_person_add_24"
+            android:gravity="center"
+            android:text="Add "
+            android:textSize="24sp" />
+
+        <View
+            android:layout_width="4dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/white" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/delete_icon"
+            android:text="Delete"
+            android:textSize="24sp"
+            android:gravity="center" />
+
+        <View
+            android:layout_width="4dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/white" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:drawableLeft="@drawable/baseline_settings_24"
+            android:text="Log ut"
+            android:textSize="24sp"
+            android:gravity="center"
+            />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/textView_Welcome"
-        android:layout_width="270dp"
-        android:layout_height="49dp"
-        android:layout_marginTop="72dp"
-        android:background="#DDD9D9"
-        android:text="Welcome_name"
-        android:textSize="30sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="13dp"
+        android:fontFamily="serif"
+        android:text="TextView"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        android:background="@color/green"/>
 
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="232dp"
-        android:background="@drawable/button_square"
-        android:backgroundTint="#A2A5A2"
-        android:text="@string/list"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button5"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
-        android:layout_marginTop="232dp"
-        android:background="@drawable/button_square"
-        android:backgroundTint="#A2A5A2"
-        android:text="extra dashboard"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.521"
-        app:layout_constraintStart_toEndOf="@+id/button4"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button6"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
-        android:background="@drawable/button_square"
-        android:backgroundTint="#A2A5A2"
-        android:text="Add elderly"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button7"
-        app:layout_constraintHorizontal_bias="0.433"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button4"
-        app:layout_constraintVertical_bias="0.502" />
-
-    <Button
-        android:id="@+id/button7"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
-        android:layout_marginEnd="36dp"
-        android:background="@drawable/button_square"
-        android:backgroundTint="#A2A5A2"
-        android:text="Button7"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button5"
-        app:layout_constraintVertical_bias="0.502" />
-
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
