@@ -75,6 +75,9 @@ public class ElderlyEntry {
     public HashMap<String, String> getCaregivers() {
         return caregivers;
     }
+    public void setCaregiver(HashMap<String, String> caregivers){
+        this.caregivers = caregivers;
+    }
 
     public void addCaregiver(String caregiver_pid, String caregiver_name) {
         this.caregivers.put(caregiver_pid, caregiver_name);

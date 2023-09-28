@@ -59,6 +59,10 @@ public class Database {
     public void updateElderly(ElderlyEntry elderly){
         elderlyRef.child(elderly.getPid()).setValue(elderly);
     }
+    public void registerMealPlan(String pid, String date, String breakfastNote, String lunchNote, String smallMealNote, String dinnerNote){
+        MealPlanEntry mealPlan = new MealPlanEntry(date, breakfastNote, lunchNote, smallMealNote, dinnerNote);
+        mealPlanRef.child(pid).child(date).setValue(mealPlan);
+    }
 
     public Task<DataSnapshot> fetchMealPlan(String pid){
         TaskCompletionSource<DataSnapshot> mealPlanTaskSource = new TaskCompletionSource<>();
