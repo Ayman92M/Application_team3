@@ -50,13 +50,14 @@
             android:background="@android:color/white" />
 
         <TextView
+            android:id="@+id/TextView_delete"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:drawableLeft="@drawable/delete_icon"
+            android:gravity="center"
             android:text="Delete"
-            android:textSize="24sp"
-            android:gravity="center" />
+            android:textSize="24sp" />
 
         <View
             android:layout_width="4dp"
