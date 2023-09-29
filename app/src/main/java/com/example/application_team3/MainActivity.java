@@ -8,8 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
-
-    Database db = new Database();
+    ViewNavigator navigator = new ViewNavigator(this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,24 +16,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_language);
 
         Button _elderly = findViewById(R.id.button);
-        _elderly.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent page1 = new Intent(MainActivity.this, Login_elderly.class);
-                startActivity(page1);
-            }
-        });
+        navigator.goToNextActivity(_elderly, Login_elderly.class);
 
         Button _caregiver = findViewById(R.id.button2);
-        _caregiver.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //setContentView(R.layout.activity_log_in);
-                Intent page1 = new Intent(MainActivity.this, Log_in.class);
-                startActivity(page1);
-            }
-        });
-
+        navigator.goToNextActivity(_caregiver, Log_in.class);
 
     }
 }

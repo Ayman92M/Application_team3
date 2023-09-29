@@ -13,8 +13,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 
 public class Login_elderly extends AppCompatActivity {
-    Database db = new Database();
-    UserAccountControl user = new UserAccountControl();
+    String _user_name, _pass;
+    ViewNavigator navigator = new ViewNavigator(this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,43 +28,37 @@ public class Login_elderly extends AppCompatActivity {
         button_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                logIn_process();
+
+                _user_name = navigator.getEditTextValue(R.id.editTextText);
+                _pass = navigator.getEditTextValue(R.id.editTextNumberPassword);
+                navigator.logInElderly(_user_name, _pass);
             }
         });
     }
+
+    /*
     private void logIn_process(){
 
-        String _user_name = getEditTextValue(R.id.editTextText);
-        String _pass = getEditTextValue(R.id.editTextNumberPassword);
+        String _user_name = navigator.getEditTextValue(R.id.editTextText);
+        String _pass = navigator.getEditTextValue(R.id.editTextNumberPassword);
 
         if (!user.isValidUsername(_user_name) || !user.isValidPin(_pass))
-            Toast.makeText(Login_elderly.this, "invalid user name or Pin", Toast.LENGTH_SHORT).show();
+            navigator.notis("invalid user name or Pin");
 
         Task<Boolean> loginCheck = db.checkLoginElderly(_user_name, _pass);
-
         Tasks.whenAll(loginCheck).addOnCompleteListener(task -> {
             if(loginCheck.getResult())
-            {
-                Toast.makeText(Login_elderly.this, "Trueeeeeeeee", Toast.LENGTH_SHORT).show();
-                Intent page1 = new Intent(Login_elderly.this, Elderly_home_test.class);
-                page1.putExtra("key", _user_name);
+                navigator.goToNextActivity(Elderly_home_test.class, "True","name", _user_name ,null, null);
 
-                startActivity(page1);
-            }
-            else {
-                Toast.makeText(Login_elderly.this, "Falseeeeee", Toast.LENGTH_SHORT).show();
-            }
+            else
+                navigator.notis("False");
+
         });
 
     }
 
-    private void notis(String msg){
-        Toast.makeText(Login_elderly.this, msg, Toast.LENGTH_SHORT).show();
-    }
+     */
 
-    private String getEditTextValue(int editTextId) {
-        EditText editText = findViewById(editTextId);
-        String value = editText.getText().toString();
-        return value;
-    }
+
+
 }

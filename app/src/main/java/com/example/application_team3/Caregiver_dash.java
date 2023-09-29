@@ -21,28 +21,38 @@ import java.util.List;
 
 public class Caregiver_dash extends AppCompatActivity {
     private ListView listView;
-    String elderlyString;
-    List<String> elderlyStrings = new ArrayList<>();
-    UserAccountControl user = new UserAccountControl();
-    Database db = new Database();
+    ViewNavigator navigator = new ViewNavigator(this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_caregiverdash);
 
-        Intent get_user_name = getIntent();
-        String message = get_user_name.getStringExtra("key");
-        String pid = get_user_name.getStringExtra("pid");
-        ( (TextView) findViewById(R.id.textView_Welcome)).setText("Welcome " + message);
+        //getIntent() används för att hämta data som har skickats till den här aktiviteten via intent.
+        Intent get_info = getIntent();
+
+        //hämta en sträng med nyckeln "name" från den tidigare nämnda intenten.
+        String _caregiverName = get_info.getStringExtra("name");
+        ((TextView) findViewById(R.id.textView_Welcome)).setText("Welcome " + _caregiverName);
 
         listView = findViewById(R.id.listView);
+        String pid = get_info.getStringExtra("pid");
+        navigator.showList(listView, pid);
 
-        TextView add_elderly = findViewById(R.id.TextView_addElderly);
+        TextView addElderly = findViewById(R.id.TextView_addElderly);
+        navigator.goToNextActivity(addElderly, Signup_elderly.class);
+
+    }
+    /*
+    private void showList(String pid){
+        listView = findViewById(R.id.listView);
 
         Task<List<ElderlyEntry>> elderlyListTask = db.ElderlyList(pid);
         Tasks.whenAll(elderlyListTask).addOnCompleteListener(task -> {
+
             List<ElderlyEntry> elderlyList = elderlyListTask.getResult();
             elderlyStrings.clear();
+
             for(ElderlyEntry elderly : elderlyList){
                 elderlyString = elderly.getName() +", " + elderly.getPid();
                 elderlyStrings.add(elderlyString);
@@ -66,37 +76,28 @@ public class Caregiver_dash extends AppCompatActivity {
                     return row;
                 }
             };
-
             listView.setAdapter(adapter);
 
-            String[] elderlyArray = elderlyStrings.toArray(new String[elderlyStrings.size()]);
+            elderlyOverview();
 
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    // Här kan du hantera klickhändelsen för det valda elementet
-                    String selectedItem = elderlyArray[position]; // Använd den omvandlade arrayen här
-                    Intent page1 = new Intent(Caregiver_dash.this, Elderly_home_test.class);
-                    String elderly_name = elderlyArray[position];
-                    String[] nameParts = elderly_name.split(", ");
-                    page1.putExtra("key", nameParts[0]);
-                    startActivity(page1);
-                    // Gör något med det valda objektet, t.ex. visa det eller starta en ny aktivitet.
-                }
-            });
         });
-
-        TextView addElderly = findViewById(R.id.TextView_addElderly);
-        addElderly.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent page = new Intent(Caregiver_dash.this, Signup_elderly.class);
-                startActivity(page);
-            }
-        });
-
-
     }
 
+    private void elderlyOverview(){
+        String[] elderlyArray = elderlyStrings.toArray(new String[elderlyStrings.size()]);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                String selectedItem = elderlyArray[position];
+                String[] nameParts = selectedItem.split(", ");
+
+                navigator.goToNextActivity(Elderly_home_test.class, "Elderly username skickas till databasen för att få Elderly overview" + nameParts[0]+ " " + nameParts[1],
+                        "name", nameParts[0], "username", nameParts[1]);
+
+            }
+        });
+    }
+
+     */
 }

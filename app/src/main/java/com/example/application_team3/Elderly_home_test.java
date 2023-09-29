@@ -14,7 +14,7 @@ public class Elderly_home_test extends AppCompatActivity {
         setContentView(R.layout.activity_elderly_home_test);
 
         Intent get_user_name = getIntent();
-        String message = get_user_name.getStringExtra("key");
+        String message = get_user_name.getStringExtra("name");
 
         ( (TextView) findViewById(R.id.textView2)).setText("Welcome " + message);
     }
