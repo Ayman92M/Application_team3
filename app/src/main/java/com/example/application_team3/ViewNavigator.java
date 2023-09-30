@@ -192,8 +192,6 @@ public class ViewNavigator {
         if (!user.isValidName(_name))
             notis("invalid name");
 
-
-
         if(_pin.matches(_pin2)){
             if(!user.isValidPin(_pin))
                 notis("invalid Pin");

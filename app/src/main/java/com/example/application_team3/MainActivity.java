@@ -21,5 +21,12 @@ public class MainActivity extends AppCompatActivity {
         Button _caregiver = findViewById(R.id.button2);
         navigator.goToNextActivity(_caregiver, Log_in.class);
 
+        Button _test = findViewById(R.id.testButton);
+        //Delete Elderly_home_test.class and write the name of your class
+        //className.class
+        //navigator.goToNextActivity(_caregiver, className.class);
+        navigator.goToNextActivity(_test, Elderly_home_test.class);
+        //you can Merge into Master only if it works.
+
     }
 }
