@@ -29,8 +29,8 @@ public class Signup_elderly extends AppCompatActivity {
                 _pin2 = navigator.getEditTextValue(R.id.editTextText11);
 
                 Intent get_caregiver = getIntent();
-                String _caregiverUserName = get_caregiver.getStringExtra("caregiverName");
-                String _caregiverName = get_caregiver.getStringExtra("caregiverUserName");
+                String _caregiverUserName = get_caregiver.getStringExtra("caregiverUserName");
+                String _caregiverName = get_caregiver.getStringExtra("caregiverName");
                 System.out.println("caregiverName S: " + _caregiverName);
                 System.out.println("caregiverUserName S: " + _caregiverUserName);
                 navigator.signUpAnElderly(_name, _user_name, _pin, _pin2, _caregiverName, _caregiverUserName);

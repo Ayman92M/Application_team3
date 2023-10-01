@@ -43,7 +43,7 @@ public class Caregiver_dash extends AppCompatActivity {
         String _caregiverUserName = get_info.getStringExtra("caregiver.getPid()");
         System.out.println("caregiverName D: " + _caregiverName);
         System.out.println("caregiverUserName D: " + _caregiverUserName);
-        navigator.goToNextActivity(addElderly, Signup_elderly.class, "caregiverUserName",_caregiverName , "caregiverName", _caregiverUserName);
+        navigator.goToNextActivity(addElderly, Signup_elderly.class, "caregiverUserName",_caregiverUserName , "caregiverName", _caregiverName);
 
     }
     /*
