@@ -52,9 +52,10 @@ public class Database {
         caregiverRef.child(caregiver.getPid()).setValue(caregiver);
     }
 
-    public void registerElderly(String name, String pid, String pin, String phoneNo, String caregiver){
-        ElderlyEntry elderly = new ElderlyEntry(name, pid, pin, phoneNo, caregiver);
+    public void registerElderly(String name, String pid, String pin, String phoneNo, String caregiver_name, String caregiver_pid){
+        ElderlyEntry elderly = new ElderlyEntry(name, pid, pin, phoneNo);
         elderlyRef.child(pid).setValue(elderly);
+        assignElderly(caregiver_pid, caregiver_name, pid, name);
     }
     public void updateElderly(ElderlyEntry elderly){
         elderlyRef.child(elderly.getPid()).setValue(elderly);
@@ -149,6 +150,10 @@ public class Database {
                     if(elderlyDB.child(e_pid).exists()){
                         elderlyList.add(elderlyDB.child(e_pid).getValue(ElderlyEntry.class));
                     }
+                    else{
+                        caregiver.removeElderly(e_pid);
+                        updateCaregiver(caregiver);
+                    }
                 }
                 listTaskSource.setResult(elderlyList);
             }
@@ -171,12 +176,31 @@ public class Database {
                     if(caregiverDB.child(c_pid).exists()){
                         caregiverList.add(caregiverDB.child(c_pid).getValue(CaregiverEntry.class));
                     }
+                    else {
+                        elderly.removeCaregiver(c_pid);
+                        updateElderly(elderly);
+                    }
                 }
+
             }
             listTaskSource.setResult(caregiverList);
         });
         return listTask;
     }
+    public void assignElderly(String caregiver_pid, String caregiver_name, String elderly_pid, String elderly_name){
+        Task<DataSnapshot> elderlyDBTask = fetchElderlyDB();
+        Tasks.whenAll(elderlyDBTask).addOnCompleteListener(task -> {
+            DataSnapshot elderlyDB = elderlyDBTask.getResult();
+            if(elderlyDB.child(elderly_pid).exists()){
+                caregiverRef.child(caregiver_pid).child("elderly").child(elderly_pid).setValue(elderly_name);
+                elderlyRef.child(elderly_pid).child("caregivers").child(caregiver_pid).setValue(caregiver_name);
+            }
+        });
 
+    }
+    public void removeElderly(String caregiver, String elderly){
+        caregiverRef.child(caregiver).child("elderly").child(elderly).removeValue();
+        elderlyRef.child(elderly).child("caregivers").child(caregiver).removeValue();
+    }
 
 }

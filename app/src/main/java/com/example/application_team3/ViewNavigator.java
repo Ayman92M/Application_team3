@@ -3,11 +3,13 @@ package com.example.application_team3;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -41,8 +43,13 @@ import java.util.List;
  */
 public class ViewNavigator {
     private Context context;
+
+    String elderlyString;
+    List<String> elderlyStrings = new ArrayList<>();
     Database db = new Database();
     UserAccountControl user = new UserAccountControl();
+    private SharedPreferences preferences;
+
 
     public ViewNavigator(Context context) {
         this.context = context;
@@ -80,12 +87,20 @@ public class ViewNavigator {
         });
     }
 
-    public void goToNextActivity(TextView txt, Class<?> targetActivity) {
+    public void goToNextActivity(TextView txt, Class<?> targetActivity, String key1, String value1, String key2, String value2) {
         // När textvyn klickas på, skapar vi en ny Intent-objekt (ActionListener).
         txt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent = new Intent(context, targetActivity);
+
+                if(key1 != null)
+                    intent.putExtra(key1, value1);
+
+                if(key2 != null)
+                    intent.putExtra(key2, value2);
+
                 // Startar en ny aktivitet (targetActivity).
                 context.startActivity(intent);
             }
@@ -96,8 +111,6 @@ public class ViewNavigator {
         context.startActivity(intent);
     }
 
-    String elderlyString;
-    List<String> elderlyStrings = new ArrayList<>();
     public void showList(ListView listView, String pid){
         // Hämta en lista av ElderlyEntry-objekt som tillhör en caregiver (som har pid som username)
         Task<List<ElderlyEntry>> elderlyListTask = db.ElderlyList(pid);
@@ -177,8 +190,11 @@ public class ViewNavigator {
 
                     CaregiverEntry caregiver = caregiverTask.getResult().getValue(CaregiverEntry.class);
                     if (caregiver != null)
-                        goToNextActivity(Caregiver_dash.class, "success","name",
-                                caregiver.getName() ,"pid", caregiver.getPid());
+                        goToNextActivity(Caregiver_dash.class, "success","caregiver.getName",
+                                caregiver.getName() ,"caregiver.getPid()", caregiver.getPid());
+
+                    System.out.println("caregiverName V: " + caregiver.getName());
+                    System.out.println("caregiverUserName V: " + caregiver.getPid());
                 }
                 else{
                     notis("False");
@@ -188,11 +204,9 @@ public class ViewNavigator {
         }
     }
 
-    public void signUpAnElderly(String _name, String _user_name, String _pin, String _pin2){
+    public void signUpAnElderly(String _name, String _user_name, String _pin, String _pin2, String caregiver_name, String caregiver_pid ) {
         if (!user.isValidName(_name))
             notis("invalid name");
-
-
 
         if(_pin.matches(_pin2)){
             if(!user.isValidPin(_pin))
@@ -217,7 +231,7 @@ public class ViewNavigator {
                     if (user.isValidName(_name) &&
                             _pin.matches(_pin2) && user.isValidPin(_pin) ){
                         notis("200");
-                        db.registerElderly(_name, _user_name, _pin, null, null);
+                        db.registerElderly(_name, _user_name, _pin, null, caregiver_name, caregiver_pid);
 
                     }
                 }
@@ -296,6 +310,110 @@ public class ViewNavigator {
         return value;
     }
 
+    public void setEditTextValue(int editTextId, String value) {
+        EditText editText = ((Activity) context).findViewById(editTextId);
+        editText.setText(value);
+    }
 
+    public void autoLogIn(Activity activity, CheckBox checkBoxRemember) {
+        preferences = activity.getPreferences(Context.MODE_PRIVATE);
+        if (preferences.getBoolean("rememberMe", false)) {
+            String username = preferences.getString("username", "");
+            String password = preferences.getString("password", "");
+            System.out.println("- Username: " + username + ", Password: " + password);
+            if (!username.isEmpty() && !password.isEmpty())
+                caregiverLogIn_process(username, password);
+
+            checkBoxRemember.setChecked(true);
+        }
+    }
+
+    public boolean getRememberMeStatus() {
+        // Retrieve the "Remember Me" status from SharedPreferences
+        return preferences.getBoolean("rememberMe", false);
+    }
+
+    private void saveRememberMeStatus(boolean status) {
+        // Save the "Remember Me" status in SharedPreferences
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean("rememberMe", status);
+        editor.apply();
+    }
+
+    public void getUsernameFromPreferences(SharedPreferences preferences, int editTextId) {
+        if (preferences.contains("username")) {
+            String username = preferences.getString("username", "");
+            setEditTextValue(editTextId, username);
+        }
+    }
+
+    public void setRememberMeValues(Activity activity, int editTextUsernameId, int editTextPasswordId, CheckBox checkBoxRemember) {
+        preferences = activity.getPreferences(Context.MODE_PRIVATE);
+        if (preferences.getBoolean("rememberMe", false)) {
+            String username = preferences.getString("username", "");
+            String password = preferences.getString("password", "");
+
+            setEditTextValue(editTextUsernameId, username);
+            setEditTextValue(editTextPasswordId, password);
+
+            //if (!username.isEmpty() && !password.isEmpty())
+              //  caregiverLogIn_process(username, password);
+
+
+            checkBoxRemember.setChecked(true);
+        }
+    }
+
+    public void setRememberMeValuesWithOutCheckBox(Activity activity, int editTextUsernameId,
+                                                   int editTextPasswordId, Boolean shouldRememberMe) {
+        preferences = activity.getPreferences(Context.MODE_PRIVATE);
+        if (shouldRememberMe) {
+            String username = preferences.getString("username", "");
+            String password = preferences.getString("password", "");
+
+            setEditTextValue(editTextUsernameId, username);
+            setEditTextValue(editTextPasswordId, password);
+            /*
+            if (!savedUserName.isEmpty() && !savedPassword.isEmpty()) {
+                navigator.caregiverLogIn_process(savedUserName, savedPassword);
+            }
+             */
+        }
+    }
+
+    public void saveInputToPreferences(String username, String password, boolean rememberMe) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("username", username);
+        editor.putString("password", password);
+        editor.putBoolean("rememberMe", rememberMe);
+        editor.apply();
+
+        //if (checkBoxRememberMe.isChecked())
+    }
+
+    public void logout(Activity activity, Class<?> targetActivity) {
+        // Clear saved credentials
+        preferences = activity.getPreferences(Context.MODE_PRIVATE);
+
+        // Log the current values before removal
+        String usernameBefore = preferences.getString("username", "");
+        String passwordBefore = preferences.getString("password", "");
+        System.out.println("Before Logout - Username: " + usernameBefore + ", Password: " + passwordBefore);
+
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.remove("rememberMe");
+        editor.remove("username");
+        editor.remove("password");
+        editor.apply();
+
+        // Log the values after removal
+        String usernameAfter = preferences.getString("username", "");
+        String passwordAfter = preferences.getString("password", "");
+        System.out.println("after Logout - Username: " + usernameBefore + ", Password: " + passwordBefore);
+
+        saveRememberMeStatus(false);
+        goToNextActivity(targetActivity, "logout successful", "logout", "true", null, null);
+    }
 }
 

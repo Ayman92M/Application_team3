@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,20 +19,30 @@ import com.google.firebase.database.DataSnapshot;
 
 public class Log_in extends AppCompatActivity {
     ViewNavigator navigator = new ViewNavigator(this);
+    private CheckBox checkBoxRememberMe;
+    private static final String EXTRA_LOGOUT = "logout";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
 
+        //logUt();
         signUp_button();
         logIn_button();
+
+        //preferences = getSharedPreferences("caregiverPreferences", MODE_PRIVATE);
+        checkBoxRememberMe = findViewById(R.id.checkBox_rememberMe);
+        //navigator.autoLogIn(this, checkBoxRememberMe);
+
+        navigator.setRememberMeValues(this, R.id.editTextText,
+                        R.id.editTextNumberPassword, checkBoxRememberMe);
 
     }
 
     private void signUp_button(){
         TextView signup_bt = findViewById(R.id.textView_signup);
-        navigator.goToNextActivity(signup_bt, Signup_caregiver.class);
+        navigator.goToNextActivity(signup_bt, Signup_caregiver.class, null, null, null, null);
     }
 
     private void logIn_button(){
@@ -41,8 +52,9 @@ public class Log_in extends AppCompatActivity {
             public void onClick(View view) {
                 String _user_name = navigator.getEditTextValue(R.id.editTextText);
                 String _pass = navigator.getEditTextValue(R.id.editTextNumberPassword);
+
+                navigator.saveInputToPreferences(_user_name, _pass, checkBoxRememberMe.isChecked());
                 navigator.caregiverLogIn_process(_user_name, _pass);
-                //logIn_process();
             }
         });
     }

@@ -2,6 +2,7 @@ package com.example.application_team3;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -27,7 +28,12 @@ public class Signup_elderly extends AppCompatActivity {
                 _pin = navigator.getEditTextValue(R.id.editTextText10);
                 _pin2 = navigator.getEditTextValue(R.id.editTextText11);
 
-                navigator.signUpAnElderly(_name, _user_name, _pin, _pin2);
+                Intent get_caregiver = getIntent();
+                String _caregiverUserName = get_caregiver.getStringExtra("caregiverUserName");
+                String _caregiverName = get_caregiver.getStringExtra("caregiverName");
+                System.out.println("caregiverName S: " + _caregiverName);
+                System.out.println("caregiverUserName S: " + _caregiverUserName);
+                navigator.signUpAnElderly(_name, _user_name, _pin, _pin2, _caregiverName, _caregiverUserName);
             }
         });
     }

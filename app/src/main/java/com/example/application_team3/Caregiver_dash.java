@@ -32,15 +32,18 @@ public class Caregiver_dash extends AppCompatActivity {
         Intent get_info = getIntent();
 
         //hämta en sträng med nyckeln "name" från den tidigare nämnda intenten.
-        String _caregiverName = get_info.getStringExtra("name");
+        String _caregiverName = get_info.getStringExtra("caregiver.getName");
         ((TextView) findViewById(R.id.textView_Welcome)).setText("Welcome " + _caregiverName);
 
         listView = findViewById(R.id.listView);
-        String pid = get_info.getStringExtra("pid");
+        String pid = get_info.getStringExtra("caregiver.getPid()");
         navigator.showList(listView, pid);
 
         TextView addElderly = findViewById(R.id.TextView_addElderly);
-        navigator.goToNextActivity(addElderly, Signup_elderly.class);
+        String _caregiverUserName = get_info.getStringExtra("caregiver.getPid()");
+        System.out.println("caregiverName D: " + _caregiverName);
+        System.out.println("caregiverUserName D: " + _caregiverUserName);
+        navigator.goToNextActivity(addElderly, Signup_elderly.class, "caregiverUserName",_caregiverUserName , "caregiverName", _caregiverName);
 
         TextView MealReg = (TextView) findViewById(R.id.TextView_delete);
         navigator.goToNextActivity(MealReg, MealRegister.class);
