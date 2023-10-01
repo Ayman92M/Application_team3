@@ -38,7 +38,7 @@
         android:layout_marginTop="232dp"
         android:background="@drawable/button_square"
         android:backgroundTint="#A2A5A2"
-        android:text="extra dashboard"
+        android:text="calendar overview"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.521"
         app:layout_constraintStart_toEndOf="@+id/button4"

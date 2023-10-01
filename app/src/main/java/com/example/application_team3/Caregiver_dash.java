@@ -39,7 +39,7 @@ public class Caregiver_dash extends AppCompatActivity {
         extra_bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent page = new Intent(Caregiver_dash.this, Extra_dashboard.class);
+                Intent page = new Intent(Caregiver_dash.this, Calendar_overview.class);
                 startActivity(page);
             }
         });
