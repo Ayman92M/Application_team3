@@ -33,7 +33,10 @@ public class Log_in extends AppCompatActivity {
 
         //preferences = getSharedPreferences("caregiverPreferences", MODE_PRIVATE);
         checkBoxRememberMe = findViewById(R.id.checkBox_rememberMe);
-        navigator.autoLogIn(this, checkBoxRememberMe);
+        //navigator.autoLogIn(this, checkBoxRememberMe);
+
+        navigator.setRememberMeValues(this, R.id.editTextText,
+                        R.id.editTextNumberPassword, checkBoxRememberMe);
 
     }
 

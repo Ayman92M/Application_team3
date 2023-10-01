@@ -355,11 +355,10 @@ public class ViewNavigator {
 
             setEditTextValue(editTextUsernameId, username);
             setEditTextValue(editTextPasswordId, password);
-            /*
-            if (!savedUserName.isEmpty() && !savedPassword.isEmpty()) {
-                navigator.caregiverLogIn_process(savedUserName, savedPassword);
-            }
-             */
+
+            //if (!username.isEmpty() && !password.isEmpty())
+              //  caregiverLogIn_process(username, password);
+
 
             checkBoxRemember.setChecked(true);
         }
