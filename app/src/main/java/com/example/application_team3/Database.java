@@ -52,9 +52,10 @@ public class Database {
         caregiverRef.child(caregiver.getPid()).setValue(caregiver);
     }
 
-    public void registerElderly(String name, String pid, String pin, String phoneNo, String caregiver){
-        ElderlyEntry elderly = new ElderlyEntry(name, pid, pin, phoneNo, caregiver);
+    public void registerElderly(String name, String pid, String pin, String phoneNo, String caregiver_name, String caregiver_pid){
+        ElderlyEntry elderly = new ElderlyEntry(name, pid, pin, phoneNo);
         elderlyRef.child(pid).setValue(elderly);
+        assignElderly(caregiver_pid, caregiver_name, pid, name);
     }
     public void updateElderly(ElderlyEntry elderly){
         elderlyRef.child(elderly.getPid()).setValue(elderly);

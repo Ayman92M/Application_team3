@@ -13,14 +13,11 @@ public class ElderlyEntry {
     HashMap<String, String> caregivers = new HashMap<>();
 
         private ElderlyEntry() {}
-    public ElderlyEntry(String name, String pid, String pin, String phoneNo, String caregiver) {
+    public ElderlyEntry(String name, String pid, String pin, String phoneNo) {
         this.name = name;
         this.pid = pid;
         this.pin = pin;
         this.phoneNo = phoneNo;
-        if(caregiver != null){
-            addCaregiver(caregiver, null);
-        }
 
     }
 
