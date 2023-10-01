@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         //Delete Elderly_home_test.class and write the name of your class
         //className.class
         //navigator.goToNextActivity(_caregiver, className.class);
-        navigator.goToNextActivity(_test, Elderly_home_test.class);
+        navigator.goToNextActivity(_test, Meal_register.class);
         //you can Merge into Master only if it works.
 
     }
