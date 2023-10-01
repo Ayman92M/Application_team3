@@ -80,4 +80,12 @@
         android:hint="@string/enter_meal_description">
     </com.google.android.material.textfield.TextInputEditText>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/create_meal_button"
+        android:layout_marginTop="10sp"
+        android:textSize="20sp">
+    </Button>
+
 </LinearLayout>
