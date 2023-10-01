@@ -40,7 +40,8 @@ public class Caregiver_dash extends AppCompatActivity {
         navigator.showList(listView, pid);
 
         TextView addElderly = findViewById(R.id.TextView_addElderly);
-        navigator.goToNextActivity(addElderly, Signup_elderly.class);
+        String _caregiverUserName = get_info.getStringExtra("pid");
+        navigator.goToNextActivity(addElderly, Signup_elderly.class, "caregiverUserName",_caregiverName , "caregiverName", _caregiverUserName);
 
     }
     /*

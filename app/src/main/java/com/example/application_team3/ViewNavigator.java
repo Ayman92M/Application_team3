@@ -80,12 +80,20 @@ public class ViewNavigator {
         });
     }
 
-    public void goToNextActivity(TextView txt, Class<?> targetActivity) {
+    public void goToNextActivity(TextView txt, Class<?> targetActivity, String key1, String value1, String key2, String value2) {
         // När textvyn klickas på, skapar vi en ny Intent-objekt (ActionListener).
         txt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent = new Intent(context, targetActivity);
+
+                if(key1 != null)
+                    intent.putExtra(key1, value1);
+
+                if(key2 != null)
+                    intent.putExtra(key2, value2);
+
                 // Startar en ny aktivitet (targetActivity).
                 context.startActivity(intent);
             }
@@ -188,7 +196,7 @@ public class ViewNavigator {
         }
     }
 
-    public void signUpAnElderly(String _name, String _user_name, String _pin, String _pin2){
+    public void signUpAnElderly(String _name, String _user_name, String _pin, String _pin2, String caregiver_name, String caregiver_pid ){
         if (!user.isValidName(_name))
             notis("invalid name");
 
@@ -215,7 +223,7 @@ public class ViewNavigator {
                     if (user.isValidName(_name) &&
                             _pin.matches(_pin2) && user.isValidPin(_pin) ){
                         notis("200");
-                        db.registerElderly(_name, _user_name, _pin, null, null);
+                        db.registerElderly(_name, _user_name, _pin, null, caregiver_name, caregiver_pid);
 
                     }
                 }

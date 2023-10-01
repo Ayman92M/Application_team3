@@ -31,7 +31,7 @@ public class Log_in extends AppCompatActivity {
 
     private void signUp_button(){
         TextView signup_bt = findViewById(R.id.textView_signup);
-        navigator.goToNextActivity(signup_bt, Signup_caregiver.class);
+        navigator.goToNextActivity(signup_bt, Signup_caregiver.class, null, null, null, null);
     }
 
     private void logIn_button(){
