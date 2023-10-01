@@ -190,8 +190,11 @@ public class ViewNavigator {
 
                     CaregiverEntry caregiver = caregiverTask.getResult().getValue(CaregiverEntry.class);
                     if (caregiver != null)
-                        goToNextActivity(Caregiver_dash.class, "success","name",
-                                caregiver.getName() ,"pid", caregiver.getPid());
+                        goToNextActivity(Caregiver_dash.class, "success","caregiver.getName",
+                                caregiver.getName() ,"caregiver.getPid()", caregiver.getPid());
+
+                    System.out.println("caregiverName V: " + caregiver.getName());
+                    System.out.println("caregiverUserName V: " + caregiver.getPid());
                 }
                 else{
                     notis("False");
@@ -201,7 +204,7 @@ public class ViewNavigator {
         }
     }
 
-    public void signUpAnElderly(String _name, String _user_name, String _pin, String _pin2, String caregiver_name, String caregiver_pid ){
+    public void signUpAnElderly(String _name, String _user_name, String _pin, String _pin2, String caregiver_name, String caregiver_pid ) {
         if (!user.isValidName(_name))
             notis("invalid name");
 
