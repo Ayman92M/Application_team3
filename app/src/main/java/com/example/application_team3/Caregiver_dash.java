@@ -46,7 +46,7 @@ public class Caregiver_dash extends AppCompatActivity {
         navigator.goToNextActivity(addElderly, Signup_elderly.class, "caregiverUserName",_caregiverUserName , "caregiverName", _caregiverName);
 
         TextView MealReg = (TextView) findViewById(R.id.TextView_delete);
-        navigator.goToNextActivity(MealReg, MealRegister.class);
+        navigator.goToNextActivity(MealReg, MealRegister.class, null, null, null, null);
 
     }
     /*

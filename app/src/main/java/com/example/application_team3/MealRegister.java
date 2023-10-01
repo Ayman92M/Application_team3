@@ -35,6 +35,7 @@ public class MealRegister extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String item = adapterView.getItemAtPosition(i).toString();
                 Toast.makeText(MealRegister.this,"Meal type: "+item, Toast.LENGTH_SHORT).show();
+                //db.registerMeal()
             }
         });
 
