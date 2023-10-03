@@ -2,9 +2,7 @@ package com.example.application_team3;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         //Delete Elderly_home_test.class and write the name of your class
         //className.class
         //navigator.goToNextActivity(_caregiver, className.class);
-        navigator.goToNextActivity(_test, Meal_register.class);
+        navigator.goToNextActivity(_test, Caregiver_dash.class);
         //you can Merge into Master only if it works.
 
     }
