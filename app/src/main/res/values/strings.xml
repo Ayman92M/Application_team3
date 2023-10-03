@@ -10,4 +10,12 @@
     <string name="en">English</string>
     <string name="list">List</string>
 
+    <string name="select_item">Select Meal</string>
+    <string name="meal_creator">Meal Creator</string>
+    <string name="pick_a_time_for_this_meal">Pick a time for this meal!</string>
+    <string name="enter_meal_description">Enter Meal Description</string>
+    <string name="choose_meal_type">Choose Meal Type</string>
+    <string name="please_enter_a_description_for_this_meal">Please enter a description for this meal!</string>
+    <string name="create_meal_button">Create Meal</string>
+
 </resources>
