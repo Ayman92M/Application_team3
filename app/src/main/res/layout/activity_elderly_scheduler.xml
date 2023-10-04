@@ -33,7 +33,6 @@
         android:background="@drawable/rounded_corner"
         android:backgroundTint="@color/cardview_dark_background"
         android:fontFamily="serif"
-        android:text="      Day and Date"
         android:textColor="@color/white"
         android:textSize="40sp"
         android:textStyle="bold"
@@ -44,6 +43,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:text="Day and Date"
+        android:textColor="@color/white"
+        android:textSize="40dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView5"
+        app:layout_constraintEnd_toEndOf="@+id/textView5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
