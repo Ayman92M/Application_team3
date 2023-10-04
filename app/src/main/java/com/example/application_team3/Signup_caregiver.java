@@ -13,9 +13,8 @@ import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.DataSnapshot;
 
 public class Signup_caregiver extends AppCompatActivity {
-    Database db = new Database();
+
     String _name, _user_name, _pass, _pass2, _email;
-    UserAccountControl user = new UserAccountControl();
     ViewNavigator navigator = new ViewNavigator(this);
 
     @Override

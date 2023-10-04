@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:gravity="center"
-        android:text="Sign up"
+        android:text="Register an elderly"
         android:textSize="40dp"
         android:textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="parent"

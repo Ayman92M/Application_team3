@@ -74,6 +74,31 @@ public class ViewNavigator {
         context.startActivity(intent);
     }
 
+    public void goToNextActivity(Class<?> targetActivity, String notis, String key1, String value1, String key2, String value2, String key3, String value3, String key4, String value4) {
+        // Skapa en ny Intent för att flytta till nästa aktivitet (targetActivity)
+        Intent intent = new Intent(context, targetActivity);
+
+        // Om det finns ett meddelande (notis), visa det
+        if(notis != null)
+            notis(notis);
+
+        // Om det finns en key1, skicka den vidare till targetActivity.
+        if(key1 != null)
+            intent.putExtra(key1, value1);
+
+        if(key2 != null)
+            intent.putExtra(key2, value2);
+
+        if(key3 != null)
+            intent.putExtra(key3, value3);
+
+        if(key4 != null)
+            intent.putExtra(key4, value4);
+
+        // Starta nästa aktivitet (targetActivity)
+        context.startActivity(intent);
+    }
+
     public void goToNextActivity(Button bt, Class<?> targetActivity) {
 
         // När knappen klickas på, skapar vi en ny Intent (ActionListener).
@@ -106,6 +131,17 @@ public class ViewNavigator {
             }
         });
     }
+
+    public void goToNextActivity(TextView txt, Class<?> targetActivity) {
+        // När textvyn klickas på, skapar vi en ny Intent-objekt (ActionListener).
+        txt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, targetActivity);
+                context.startActivity(intent);
+            }
+        });
+    }
     public void goToNextActivity(Class<?> targetActivity) {
         Intent intent = new Intent(context, targetActivity);
         context.startActivity(intent);
@@ -124,11 +160,11 @@ public class ViewNavigator {
 
                     CaregiverEntry caregiver = caregiverTask.getResult().getValue(CaregiverEntry.class);
                     if (caregiver != null)
-                        goToNextActivity(Caregiver_dash.class, "success","caregiver.getName",
-                                caregiver.getName() ,"caregiver.getPid()", caregiver.getPid());
+                        goToNextActivity(Caregiver_dash.class, "success","caregiverName",
+                                caregiver.getName() ,"caregiverUserName", caregiver.getPid());
 
-                    System.out.println("caregiverName V: " + caregiver.getName());
-                    System.out.println("caregiverUserName V: " + caregiver.getPid());
+                    System.out.println("caregiverName LogIn_process: " + caregiver.getName());
+                    System.out.println("caregiverUserName LogIn_process: " + caregiver.getPid());
                 }
                 else{
                     notis("False");
@@ -249,9 +285,9 @@ public class ViewNavigator {
         editText.setText(value);
     }
 
-    public void showList(ListView listView, String pid){
-        // Hämta en lista av ElderlyEntry-objekt som tillhör en caregiver (som har pid som username)
-        Task<List<ElderlyEntry>> elderlyListTask = db.ElderlyList(pid);
+    public void showList(ListView listView, String caregiverUserName, String caregiverName){
+        // Hämta en lista av ElderlyEntry-objekt som tillhör en caregiver (som har caregiverUserName som username)
+        Task<List<ElderlyEntry>> elderlyListTask = db.ElderlyList(caregiverUserName);
         // Lyssna på när uppgiften (Task) är klar
         Tasks.whenAll(elderlyListTask).addOnCompleteListener(task -> {
             // Hämta resultatet
@@ -260,7 +296,7 @@ public class ViewNavigator {
             // Rensa den befintliga listan (elderlyStrings). Börja om
             elderlyStrings.clear();
 
-            // Loopa genom ElderlyEntry-objekten och skapa strängar som innehåller namn och pid
+            // Loopa genom ElderlyEntry-objekten och skapa strängar som innehåller namn och caregiverUserName
             for(ElderlyEntry elderly : elderlyList){
                 elderlyString = elderly.getName() +", " + elderly.getPid();
                 elderlyStrings.add(elderlyString);
@@ -279,7 +315,7 @@ public class ViewNavigator {
                     TextView textView1 = row.findViewById(R.id.textView_list_username);
                     TextView textView2 = row.findViewById(R.id.textView_list_pid);
 
-                    // Sätt texten för användarnamn och pid
+                    // Sätt texten för användarnamn och caregiverUserName
                     textView1.setText(itemParts[0]); // Huvudtext (item)
                     textView2.setText(itemParts[1]); // Undertext (subitem)
 
@@ -289,12 +325,13 @@ public class ViewNavigator {
             // Koppla adaptern till ListView
             listView.setAdapter(adapter);
 
+
             // Actionlistner metod för Listan
-            elderlyOverview(listView);
+            elderlyOverview(listView, caregiverUserName, caregiverName);
         });
     }
 
-    public void elderlyOverview(ListView listView){
+    public void elderlyOverview(ListView listView, String caregiverUserName, String caregiverName){
         String[] elderlyArray = elderlyStrings.toArray(new String[elderlyStrings.size()]);
 
         // Sätter en klickhändelse för ListView
@@ -306,13 +343,15 @@ public class ViewNavigator {
                 // Delar upp det valda elementet i delar med hjälp av ", " som separator.
                 String[] nameParts = selectedItem.split(", ");
 
-                // Anropar metoden goToNextActivity för att gå till Elderly_home_test-aktiviteten
-                // och skickar med vissa data som extras via en Intent. name och username så vi kan skicka de vidare till databasen.
-                goToNextActivity(Elderly_home_test.class, "Elderly username skickas till databasen för att få Elderly overview" + nameParts[0]+ " " + nameParts[1],
-                        "name", nameParts[0], "username", nameParts[1]);
+
+                goToNextActivity(Elderly_home_test.class, "Elderly username skickas till databasen för att få Elderly overview"
+                                + nameParts[0]+ " " + nameParts[1],
+                        "elderlyName", nameParts[0], "elderlyUserName", nameParts[1],
+                        "caregiverName",caregiverName, "caregiverUserName", caregiverUserName);
 
             }
         });
+
     }
 
     public void saveInputToPreferences(String username, String password, boolean rememberMe) {
