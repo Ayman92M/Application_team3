@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CargiverElderlyPageActivity">
+
+    <FrameLayout
+        android:layout_width="347dp"
+        android:layout_height="531dp"
+        android:background="@color/cardview_dark_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.8">
+
+        <Button
+            android:id="@+id/mealHistory"
+            android:layout_width="165dp"
+            android:layout_height="172dp"
+            android:layout_marginLeft="180dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/rounded_corner"
+            android:text="Meal History" />
+
+        <Button
+            android:id="@+id/mealPlanner"
+            android:layout_width="165dp"
+            android:layout_height="172dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/rounded_corner"
+            android:backgroundTint="@color/grey"
+            android:text="Meal Planner" />
+
+        <Button
+            android:id="@+id/personalnformation"
+            android:layout_width="165dp"
+            android:layout_height="172dp"
+            android:layout_marginTop="300dp"
+            android:text="Personal Information"
+            android:background="@drawable/rounded_corner"/>
+
+        <Button
+            android:id="@+id/deleteElderly"
+            android:layout_width="165dp"
+            android:layout_height="172dp"
+            android:layout_marginLeft="180dp"
+            android:layout_marginTop="300dp"
+            android:text="Delete"
+            android:background="@drawable/rounded_corner"/>
+
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/elderly_name"
+        android:layout_width="490dp"
+        android:layout_height="133dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/rounded_corner"
+        android:backgroundTint="@color/green_light"
+        android:text="       Elderly Name"
+        android:textSize="40dp"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

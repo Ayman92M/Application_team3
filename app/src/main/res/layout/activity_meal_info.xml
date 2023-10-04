@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Meal_info">
+
+    <FrameLayout
+        android:id="@+id/mealinfo"
+        android:layout_width="344dp"
+        android:layout_height="426dp"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="103dp"
+        android:layout_marginEnd="34dp"
+        android:layout_marginBottom="202dp"
+        android:background="@color/cardview_dark_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <TextView
+            android:id="@+id/meal_info"
+            android:layout_width="500dp"
+            android:layout_height="95dp"
+            android:background="@drawable/rounded_corner"
+            android:backgroundTint="@color/green_light"
+            android:text="    Meal "
+            android:textColor="@color/white"
+            android:textSize="35dp" />
+
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="196dp"
+            android:layout_marginTop="155dp"
+            android:layout_marginBottom="155dp"
+            android:background="@color/grey"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.128">
+
+        </ListView>
+
+
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
