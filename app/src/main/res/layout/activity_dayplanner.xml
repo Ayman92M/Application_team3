@@ -23,58 +23,30 @@
         tools:layout_editor_absoluteY="6dp" />
 
     <TextView
-        android:id="@+id/morgon"
+        android:id="@+id/frukost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="150dp"
         android:layout_marginEnd="25dp"
         android:layout_marginBottom="25dp"
-        android:text="Morgon"
-        android:textSize="40dp"
+        android:text="frukost:"
+        android:textSize="30dp"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="6dp" />
-
-    <EditText
-        android:id="@+id/morgonn"
-        android:layout_width="167dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="210dp"
-        android:layout_marginTop="150dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginBottom="25dp"
-        android:background="#60B8B3B3"
-        android:drawablePadding="16dp"
-        android:padding="16dp"
-        android:textColor="@color/black"
-        android:textColorHint="@color/black" />
 
     <TextView
-        android:id="@+id/kvall"
+        android:id="@+id/middag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="250dp"
         android:layout_marginEnd="25dp"
         android:layout_marginBottom="25dp"
-        android:text="Kväll"
-        android:textSize="40dp"
+        android:text="middag:"
+        android:textSize="30dp"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="6dp" />
-
-    <EditText
-        android:id="@+id/kvalll"
-        android:layout_width="165dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="210dp"
-        android:layout_marginTop="250dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="25dp"
-        android:background="#60B8B3B3"
-        android:drawablePadding="16dp"
-        android:padding="16dp"
-        android:textColor="@color/black"
-        android:textColorHint="@color/black" />
 
     <TextView
         android:id="@+id/mellanmal"
@@ -84,31 +56,56 @@
         android:layout_marginTop="350dp"
         android:layout_marginEnd="25dp"
         android:layout_marginBottom="25dp"
-        android:text="Mellanmål"
-        android:textSize="40dp"
+        android:text="Mellanmål:"
+        android:textSize="30dp"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="6dp" />
 
-    <EditText
-        android:id="@+id/mellanmall"
-        android:layout_width="166dp"
+    <TextView
+        android:id="@+id/frukostoutput"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="210dp"
+        android:layout_marginStart="250dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="25dp"
+        android:text="här"
+        android:textSize="30dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="6dp" />
+
+    <TextView
+        android:id="@+id/middagoutput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="250dp"
+        android:layout_marginTop="250dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="25dp"
+        android:text="här"
+        android:textSize="30dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="6dp" />
+
+    <TextView
+        android:id="@+id/mellanmaloutput"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="250dp"
         android:layout_marginTop="350dp"
         android:layout_marginEnd="25dp"
         android:layout_marginBottom="25dp"
-        android:background="#60B8B3B3"
-        android:drawablePadding="16dp"
-        android:padding="16dp"
-        android:textColor="@color/black"
-        android:textColorHint="@color/black" />
+        android:text="här"
+        android:textSize="30dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="6dp" />
 
     <EditText
         android:id="@+id/notes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="600dp"
+        android:layout_marginTop="500dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:background="#60B8B3B3"
