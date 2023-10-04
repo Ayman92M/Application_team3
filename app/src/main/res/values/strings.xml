@@ -18,4 +18,7 @@
     <string name="please_enter_a_description_for_this_meal">Please enter a description for this meal!</string>
     <string name="create_meal_button">Create Meal</string>
 
+    <string name="meal_info">Meal</string>
+
+
 </resources>
