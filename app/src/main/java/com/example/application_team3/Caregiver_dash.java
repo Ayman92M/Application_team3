@@ -48,8 +48,6 @@ public class Caregiver_dash extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                navigator.notis("need a layout or a list");
-
                 Context context = view.getContext();
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View popupView = inflater.inflate(R.layout.popup_add_elderly, null);

@@ -355,6 +355,22 @@ public class ViewNavigator {
         goToNextActivity(targetActivity, "logout successful", "logout", "true", null, null);
     }
 
+    public void remove(Button bt, String _caregiver_username, String _elderly_username){
+
+        bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println("caregiver_username: "+ _caregiver_username + "remove "
+                        + "elderly_username: "+ _elderly_username);
+
+                //db.removeElderly(_caregiver_username,_elderly_username);
+                notis("Done");
+                goToNextActivity(Caregiver_dash.class);
+            }
+        });
+
+
+    }
 
 
 

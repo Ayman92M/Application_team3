@@ -19,8 +19,14 @@ public class CargiverElderlyPageActivity extends AppCompatActivity {
         get_info = getIntent();
         String elderly_name = get_info.getStringExtra("elderlyName");
         String elderly_username = get_info.getStringExtra("elderlyUserName");
+        String caregiver_username = get_info.getStringExtra("caregiver_username");
 
         ( (TextView) findViewById(R.id.elderly_name)).setText("          Elderly " + elderly_name);
+
+
+        Button removeElderly = findViewById(R.id.deleteElderly);
+        navigator.remove(removeElderly, caregiver_username, elderly_username);
+
         Button meal_reg = findViewById(R.id.mealPlanner);
         meal_reg.setOnClickListener(new View.OnClickListener() {
             @Override
