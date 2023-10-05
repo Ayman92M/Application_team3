@@ -360,10 +360,10 @@ public class ViewNavigator {
         bt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("caregiver_username: "+ _caregiver_username + "remove "
+                System.out.println("caregiver_username: "+ _caregiver_username + " remove "
                         + "elderly_username: "+ _elderly_username);
 
-                db.removeElderly(_caregiver_username,_elderly_username);
+                //db.removeElderly(_caregiver_username,_elderly_username);
                 notis("Done");
                 goToNextActivity(Caregiver_dash.class);
             }

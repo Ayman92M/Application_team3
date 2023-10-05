@@ -19,7 +19,7 @@ public class CargiverElderlyPageActivity extends AppCompatActivity {
         get_info = getIntent();
         String elderly_name = get_info.getStringExtra("elderlyName");
         String elderly_username = get_info.getStringExtra("elderlyUserName");
-        String caregiver_username = get_info.getStringExtra("caregiver_username");
+        String caregiver_username = get_info.getStringExtra("caregiverUserName");
 
         ( (TextView) findViewById(R.id.elderly_name)).setText("          Elderly " + elderly_name);
 
