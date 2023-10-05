@@ -69,15 +69,17 @@
         android:layout_marginBottom="10dp" />
 
     <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/TextInputEditText_EnterMeal"
         android:layout_width="match_parent"
         android:layout_height="58dp"
         android:hint="@string/enter_meal_description" />
 
     <Button
+        android:id="@+id/Button_createMeal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/create_meal_button"
         android:layout_marginTop="10dp"
+        android:text="@string/create_meal_button"
         android:textSize="20sp" />
 
 </LinearLayout>

@@ -4,18 +4,35 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class CargiverElderlyPageActivity extends AppCompatActivity {
-    //Intent get_info;
+    Intent get_info;
+    ViewNavigator navigator = new ViewNavigator(this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cargiver_elderly_page);
 
-        //get_info = getIntent();
-        //String elderly_name = get_info.getStringExtra("elderlyName");
+        get_info = getIntent();
+        String elderly_name = get_info.getStringExtra("elderlyName");
+        String elderly_username = get_info.getStringExtra("elderlyUserName");
 
-        //( (TextView) findViewById(R.id.elderly_name)).setText("          Elderly" + elderly_name);
+        ( (TextView) findViewById(R.id.elderly_name)).setText("          Elderly " + elderly_name);
+        Button meal_reg = findViewById(R.id.mealPlanner);
+        meal_reg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(CargiverElderlyPageActivity.this, Meal_register.class);
+                get_info = getIntent();
+                String elderly_username = get_info.getStringExtra("elderlyUserName");
+                intent.putExtra("elderlyUserName", elderly_username);
+                navigator.notis(elderly_username);
+                startActivity(intent);
+            }
+        });
+
     }
 }

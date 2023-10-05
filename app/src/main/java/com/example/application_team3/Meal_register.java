@@ -2,18 +2,26 @@ package com.example.application_team3;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.google.android.material.textfield.TextInputEditText;
 
 public class Meal_register extends AppCompatActivity {
     String[] mealtype = {"Breakfast", "Lunch", "Dinner", "Snack"};
     AutoCompleteTextView autoCompleteTextView;
+    Database db = new Database();
     ArrayAdapter<String> adapterItems;
+    Intent get_info;
+    String item, note;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,10 +38,33 @@ public class Meal_register extends AppCompatActivity {
         autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String item = adapterView.getItemAtPosition(i).toString();
+                item = adapterView.getItemAtPosition(i).toString();
                 Toast.makeText(Meal_register.this, "Meal type: " + item, Toast.LENGTH_SHORT).show();
-                // db.registerMeal()
+
             }
         });
+
+
+
+
+        Button create_meal = findViewById(R.id.Button_createMeal);
+        create_meal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                TextInputEditText _note = findViewById(R.id.TextInputEditText_EnterMeal);
+                note = _note.getText().toString();
+
+                get_info = getIntent();
+                String elderly_username = get_info.getStringExtra("elderlyUserName");
+                int hour = picker.getHour();    int minute = picker.getMinute();
+                String hourString = hour + ":" +minute ;
+
+                //Toast.makeText(Meal_register.this, elderly_username , Toast.LENGTH_SHORT).show();
+                db.registerMeal(elderly_username, "2023-10-5", item, hourString, note);
+
+            }
+        });
+
     }
 }

@@ -22,6 +22,12 @@
             android:name=".Signup_elderly"
             android:exported="false" />
         <activity
+            android:name=".CargiverElderlyPageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Meal_register"
+            android:exported="false" />
+        <activity
             android:name=".List_viewer"
             android:exported="false" />
         <activity
