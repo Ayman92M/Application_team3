@@ -447,14 +447,14 @@ public class ViewNavigator {
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                     context.getApplicationContext(), // Använd den aktuella kontexten
                     R.layout.activity_list_item,
-                    R.id.textView_list_username,
+                    R.id.textView_username,
                     elderlyStrings
             ) {
                 @Override
                 public View getView(int position, View convertView, ViewGroup parent) {
                     View row = super.getView(position, convertView, parent);
                     String[] itemParts = getItem(position).split(", ");
-                    TextView textView1 = row.findViewById(R.id.textView_list_username);
+                    TextView textView1 = row.findViewById(R.id.textView_username);
                     TextView textView2 = row.findViewById(R.id.textView_list_pid);
 
                     // Sätt texten för användarnamn och caregiverUserName
