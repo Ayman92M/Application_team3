@@ -27,7 +27,7 @@ public class Log_in extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
 
-        //logUt();
+        logUt();
         signUp_button();
         logIn_button();
 
@@ -54,6 +54,16 @@ public class Log_in extends AppCompatActivity {
                 navigator.caregiverLogIn_process(_user_name, _pass);
             }
         });
+    }
+
+    private void logUt(){
+        Intent reset = getIntent();
+        String bool = reset.getStringExtra("logut");
+        System.out.println(" log ut activity " + bool);
+        if (bool != null && bool.equals("true")){
+            System.out.println(" log ut activity If" + bool);
+            navigator.logout(this, MainActivity.class);
+        }
     }
 
 }

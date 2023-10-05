@@ -65,14 +65,14 @@
             android:background="@android:color/white" />
 
         <TextView
+            android:id="@+id/TextView_logut"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:drawableLeft="@drawable/baseline_settings_24"
-            android:text="Log ut"
-            android:textSize="24sp"
             android:gravity="center"
-            />
+            android:text="Log ut"
+            android:textSize="24sp" />
 
     </LinearLayout>
 

@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,11 +57,55 @@ public class ViewNavigator {
     UserAccountControl user = new UserAccountControl();
     private SharedPreferences preferences;
 
+    public void notis(String msg){
 
+        // Skapar en toast-notifiering med ett meddelande (msg)
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    public String getEditTextValue(int editTextId) {
+        // Hitta EditText-komponenten med hjälp av dess ID
+        EditText editText = ((Activity) context).findViewById(editTextId);
+        // Hämta textvärdet från EditText och konvertera det till en sträng
+        String value = editText.getText().toString();
+        return value;
+    }
+
+    public void setEditTextValue(int editTextId, String value) {
+        EditText editText = ((Activity) context).findViewById(editTextId);
+        editText.setText(value);
+    }
+
+    public void goToNextActivity(Button bt, Class<?> targetActivity) {
+
+        // När knappen klickas på, skapar vi en ny Intent (ActionListener).
+        bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, targetActivity);
+                // Startar en ny aktivitet (targetActivity).
+                context.startActivity(intent);
+            }
+        });
+    }
     public ViewNavigator(Context context) {
         this.context = context;
     }
 
+    public void goToNextActivity(Class<?> targetActivity) {
+        Intent intent = new Intent(context, targetActivity);
+        context.startActivity(intent);
+    }
+    public void goToNextActivity(TextView txt, Class<?> targetActivity) {
+        // När textvyn klickas på, skapar vi en ny Intent-objekt (ActionListener).
+        txt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, targetActivity);
+                context.startActivity(intent);
+            }
+        });
+    }
     public void goToNextActivity(Class<?> targetActivity, String notis, String key1, String value1, String key2, String value2) {
         // Skapa en ny Intent för att flytta till nästa aktivitet (targetActivity)
         Intent intent = new Intent(context, targetActivity);
@@ -79,7 +125,28 @@ public class ViewNavigator {
         context.startActivity(intent);
     }
 
-    public void goToNextActivity(Class<?> targetActivity, String notis, String key1, String value1, String key2, String value2, String key3, String value3, String key4, String value4) {
+    public void goToNextActivity(TextView txt, Class<?> targetActivity, String key1, String value1, String key2, String value2) {
+        // När textvyn klickas på, skapar vi en ny Intent-objekt (ActionListener).
+        txt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(context, targetActivity);
+
+                if(key1 != null)
+                    intent.putExtra(key1, value1);
+
+                if(key2 != null)
+                    intent.putExtra(key2, value2);
+
+                // Startar en ny aktivitet (targetActivity).
+                context.startActivity(intent);
+            }
+        });
+    }
+
+    public void goToNextActivity(Class<?> targetActivity, String notis, String key1, String value1, String key2, String value2,
+                                 String key3, String value3, String key4, String value4) {
         // Skapa en ny Intent för att flytta till nästa aktivitet (targetActivity)
         Intent intent = new Intent(context, targetActivity);
 
@@ -137,53 +204,6 @@ public class ViewNavigator {
         context.startActivity(intent);
     }
 
-    public void goToNextActivity(Button bt, Class<?> targetActivity) {
-
-        // När knappen klickas på, skapar vi en ny Intent (ActionListener).
-        bt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, targetActivity);
-                // Startar en ny aktivitet (targetActivity).
-                context.startActivity(intent);
-            }
-        });
-    }
-
-    public void goToNextActivity(TextView txt, Class<?> targetActivity, String key1, String value1, String key2, String value2) {
-        // När textvyn klickas på, skapar vi en ny Intent-objekt (ActionListener).
-        txt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intent = new Intent(context, targetActivity);
-
-                if(key1 != null)
-                    intent.putExtra(key1, value1);
-
-                if(key2 != null)
-                    intent.putExtra(key2, value2);
-
-                // Startar en ny aktivitet (targetActivity).
-                context.startActivity(intent);
-            }
-        });
-    }
-
-    public void goToNextActivity(TextView txt, Class<?> targetActivity) {
-        // När textvyn klickas på, skapar vi en ny Intent-objekt (ActionListener).
-        txt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, targetActivity);
-                context.startActivity(intent);
-            }
-        });
-    }
-    public void goToNextActivity(Class<?> targetActivity) {
-        Intent intent = new Intent(context, targetActivity);
-        context.startActivity(intent);
-    }
 
     public void caregiverLogIn_process(String _user_name, String _pass){
 
@@ -306,126 +326,7 @@ public class ViewNavigator {
         }
     }
 
-    public void notis(String msg){
 
-        // Skapar en toast-notifiering med ett meddelande (msg)
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
-    }
-
-    //// Metod för att hämta textvärdet från en EditText-komponent
-    public String getEditTextValue(int editTextId) {
-        // Hitta EditText-komponenten med hjälp av dess ID
-        EditText editText = ((Activity) context).findViewById(editTextId);
-        // Hämta textvärdet från EditText och konvertera det till en sträng
-        String value = editText.getText().toString();
-        return value;
-    }
-
-    public void setEditTextValue(int editTextId, String value) {
-        EditText editText = ((Activity) context).findViewById(editTextId);
-        editText.setText(value);
-    }
-
-    public void showList2(ListView listView, String elderlyUserName, String elderlyName, String date){
-
-        // Hämta en lista av ElderlyEntry-objekt som tillhör en caregiver (som har caregiverUserName som username)
-        Task<DataSnapshot> mealPlanTask = db.fetchMealPlanDate(elderlyUserName, date);
-        // Hämta resultatet
-        Tasks.whenAll(mealPlanTask).addOnCompleteListener(task -> {
-            DataSnapshot mealsData = mealPlanTask.getResult();
-            mealStrings.clear();
-
-            for(DataSnapshot mealData : mealsData.getChildren()) {
-                MealEntry meal = mealData.getValue(MealEntry.class);
-                mealString = meal.getMealType() +", " + meal.getTime()+", "
-                        + meal.getNote() +", "+ meal.isHasEaten();
-                mealStrings.add(mealString);
-            }
-
-            // Skapa en adapter för att koppla data till ListView
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                    context.getApplicationContext(), // Använd den aktuella kontexten
-                    R.layout.activity_list_item_elderlyscheduler,
-                    R.id.meal,
-                    mealStrings
-            ) {
-                @Override
-                public View getView(int position, View convertView, ViewGroup parent) {
-                    View row = super.getView(position, convertView, parent);
-                    String[] itemParts = getItem(position).split(", ");
-                    TextView textView1 = row.findViewById(R.id.meal);
-                    TextView textView2 = row.findViewById(R.id.time);
-
-                    // Sätt texten för användarnamn och caregiverUserName
-                    textView1.setText(itemParts[0]); // Huvudtext (item)
-                    textView2.setText(itemParts[1]); // Undertext (subitem)
-
-                    return row;
-                }
-            };
-            // Koppla adaptern till ListView
-            listView.setAdapter(adapter);
-
-            elderlyOverview2(listView, elderlyUserName, elderlyName);
-
-        });
-    }
-
-    public void elderlyOverview2(ListView listView, String elderlyUserName, String elderlyName){
-        String[] mealArray = mealStrings.toArray(new String[mealStrings.size()]);
-
-        // Sätter en klickhändelse för ListView
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Hämtar det valda elementet från listan baserat på positionen
-                String selectedItem = mealArray[position];
-                // Delar upp det valda elementet i delar med hjälp av ", " som separator.
-                String[] nameParts = selectedItem.split(", ");
-
-
-                //goToNextActivity(Meal_info.class, "----"
-                  //              + nameParts[0]+ " -- " + nameParts[1] +" -- " + nameParts[2] +" -- " + nameParts[3] ,
-                    //    "elderlyName",elderlyName, "elderlyUserName", elderlyUserName,
-                      //  "mealType", nameParts[0], "mealTime", nameParts[1], "mealNote", nameParts[2], "hasEaten", nameParts[3]);
-
-                Context context = view.getContext();
-                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View popupView = inflater.inflate(R.layout.popup_layout, null);
-
-                // Create a PopupWindow
-                int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-                int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-                boolean focusable = true; // let taps outside the popup also dismiss it
-                final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
-
-                // Set a click listener for the close button in the popup
-                Button closePopupBtn = popupView.findViewById(R.id.closePopupBtn);
-                closePopupBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // Dismiss the popup
-                        popupWindow.dismiss();
-                    }
-                });
-                // Show the popup at the center of the screen
-                popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-
-            }
-        });
-
-    }
-
-    /*
-     Context context = v.getContext();
-
-
-
-                // Show the popup at the center of the screen
-                popupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
-            }
-        });
-     */
 
     public void showList(ListView listView, String caregiverUserName, String caregiverName){
         // Hämta en lista av ElderlyEntry-objekt som tillhör en caregiver (som har caregiverUserName som username)

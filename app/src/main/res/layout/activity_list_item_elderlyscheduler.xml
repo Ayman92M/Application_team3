@@ -11,12 +11,13 @@
 
 
     <TextView
-        android:id="@+id/button13"
+        android:id="@+id/TextView_background"
         android:layout_width="356dp"
         android:layout_height="152dp"
         android:layout_marginTop="20dp"
+
         android:background="@drawable/rounded_corner"
-        android:backgroundTint="@color/green_light"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.6"
@@ -31,10 +32,10 @@
         android:text="00:00"
         android:textColor="@color/white"
         android:textSize="40dp"
-        app:layout_constraintBottom_toBottomOf="@+id/button13"
+        app:layout_constraintBottom_toBottomOf="@+id/TextView_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.582"
-        app:layout_constraintStart_toStartOf="@+id/button13"
+        app:layout_constraintStart_toStartOf="@+id/TextView_background"
         app:layout_constraintTop_toBottomOf="@+id/meal"
         app:layout_constraintVertical_bias="0.36" />
 
@@ -45,11 +46,11 @@
         android:text="MEAL"
         android:textColor="@color/white"
         android:textSize="45dp"
-        app:layout_constraintBottom_toBottomOf="@+id/button13"
-        app:layout_constraintEnd_toEndOf="@+id/button13"
+        app:layout_constraintBottom_toBottomOf="@+id/TextView_background"
+        app:layout_constraintEnd_toEndOf="@+id/TextView_background"
         app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="@+id/button13"
-        app:layout_constraintTop_toTopOf="@+id/button13"
+        app:layout_constraintStart_toStartOf="@+id/TextView_background"
+        app:layout_constraintTop_toTopOf="@+id/TextView_background"
         app:layout_constraintVertical_bias="0.136" />
 
 

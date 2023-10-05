@@ -28,13 +28,13 @@ public class Caregiver_dash extends AppCompatActivity {
         Intent get_info = getIntent();
         _caregiverName = get_info.getStringExtra("caregiverName");
         _caregiverUserName = get_info.getStringExtra("caregiverUserName");
-        System.out.println("caregiverName Dashboard: " + _caregiverName);
-        System.out.println("caregiverUserName Dashboard: " + _caregiverUserName);
 
         ((TextView) findViewById(R.id.textView_Welcome)).setText("Welcome " + _caregiverName);
 
         listView = findViewById(R.id.listView);
         navigator.showList(listView, _caregiverUserName, _caregiverName);
+
+        logut();
 
         TextView newElderly = findViewById(R.id.TextView_newElderly);
         navigator.goToNextActivity(newElderly, Signup_elderly.class);
@@ -43,7 +43,6 @@ public class Caregiver_dash extends AppCompatActivity {
                 "caregiverUserName",_caregiverUserName ,
                 "caregiverName", _caregiverName);*/
 
-        //
         TextView addElderly = findViewById(R.id.TextView_addElderly);
         addElderly.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,8 +77,21 @@ public class Caregiver_dash extends AppCompatActivity {
 
         //navigator.addElderlyToCaregiver(addElderly, _caregiverUserName, _caregiverName);
 
+
+
     }
 
+    private void logut() {
+        TextView logut = findViewById(R.id.TextView_logut);
+        logut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //navigator.logout(Caregiver_dash.this, Log_in.class);
+                navigator.goToNextActivity(Log_in.class, "null", "logut", "true", null, null);
+            }
+        });
+
+    }
 
 
 }
