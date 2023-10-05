@@ -32,7 +32,7 @@ public class Caregiver_dash extends AppCompatActivity {
         ((TextView) findViewById(R.id.textView_Welcome)).setText("Welcome " + _caregiverName);
 
         listView = findViewById(R.id.listView);
-        navigator.showList(listView, _caregiverUserName, _caregiverName);
+        navigator.showElderlyList(listView, _caregiverUserName, _caregiverName);
 
         logut();
 

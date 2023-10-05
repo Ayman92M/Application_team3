@@ -26,6 +26,8 @@ import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /*
@@ -205,6 +207,8 @@ public class ViewNavigator {
     }
 
 
+
+    //SIGN MANAGER
     public void caregiverLogIn_process(String _user_name, String _pass){
 
         if (!user.isValidUsername(_user_name) || !user.isValidPassword(_pass))
@@ -326,9 +330,36 @@ public class ViewNavigator {
         }
     }
 
+    public void logout(Activity activity, Class<?> targetActivity) {
+        // Clear saved credentials
+        preferences = activity.getPreferences(Context.MODE_PRIVATE);
+
+        // Log the current values before removal
+        String usernameBefore = preferences.getString("username", "");
+        String passwordBefore = preferences.getString("password", "");
+        System.out.println("Before Logout - Username: " + usernameBefore + ", Password: " + passwordBefore);
 
 
-    public void showList(ListView listView, String caregiverUserName, String caregiverName){
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.remove("rememberMe");
+        editor.remove("username");
+        editor.remove("password");
+        editor.apply();
+
+        // Log the values after removal
+        String usernameAfter = preferences.getString("username", "");
+        String passwordAfter = preferences.getString("password", "");
+        System.out.println("after Logout - Username: " + usernameBefore + ", Password: " + passwordBefore);
+
+        saveRememberMeStatus(false);
+        goToNextActivity(targetActivity, "logout successful", "logout", "true", null, null);
+    }
+
+
+
+
+    //ELDERLY LIST MANAGER
+    public void showElderlyList(ListView listView, String caregiverUserName, String caregiverName){
         // Hämta en lista av ElderlyEntry-objekt som tillhör en caregiver (som har caregiverUserName som username)
         Task<List<ElderlyEntry>> elderlyListTask = db.ElderlyList(caregiverUserName);
         // Lyssna på när uppgiften (Task) är klar
@@ -344,37 +375,41 @@ public class ViewNavigator {
                 elderlyString = elderly.getName() +", " + elderly.getPid();
                 elderlyStrings.add(elderlyString);
             }
-            // Skapa en adapter för att koppla data till ListView
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                    context.getApplicationContext(), // Använd den aktuella kontexten
-                    R.layout.activity_list_item,
-                    R.id.textView_username,
-                    elderlyStrings
-            ) {
-                @Override
-                public View getView(int position, View convertView, ViewGroup parent) {
-                    View row = super.getView(position, convertView, parent);
-                    String[] itemParts = getItem(position).split(", ");
-                    TextView textView1 = row.findViewById(R.id.textView_username);
-                    TextView textView2 = row.findViewById(R.id.textView_list_pid);
-
-                    // Sätt texten för användarnamn och caregiverUserName
-                    textView1.setText(itemParts[0]); // Huvudtext (item)
-                    textView2.setText(itemParts[1]); // Undertext (subitem)
-
-                    return row;
-                }
-            };
-            // Koppla adaptern till ListView
-            listView.setAdapter(adapter);
-
-
-            // Actionlistner metod för Listan
-            elderlyOverview(listView, caregiverUserName, caregiverName);
+            setupElderlyListView(listView, caregiverUserName, caregiverName);
         });
     }
 
-    public void elderlyOverview(ListView listView, String caregiverUserName, String caregiverName){
+    private void setupElderlyListView(ListView listView, String caregiverUserName, String caregiverName){
+        // Skapa en adapter för att koppla data till ListView
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                context.getApplicationContext(), // Använd den aktuella kontexten
+                R.layout.activity_list_item,
+                R.id.textView_username,
+                elderlyStrings
+        ) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View row = super.getView(position, convertView, parent);
+                String[] itemParts = getItem(position).split(", ");
+                TextView textView1 = row.findViewById(R.id.textView_username);
+                TextView textView2 = row.findViewById(R.id.textView_list_pid);
+
+                // Sätt texten för användarnamn och caregiverUserName
+                textView1.setText(itemParts[0]); // Huvudtext (item)
+                textView2.setText(itemParts[1]); // Undertext (subitem)
+
+                return row;
+            }
+        };
+        // Koppla adaptern till ListView
+        listView.setAdapter(adapter);
+
+
+        // Actionlistner metod för Listan
+        elderlyListActionListener(listView, caregiverUserName, caregiverName);
+    }
+
+    public void elderlyListActionListener(ListView listView, String caregiverUserName, String caregiverName){
         String[] elderlyArray = elderlyStrings.toArray(new String[elderlyStrings.size()]);
 
         // Sätter en klickhändelse för ListView
@@ -397,6 +432,164 @@ public class ViewNavigator {
 
     }
 
+
+
+
+
+
+    //MEAL LIST MANAGER
+    public void showMealList(ListView listView, String elderlyUserName, String elderlyName, String date){
+        // Hämta en lista av ElderlyEntry-objekt som tillhör en caregiver (som har caregiverUserName som username)
+        Task<DataSnapshot> mealPlanTask = db.fetchMealPlanDate(elderlyUserName, date);
+        // Hämta resultatet
+        Tasks.whenAll(mealPlanTask).addOnCompleteListener(task -> {
+            DataSnapshot mealsData = mealPlanTask.getResult();
+            mealStrings.clear();
+
+            for(DataSnapshot mealData : mealsData.getChildren()) {
+                MealEntry meal = mealData.getValue(MealEntry.class);
+                mealString = meal.getMealType() +", " + meal.getTime()+", "
+                        + meal.getNote() +", "+ meal.isHasEaten();
+                mealStrings.add(mealString);
+            }
+
+            for (String mealString : mealStrings)
+                System.out.println(mealString);
+
+
+            sortMealByTime(mealStrings);
+
+            for (String mealString : mealStrings)
+                System.out.println(mealString);
+
+            setupMealListView(listView, elderlyUserName, elderlyName);
+
+        });
+    }
+
+    private void sortMealByTime(List<String> mealStrings) {
+        Collections.sort(mealStrings, new Comparator<String>() {
+            @Override
+            public int compare(String meal1, String meal2) {
+                // Antag att tiden är i formatet "HH:mm"
+                String[] parts1 = meal1.split(", ")[1].split(":");
+                String[] parts2 = meal2.split(", ")[1].split(":");
+
+                int hour1 = Integer.parseInt(parts1[0]);
+                int minute1 = Integer.parseInt(parts1[1]);
+
+                int hour2 = Integer.parseInt(parts2[0]);
+                int minute2 = Integer.parseInt(parts2[1]);
+
+                if (hour1 == hour2) {
+                    return Integer.compare(minute1, minute2);
+                } else {
+                    return Integer.compare(hour1, hour2);
+                }
+            }
+        });
+    }
+
+    private void setupMealListView(ListView listView, String elderlyUserName, String elderlyName){
+        // Skapa en adapter för att koppla data till ListView
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                context.getApplicationContext(), // Använd den aktuella kontexten -- context.getApplicationContext(),
+                R.layout.activity_list_item_elderlyscheduler,
+                R.id.meal,
+                mealStrings
+        ) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View row = super.getView(position, convertView, parent);
+                String[] itemParts = getItem(position).split(", ");
+                TextView textView1 = row.findViewById(R.id.meal);
+                TextView textView2 = row.findViewById(R.id.time);
+                TextView txt_bakground = row.findViewById(R.id.TextView_background);
+
+                // Sätt texten för användarnamn och caregiverUserName
+                textView1.setText(itemParts[0]); // Huvudtext (item)
+                textView2.setText(itemParts[1]); // Undertext (subitem)
+                mealListChangeColor(txt_bakground, position);
+
+                return row;
+            }
+        };
+        // Koppla adaptern till ListView
+        listView.setAdapter(adapter);
+
+        elderlyMealListActionListener(listView, elderlyUserName, elderlyName);
+    }
+
+    private void mealListChangeColor(TextView txt_bakground, int position){
+
+        int[] rowColors = {
+                Color.rgb(121, 165, 123),   // Grön
+                Color.rgb(255, 193, 7), // Gul
+                Color.rgb(164, 120, 241) , // Lila
+                Color.rgb(33, 150, 243)   // Blå
+        };
+
+        //txt_bakground.setBackgroundColor(rowColors[position % rowColors.length]);
+        GradientDrawable gradientDrawable = (GradientDrawable) context.getResources().getDrawable(R.drawable.rounded_corner);
+        //GradientDrawable gradientDrawable = (GradientDrawable) getResources().getDrawable(R.drawable.rounded_corner);
+        gradientDrawable.setColor(rowColors[position % rowColors.length]);
+        txt_bakground.setBackground(gradientDrawable);
+    }
+
+    public void elderlyMealListActionListener(ListView listView, String elderlyUserName, String elderlyName){
+        String[] mealArray = mealStrings.toArray(new String[mealStrings.size()]);
+
+        // Sätter en klickhändelse för ListView
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Hämtar det valda elementet från listan baserat på positionen
+                String selectedItem = mealArray[position];
+                // Delar upp det valda elementet i delar med hjälp av ", " som separator.
+                String[] nameParts = selectedItem.split(", ");
+
+
+                //goToNextActivity(Meal_info.class, "----"
+                //              + nameParts[0]+ " -- " + nameParts[1] +" -- " + nameParts[2] +" -- " + nameParts[3] ,
+                //    "elderlyName",elderlyName, "elderlyUserName", elderlyUserName,
+                //  "mealType", nameParts[0], "mealTime", nameParts[1], "mealNote", nameParts[2], "hasEaten", nameParts[3]);
+
+                Context context = view.getContext();
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View popupView = inflater.inflate(R.layout.popup_layout, null);
+
+                // Create a PopupWindow
+                int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+                int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                boolean focusable = true; // let taps outside the popup also dismiss it
+                final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+                // Set a click listener for the close button in the popup
+                Button closePopupBtn = popupView.findViewById(R.id.closePopupBtn);
+                closePopupBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Dismiss the popup
+                        popupWindow.dismiss();
+                    }
+                });
+                // Show the popup at the center of the screen
+                popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+            }
+        });
+
+    }
+
+
+
+
+
+
+
+
+
+    //SharedPreferences
     public void saveInputToPreferences(String username, String password, boolean rememberMe) {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("username", username);
@@ -472,29 +665,6 @@ public class ViewNavigator {
     }
 
 
-    public void logout(Activity activity, Class<?> targetActivity) {
-        // Clear saved credentials
-        preferences = activity.getPreferences(Context.MODE_PRIVATE);
 
-        // Log the current values before removal
-        String usernameBefore = preferences.getString("username", "");
-        String passwordBefore = preferences.getString("password", "");
-        System.out.println("Before Logout - Username: " + usernameBefore + ", Password: " + passwordBefore);
-
-
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.remove("rememberMe");
-        editor.remove("username");
-        editor.remove("password");
-        editor.apply();
-
-        // Log the values after removal
-        String usernameAfter = preferences.getString("username", "");
-        String passwordAfter = preferences.getString("password", "");
-        System.out.println("after Logout - Username: " + usernameBefore + ", Password: " + passwordBefore);
-
-        saveRememberMeStatus(false);
-        goToNextActivity(targetActivity, "logout successful", "logout", "true", null, null);
-    }
 }
 
