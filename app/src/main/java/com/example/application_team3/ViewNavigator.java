@@ -216,10 +216,13 @@ public class ViewNavigator {
             notis("invalid user name or Pin");
 
         Task<Boolean> loginCheck = db.checkLoginElderly(_user_name, _pass);
-        Tasks.whenAll(loginCheck).addOnCompleteListener(task -> {
-            if(loginCheck.getResult())
-                goToNextActivity(Elderly_home_test.class, "True","name", _user_name ,null, null);
-
+        Task<DataSnapshot> elderlyTask = db.fetchElderly(_user_name);
+        Tasks.whenAll(loginCheck, elderlyTask).addOnCompleteListener(task -> {
+            if(loginCheck.getResult()) {
+                DataSnapshot elderly = elderlyTask.getResult();
+                String elderly_name = elderly.child("name").getValue().toString();
+                goToNextActivity(Elderly_home_test.class, "True", "elderlyUserName", _user_name, "elderlyName", elderly_name);
+            }
             else
                 notis("False");
 
@@ -344,7 +347,7 @@ public class ViewNavigator {
                 String[] nameParts = selectedItem.split(", ");
 
 
-                goToNextActivity(Elderly_home_test.class, "Elderly username skickas till databasen för att få Elderly overview"
+                goToNextActivity(CargiverElderlyPageActivity.class, "Elderly username skickas till databasen för att få Elderly overview"
                                 + nameParts[0]+ " " + nameParts[1],
                         "elderlyName", nameParts[0], "elderlyUserName", nameParts[1],
                         "caregiverName",caregiverName, "caregiverUserName", caregiverUserName);

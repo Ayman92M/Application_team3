@@ -61,7 +61,7 @@
         android:layout_marginTop="4dp"
         android:background="@drawable/rounded_corner"
         android:backgroundTint="@color/green_light"
-        android:text="       Elderly Name"
+        android:text=""
         android:textSize="40dp"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
