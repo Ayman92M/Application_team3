@@ -17,7 +17,7 @@ public class Elderly_home_test extends AppCompatActivity {
         setContentView(R.layout.activity_elderly_home_test);
 
         get_info = getIntent();
-        String _caregiver_username = get_info.getStringExtra("caregiver_name");
+        String _caregiver_username = get_info.getStringExtra("elderlyName");
 
         ( (TextView) findViewById(R.id.textView2)).setText("Welcome " + _caregiver_username);
         skrivUt();
