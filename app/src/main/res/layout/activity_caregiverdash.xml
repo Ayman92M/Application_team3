@@ -35,13 +35,13 @@
 
 
         <TextView
-            android:id="@+id/TextView_addElderly"
+            android:id="@+id/TextView_newElderly"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:drawableStart="@drawable/baseline_person_add_24"
             android:gravity="center"
-            android:text="Add "
+            android:text="New "
             android:textSize="24sp" />
 
         <View
@@ -50,13 +50,14 @@
             android:background="@android:color/white" />
 
         <TextView
+            android:id="@+id/TextView_addElderly"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:drawableLeft="@drawable/delete_icon"
-            android:text="Delete"
-            android:textSize="24sp"
-            android:gravity="center" />
+            android:drawableLeft="@drawable/baseline_person_add_24"
+            android:gravity="center"
+            android:text="Add "
+            android:textSize="24sp" />
 
         <View
             android:layout_width="4dp"

@@ -31,10 +31,7 @@ public class Log_in extends AppCompatActivity {
         signUp_button();
         logIn_button();
 
-        //preferences = getSharedPreferences("caregiverPreferences", MODE_PRIVATE);
         checkBoxRememberMe = findViewById(R.id.checkBox_rememberMe);
-        //navigator.autoLogIn(this, checkBoxRememberMe);
-
         navigator.setRememberMeValues(this, R.id.editTextText,
                         R.id.editTextNumberPassword, checkBoxRememberMe);
 
@@ -58,35 +55,5 @@ public class Log_in extends AppCompatActivity {
             }
         });
     }
-
-    /*
-    private void logIn_process(){
-        String _user_name = navigator.getEditTextValue(R.id.editTextText);
-        String _pass = navigator.getEditTextValue(R.id.editTextNumberPassword);
-
-        if (!user.isValidUsername(_user_name) || !user.isValidPassword(_pass))
-            navigator.notis("invalid user name or password");
-
-
-        else{
-            Task<Boolean> checkLogin = db.checkLoginCaregiver(_user_name, _pass);
-            Task<DataSnapshot> caregiverTask = db.fetchCaregiver(_user_name);
-            Tasks.whenAll(checkLogin, caregiverTask).addOnCompleteListener(task-> {
-                if(checkLogin.getResult()){
-
-                    CaregiverEntry caregiver = caregiverTask.getResult().getValue(CaregiverEntry.class);
-                    if (caregiver != null)
-                        navigator.goToNextActivity(Caregiver_dash.class, "success","name",
-                                caregiver.getName() ,"pid", caregiver.getPid());
-                }
-                else{
-                    navigator.notis("False");
-                }
-
-            });
-        }
-    }
-
-     */
 
 }

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,12 +10,12 @@
         android:id="@+id/button3"
         android:layout_width="233dp"
         android:layout_height="128dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:backgroundTint="#6F716F"
         android:text="Log In"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNumberPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/checkBox_rememberPassword" />
 
     <EditText
         android:id="@+id/editTextText"
@@ -58,5 +58,16 @@
         app:layout_constraintHorizontal_bias="0.469"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/checkBox_rememberPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Remember Me"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.264"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextNumberPassword" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

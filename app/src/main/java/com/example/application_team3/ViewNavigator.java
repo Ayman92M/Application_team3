@@ -74,6 +74,31 @@ public class ViewNavigator {
         context.startActivity(intent);
     }
 
+    public void goToNextActivity(Class<?> targetActivity, String notis, String key1, String value1, String key2, String value2, String key3, String value3, String key4, String value4) {
+        // Skapa en ny Intent för att flytta till nästa aktivitet (targetActivity)
+        Intent intent = new Intent(context, targetActivity);
+
+        // Om det finns ett meddelande (notis), visa det
+        if(notis != null)
+            notis(notis);
+
+        // Om det finns en key1, skicka den vidare till targetActivity.
+        if(key1 != null)
+            intent.putExtra(key1, value1);
+
+        if(key2 != null)
+            intent.putExtra(key2, value2);
+
+        if(key3 != null)
+            intent.putExtra(key3, value3);
+
+        if(key4 != null)
+            intent.putExtra(key4, value4);
+
+        // Starta nästa aktivitet (targetActivity)
+        context.startActivity(intent);
+    }
+
     public void goToNextActivity(Button bt, Class<?> targetActivity) {
 
         // När knappen klickas på, skapar vi en ny Intent (ActionListener).
@@ -106,75 +131,20 @@ public class ViewNavigator {
             }
         });
     }
+
+    public void goToNextActivity(TextView txt, Class<?> targetActivity) {
+        // När textvyn klickas på, skapar vi en ny Intent-objekt (ActionListener).
+        txt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, targetActivity);
+                context.startActivity(intent);
+            }
+        });
+    }
     public void goToNextActivity(Class<?> targetActivity) {
         Intent intent = new Intent(context, targetActivity);
         context.startActivity(intent);
-    }
-
-    public void showList(ListView listView, String pid){
-        // Hämta en lista av ElderlyEntry-objekt som tillhör en caregiver (som har pid som username)
-        Task<List<ElderlyEntry>> elderlyListTask = db.ElderlyList(pid);
-        // Lyssna på när uppgiften (Task) är klar
-        Tasks.whenAll(elderlyListTask).addOnCompleteListener(task -> {
-            // Hämta resultatet
-            List<ElderlyEntry> elderlyList = elderlyListTask.getResult();
-
-            // Rensa den befintliga listan (elderlyStrings). Börja om
-            elderlyStrings.clear();
-
-            // Loopa genom ElderlyEntry-objekten och skapa strängar som innehåller namn och pid
-            for(ElderlyEntry elderly : elderlyList){
-                elderlyString = elderly.getName() +", " + elderly.getPid();
-                elderlyStrings.add(elderlyString);
-            }
-            // Skapa en adapter för att koppla data till ListView
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                    context.getApplicationContext(), // Använd den aktuella kontexten
-                    R.layout.activity_list_item,
-                    R.id.textView_list_username,
-                    elderlyStrings
-            ) {
-                @Override
-                public View getView(int position, View convertView, ViewGroup parent) {
-                    View row = super.getView(position, convertView, parent);
-                    String[] itemParts = getItem(position).split(", ");
-                    TextView textView1 = row.findViewById(R.id.textView_list_username);
-                    TextView textView2 = row.findViewById(R.id.textView_list_pid);
-
-                    // Sätt texten för användarnamn och pid
-                    textView1.setText(itemParts[0]); // Huvudtext (item)
-                    textView2.setText(itemParts[1]); // Undertext (subitem)
-
-                    return row;
-                }
-            };
-            // Koppla adaptern till ListView
-            listView.setAdapter(adapter);
-
-            // Actionlistner metod för Listan
-            elderlyOverview(listView);
-        });
-    }
-
-    public void elderlyOverview(ListView listView){
-        String[] elderlyArray = elderlyStrings.toArray(new String[elderlyStrings.size()]);
-
-        // Sätter en klickhändelse för ListView
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Hämtar det valda elementet från listan baserat på positionen
-                String selectedItem = elderlyArray[position];
-                // Delar upp det valda elementet i delar med hjälp av ", " som separator.
-                String[] nameParts = selectedItem.split(", ");
-
-                // Anropar metoden goToNextActivity för att gå till Elderly_home_test-aktiviteten
-                // och skickar med vissa data som extras via en Intent. name och username så vi kan skicka de vidare till databasen.
-                goToNextActivity(Elderly_home_test.class, "Elderly username skickas till databasen för att få Elderly overview" + nameParts[0]+ " " + nameParts[1],
-                        "name", nameParts[0], "username", nameParts[1]);
-
-            }
-        });
     }
 
     public void caregiverLogIn_process(String _user_name, String _pass){
@@ -190,11 +160,11 @@ public class ViewNavigator {
 
                     CaregiverEntry caregiver = caregiverTask.getResult().getValue(CaregiverEntry.class);
                     if (caregiver != null)
-                        goToNextActivity(Caregiver_dash.class, "success","caregiver.getName",
-                                caregiver.getName() ,"caregiver.getPid()", caregiver.getPid());
+                        goToNextActivity(Caregiver_dash.class, "success","caregiverName",
+                                caregiver.getName() ,"caregiverUserName", caregiver.getPid());
 
-                    System.out.println("caregiverName V: " + caregiver.getName());
-                    System.out.println("caregiverUserName V: " + caregiver.getPid());
+                    System.out.println("caregiverName LogIn_process: " + caregiver.getName());
+                    System.out.println("caregiverUserName LogIn_process: " + caregiver.getPid());
                 }
                 else{
                     notis("False");
@@ -246,10 +216,13 @@ public class ViewNavigator {
             notis("invalid user name or Pin");
 
         Task<Boolean> loginCheck = db.checkLoginElderly(_user_name, _pass);
-        Tasks.whenAll(loginCheck).addOnCompleteListener(task -> {
-            if(loginCheck.getResult())
-                goToNextActivity(Elderly_home_test.class, "True","name", _user_name ,null, null);
-
+        Task<DataSnapshot> elderlyTask = db.fetchElderly(_user_name);
+        Tasks.whenAll(loginCheck, elderlyTask).addOnCompleteListener(task -> {
+            if(loginCheck.getResult()) {
+                DataSnapshot elderly = elderlyTask.getResult();
+                String elderly_name = elderly.child("name").getValue().toString();
+                goToNextActivity(Elderly_home_test.class, "True", "elderlyUserName", _user_name, "elderlyName", elderly_name);
+            }
             else
                 notis("False");
 
@@ -315,22 +288,98 @@ public class ViewNavigator {
         editText.setText(value);
     }
 
-    public void autoLogIn(Activity activity, CheckBox checkBoxRemember) {
+    public void showList(ListView listView, String caregiverUserName, String caregiverName){
+        // Hämta en lista av ElderlyEntry-objekt som tillhör en caregiver (som har caregiverUserName som username)
+        Task<List<ElderlyEntry>> elderlyListTask = db.ElderlyList(caregiverUserName);
+        // Lyssna på när uppgiften (Task) är klar
+        Tasks.whenAll(elderlyListTask).addOnCompleteListener(task -> {
+            // Hämta resultatet
+            List<ElderlyEntry> elderlyList = elderlyListTask.getResult();
+
+            // Rensa den befintliga listan (elderlyStrings). Börja om
+            elderlyStrings.clear();
+
+            // Loopa genom ElderlyEntry-objekten och skapa strängar som innehåller namn och caregiverUserName
+            for(ElderlyEntry elderly : elderlyList){
+                elderlyString = elderly.getName() +", " + elderly.getPid();
+                elderlyStrings.add(elderlyString);
+            }
+            // Skapa en adapter för att koppla data till ListView
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                    context.getApplicationContext(), // Använd den aktuella kontexten
+                    R.layout.activity_list_item,
+                    R.id.textView_list_username,
+                    elderlyStrings
+            ) {
+                @Override
+                public View getView(int position, View convertView, ViewGroup parent) {
+                    View row = super.getView(position, convertView, parent);
+                    String[] itemParts = getItem(position).split(", ");
+                    TextView textView1 = row.findViewById(R.id.textView_list_username);
+                    TextView textView2 = row.findViewById(R.id.textView_list_pid);
+
+                    // Sätt texten för användarnamn och caregiverUserName
+                    textView1.setText(itemParts[0]); // Huvudtext (item)
+                    textView2.setText(itemParts[1]); // Undertext (subitem)
+
+                    return row;
+                }
+            };
+            // Koppla adaptern till ListView
+            listView.setAdapter(adapter);
+
+
+            // Actionlistner metod för Listan
+            elderlyOverview(listView, caregiverUserName, caregiverName);
+        });
+    }
+
+    public void elderlyOverview(ListView listView, String caregiverUserName, String caregiverName){
+        String[] elderlyArray = elderlyStrings.toArray(new String[elderlyStrings.size()]);
+
+        // Sätter en klickhändelse för ListView
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Hämtar det valda elementet från listan baserat på positionen
+                String selectedItem = elderlyArray[position];
+                // Delar upp det valda elementet i delar med hjälp av ", " som separator.
+                String[] nameParts = selectedItem.split(", ");
+
+
+                goToNextActivity(CargiverElderlyPageActivity.class, "Elderly username skickas till databasen för att få Elderly overview"
+                                + nameParts[0]+ " " + nameParts[1],
+                        "elderlyName", nameParts[0], "elderlyUserName", nameParts[1],
+                        "caregiverName",caregiverName, "caregiverUserName", caregiverUserName);
+
+            }
+        });
+
+    }
+
+    public void saveInputToPreferences(String username, String password, boolean rememberMe) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("username", username);
+        editor.putString("password", password);
+        editor.putBoolean("rememberMe", rememberMe);
+        editor.apply();
+
+        //if (checkBoxRememberMe.isChecked())
+    }
+
+    public void setRememberMeValues(Activity activity, int editTextUsernameId, int editTextPasswordId, CheckBox checkBoxRemember) {
         preferences = activity.getPreferences(Context.MODE_PRIVATE);
-        if (preferences.getBoolean("rememberMe", false)) {
-            String username = preferences.getString("username", "");
+
+        String username = preferences.getString("username", "");
+        if (username != null)
+            setEditTextValue(editTextUsernameId, username);
+
+        if (getRememberMeStatus()) {
             String password = preferences.getString("password", "");
-            System.out.println("- Username: " + username + ", Password: " + password);
-            if (!username.isEmpty() && !password.isEmpty())
-                caregiverLogIn_process(username, password);
+            setEditTextValue(editTextPasswordId, password);
 
             checkBoxRemember.setChecked(true);
         }
-    }
-
-    public boolean getRememberMeStatus() {
-        // Retrieve the "Remember Me" status from SharedPreferences
-        return preferences.getBoolean("rememberMe", false);
     }
 
     private void saveRememberMeStatus(boolean status) {
@@ -340,6 +389,11 @@ public class ViewNavigator {
         editor.apply();
     }
 
+    public boolean getRememberMeStatus() {
+        // Retrieve the "Remember Me" status from SharedPreferences
+        return preferences.getBoolean("rememberMe", false);
+    }
+
     public void getUsernameFromPreferences(SharedPreferences preferences, int editTextId) {
         if (preferences.contains("username")) {
             String username = preferences.getString("username", "");
@@ -347,18 +401,14 @@ public class ViewNavigator {
         }
     }
 
-    public void setRememberMeValues(Activity activity, int editTextUsernameId, int editTextPasswordId, CheckBox checkBoxRemember) {
+    public void autoLogIn(Activity activity, CheckBox checkBoxRemember) {
         preferences = activity.getPreferences(Context.MODE_PRIVATE);
         if (preferences.getBoolean("rememberMe", false)) {
             String username = preferences.getString("username", "");
             String password = preferences.getString("password", "");
-
-            setEditTextValue(editTextUsernameId, username);
-            setEditTextValue(editTextPasswordId, password);
-
-            //if (!username.isEmpty() && !password.isEmpty())
-              //  caregiverLogIn_process(username, password);
-
+            System.out.println("- Username: " + username + ", Password: " + password);
+            if (!username.isEmpty() && !password.isEmpty())
+                caregiverLogIn_process(username, password);
 
             checkBoxRemember.setChecked(true);
         }
@@ -381,15 +431,6 @@ public class ViewNavigator {
         }
     }
 
-    public void saveInputToPreferences(String username, String password, boolean rememberMe) {
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("username", username);
-        editor.putString("password", password);
-        editor.putBoolean("rememberMe", rememberMe);
-        editor.apply();
-
-        //if (checkBoxRememberMe.isChecked())
-    }
 
     public void logout(Activity activity, Class<?> targetActivity) {
         // Clear saved credentials
