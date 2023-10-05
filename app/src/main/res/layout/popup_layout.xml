@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- popup_layout.xml -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Meal_info">
+
+
+    <FrameLayout
+        android:id="@+id/mealinfo"
+        android:layout_width="341dp"
+        android:layout_height="447dp"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginEnd="34dp"
+        android:layout_marginBottom="202dp"
+        android:background="@color/cardview_dark_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/meal_info"
+            android:layout_width="500dp"
+            android:layout_height="95dp"
+            android:background="@drawable/rounded_corner"
+            android:backgroundTint="@color/green_light"
+            android:text="    Meal "
+            android:textColor="@color/white"
+            android:textSize="35dp" />
+
+        <Button
+            android:id="@+id/i_have_eaten"
+            style="style/widget.MaterialComponents.Button.Icon"
+            android:layout_width="147dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="360dp"
+            android:background="@drawable/rounded_corner"
+            android:text="I have eaten this meal"
+            app:icon="@drawable/baseline_check_24" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="match_parent"
+            android:layout_height="231dp"
+            android:layout_marginTop="110dp"
+            android:background="@color/grey"
+            android:text="Meal info"
+            android:textSize="25dp" />
+
+        <Button
+            android:id="@+id/closePopupBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Close Popup"
+            android:layout_marginLeft="220dp"
+            />
+
+
+    </FrameLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
