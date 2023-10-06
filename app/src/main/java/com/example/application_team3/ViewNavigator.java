@@ -462,13 +462,15 @@ public class ViewNavigator {
         Tasks.whenAll(mealPlanTask).addOnCompleteListener(task -> {
             DataSnapshot mealsData = mealPlanTask.getResult();
             mealStrings.clear();
-
-            for(DataSnapshot mealData : mealsData.getChildren()) {
-                MealEntry meal = mealData.getValue(MealEntry.class);
-                mealString = meal.getMealType() +", " + meal.getTime()+", "
-                        + meal.getNote() +", "+ meal.isHasEaten();
-                mealStrings.add(mealString);
+            if(mealsData.hasChildren()){
+                for(DataSnapshot mealData : mealsData.getChildren()) {
+                    MealEntry meal = mealData.getValue(MealEntry.class);
+                    mealString = meal.getMealType() +", " + meal.getTime()+", "
+                            + meal.getNote() +", "+ meal.isHasEaten();
+                    mealStrings.add(mealString);
+                }
             }
+
 
             for (String mealString : mealStrings)
                 System.out.println(mealString);
