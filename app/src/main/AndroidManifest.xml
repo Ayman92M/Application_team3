@@ -16,6 +16,9 @@
             android:name=".testCalendar"
             android:exported="false" />
         <activity
+            android:name=".Elderly_Scheduler"
+            android:exported="false" />
+        <activity
             android:name=".Meal_register"
             android:exported="false" />
         <activity
