@@ -2,11 +2,14 @@ package com.example.application_team3;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.TextView;
 
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -36,10 +39,20 @@ public class Elderly_Scheduler extends AppCompatActivity {
     Database db = new Database();
     ViewNavigator navigator = new ViewNavigator(this);
 
+    TextView chosenDate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_elderly_scheduler);
+
+        chosenDate = findViewById(R.id.textView5);
+        Intent incomingIntent = getIntent();
+        String date = incomingIntent.getStringExtra("date");
+        Log.d("incoming intent", "chosen date" + date);
+        chosenDate.setText(date);
+
+
 
         Intent get_info = getIntent();
         String elderly_username = get_info.getStringExtra("elderlyUserName");
@@ -48,6 +61,4 @@ public class Elderly_Scheduler extends AppCompatActivity {
         navigator.showMealList(listView, elderly_username, elderly_name, "2023-10-5");
 
     }
-
-
 }

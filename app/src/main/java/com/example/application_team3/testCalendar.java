@@ -23,11 +23,11 @@ public class testCalendar extends AppCompatActivity {
                 String date = day +"/" + (month + 1) + "/" + year;
                 Log.d(TAG,"OnSelectedDayChange: date: " + date);
 
-                /*
-                Intent intent = new Intent(testCalendar.this, *NEXT PAGE*);
+
+                Intent intent = new Intent(testCalendar.this, Elderly_Scheduler.class);
                 intent.putExtra("date", date);
                 startActivity(intent);
-                */
+
 
                 /* In the next page (dayPlanner):
                 Intent incomingIntent = getIntent();
