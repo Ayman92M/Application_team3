@@ -11,30 +11,26 @@ import android.widget.CalendarView;
 public class Calendar_Overview extends AppCompatActivity {
     ViewNavigator navigator = new ViewNavigator(this);
     private static final String TAG = "calendar_overview";
-    private CalendarView mCalendarview;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test_calendar);
+        setContentView(R.layout.activity_calendar_overview);
+        CalendarView mCalendarview;
         mCalendarview = (CalendarView) findViewById(R.id.calendarView);
         mCalendarview.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
-                String date = day +"/" + (month + 1) + "/" + year;
+                String date = year +"-" + (month + 1) + "-" + day;
                 Log.d(TAG,"OnSelectedDayChange: date: " + date);
 
-                /*
-                Intent intent = new Intent(Calendar_Overview.this, *NEXT PAGE*);
+
+                Intent intent = new Intent(Calendar_Overview.this, Elderly_Scheduler.class);
                 intent.putExtra("date", date);
+                intent.putExtra("elderlyUserName", "rem12");
+                intent.putExtra("elderlyName", "rem");
                 startActivity(intent);
-                */
 
-                /* In the next page (dayPlanner):
-                Intent incomingIntent = getIntent();
-                String date = incomingIntent.getStringExtra("date");
-
-                Lägg in date i textView med xxx.setText(date);
-                 */
             }
         });
 
