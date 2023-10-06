@@ -51,15 +51,20 @@ public class Elderly_Scheduler extends AppCompatActivity {
         Intent incomingIntent = getIntent();
         String date = incomingIntent.getStringExtra("date");
 
+
         Calendar day_calendar = Calendar.getInstance();
         int year = day_calendar.get(Calendar.YEAR);
         int month = day_calendar.get(Calendar.MONTH);
         int day = day_calendar.get(Calendar.DAY_OF_MONTH);
 
         // Adding 1 to month to get the human-readable month representation
+        Intent get_info = getIntent();
+        String elderly_username = get_info.getStringExtra("elderlyUserName");
+        String elderly_name = get_info.getStringExtra("elderlyName");
 
         if(date == null){
             date = year + "-" + (month + 1) + "-" + day;
+            db.listenForMealPlan(elderly_username);
         }
 
         Log.d("incoming intent", "chosen date" + date);
@@ -67,10 +72,9 @@ public class Elderly_Scheduler extends AppCompatActivity {
 
 
 
-        Intent get_info = getIntent();
-        String elderly_username = get_info.getStringExtra("elderlyUserName");
-        String elderly_name = get_info.getStringExtra("elderlyName");
+
         listView = findViewById(R.id.listView_elderly_scheduler);
+
         navigator.showMealList(listView, elderly_username, elderly_name, date);
 
     }
