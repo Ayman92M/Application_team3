@@ -17,5 +17,13 @@
     <string name="choose_meal_type">Choose Meal Type</string>
     <string name="please_enter_a_description_for_this_meal">Please enter a description for this meal!</string>
     <string name="create_meal_button">Create Meal</string>
+    <string name="contact_number">Contact number</string>
+    <string name="date_of_birth">Date of birth</string>
+    <string name="name">Name</string>
+    <string name="personal_information">Personal Information</string>
+    <string name="address">Address</string>
+    <string name="user_name_info">User name</string>
+    <string name="pin">PIN</string>
+    <string name="edit">Edit</string>
 
 </resources>
