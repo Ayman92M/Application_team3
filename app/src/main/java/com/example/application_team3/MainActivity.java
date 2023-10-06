@@ -8,7 +8,9 @@ import android.widget.Button;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     ViewNavigator navigator = new ViewNavigator(this);
@@ -36,22 +38,34 @@ public class MainActivity extends AppCompatActivity {
         _test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                noti.setAlarm(MainActivity.this, "05:01");
-                convertStringToMillis("2023-10-6 05:01");
+                noti.setAlarm(MainActivity.this, "17:32", convertStringToMillis("2023-10-6 9:48"), 2023-10-6-944);
+
             }
         });
 
     }
 
     public long convertStringToMillis(String dateString) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-d HH:mm");
-        try {
-            Date date = dateFormat.parse(dateString);
-            System.out.println("conert: "+date.getTime());
-            return date.getTime();
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return -1;
+        List<String> possibleFormats = new ArrayList<>();
+        possibleFormats.add("yyyy-MM-dd HH:mm");
+        possibleFormats.add("yyyy-MM-d HH:mm");
+        possibleFormats.add("yyyy-M-dd HH:mm");
+        possibleFormats.add("yyyy-MM-d H:mm");
+
+        for (String format : possibleFormats) {
+            try {
+                SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+                Date date = dateFormat.parse(dateString);
+                System.out.println("convert: "+ date);
+                System.out.println("convert: "+ date.getTime());
+                return date.getTime();
+            } catch (ParseException ignored) {
+                // Ignorera ParseException för detta format, fortsätt med nästa
+            }
         }
+
+        // Ingen matchande format hittades
+        return -1;
     }
+
 }

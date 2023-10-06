@@ -19,27 +19,27 @@ public class Notification {
     private PendingIntent pendingIntent;
 
     @SuppressLint("ScheduleExactAlarm")
-    public void setAlarm(Context context, String time ) {
-
+    public void setAlarm(Context context, String time, long triggerTimeInMillis, int id) {
+        /*
         String[] timeParts = time.split(":") ;
         System.out.println(" hour: "+timeParts[0]);
         System.out.println(" min: "+timeParts[1]);
         int hour = Integer.parseInt(timeParts[0]);
         int min = Integer.parseInt(timeParts[1]);
-
+        */
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlarmReceiver.class);
 
-        pendingIntent = PendingIntent.getBroadcast(context, 1,intent, PendingIntent.FLAG_IMMUTABLE);
-
+        pendingIntent = PendingIntent.getBroadcast(context, id,intent, PendingIntent.FLAG_IMMUTABLE);
+        /*
         Calendar calendar = Calendar.getInstance();
 
-        calendar.set(Calendar.HOUR, hour);
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, min);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
+        */
 
-        long triggerTimeInMillis = calendar.getTimeInMillis();
         System.out.println("Milliseconds "+ triggerTimeInMillis);
 
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTimeInMillis, pendingIntent);
@@ -47,10 +47,10 @@ public class Notification {
         Toast.makeText(context, "Alarm set successfully", Toast.LENGTH_SHORT).show();
     }
 
-    public void cancelAlarm(Context context) {
+    public void cancelAlarm(Context context, int id) {
 
         Intent intent = new Intent(context, AlarmReceiver.class);
-        pendingIntent = PendingIntent.getBroadcast(context,1,intent,PendingIntent.FLAG_IMMUTABLE);
+        pendingIntent = PendingIntent.getBroadcast(context,id,intent,PendingIntent.FLAG_IMMUTABLE);
 
         if(alarmManager == null) {
             alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
