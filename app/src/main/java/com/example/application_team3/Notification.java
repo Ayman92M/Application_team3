@@ -19,7 +19,13 @@ public class Notification {
     private PendingIntent pendingIntent;
 
     @SuppressLint("ScheduleExactAlarm")
-    public void setAlarm(Context context) {
+    public void setAlarm(Context context, String time ) {
+
+        String[] timeParts = time.split(":") ;
+        System.out.println(" hour: "+timeParts[0]);
+        System.out.println(" min: "+timeParts[1]);
+        int hour = Integer.parseInt(timeParts[0]);
+        int min = Integer.parseInt(timeParts[1]);
 
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlarmReceiver.class);
@@ -27,12 +33,13 @@ public class Notification {
         pendingIntent = PendingIntent.getBroadcast(context, 1,intent, PendingIntent.FLAG_IMMUTABLE);
 
         Calendar calendar = Calendar.getInstance();
-        //calendar.set(Calendar.HOUR, 10);
-        //calendar.set(Calendar.MINUTE, 37);
-        calendar.set(Calendar.SECOND, 3);
-        //calendar.set(Calendar.MILLISECOND, 0);
+        calendar.set(Calendar.HOUR, hour);
+        calendar.set(Calendar.MINUTE, min);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
 
         long triggerTimeInMillis = calendar.getTimeInMillis();
+        System.out.println("Milliseconds "+ triggerTimeInMillis);
 
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTimeInMillis, pendingIntent);
 

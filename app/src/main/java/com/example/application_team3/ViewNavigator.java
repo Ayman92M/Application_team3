@@ -51,7 +51,7 @@ import java.util.List;
  */
 public class ViewNavigator {
     private Context context;
-
+    private Notification noti = new Notification();
     String elderlyString, mealString;
     List<String> elderlyStrings = new ArrayList<>();
     List<String> mealStrings =  new ArrayList<>();
