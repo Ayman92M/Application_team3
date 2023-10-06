@@ -58,7 +58,7 @@ public class Elderly_Scheduler extends AppCompatActivity {
         String elderly_username = get_info.getStringExtra("elderlyUserName");
         String elderly_name = get_info.getStringExtra("elderlyName");
         listView = findViewById(R.id.listView_elderly_scheduler);
-        navigator.showMealList(listView, elderly_username, elderly_name, "2023-10-5");
+        navigator.showMealList(listView, elderly_username, elderly_name, date);
 
     }
 }

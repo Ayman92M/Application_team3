@@ -16,6 +16,8 @@ public class Calendar_Overview extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar_overview);
+        Intent get_elderlyUserName = getIntent();
+        String elderly_username = get_elderlyUserName.getStringExtra("elderlyUserName");
         CalendarView mCalendarview;
         mCalendarview = (CalendarView) findViewById(R.id.calendarView);
         mCalendarview.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
@@ -27,8 +29,9 @@ public class Calendar_Overview extends AppCompatActivity {
 
                 Intent intent = new Intent(Calendar_Overview.this, Elderly_Scheduler.class);
                 intent.putExtra("date", date);
-                intent.putExtra("elderlyUserName", "rem12");
+                //intent.putExtra("elderlyUserName", "rem12");
                 intent.putExtra("elderlyName", "rem");
+                intent.putExtra("elderlyUserName", elderly_username);
                 startActivity(intent);
 
             }

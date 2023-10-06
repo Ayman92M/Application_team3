@@ -51,17 +51,21 @@ public class Meal_register extends AppCompatActivity {
         create_meal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent incomingIntent = getIntent();
+                String date = incomingIntent.getStringExtra("date");
+                Intent get_info = getIntent();
+                String elderly_username = get_info.getStringExtra("elderlyUserName");
+                String elderly_name = get_info.getStringExtra("elderlyName");
                 TextInputEditText _note = findViewById(R.id.TextInputEditText_EnterMeal);
                 note = _note.getText().toString();
 
                 get_info = getIntent();
-                String elderly_username = get_info.getStringExtra("elderlyUserName");
+                //String elderly_username = get_info.getStringExtra("elderlyUserName");
                 int hour = picker.getHour();    int minute = picker.getMinute();
                 String hourString = hour + ":" +minute ;
 
                 //Toast.makeText(Meal_register.this, elderly_username , Toast.LENGTH_SHORT).show();
-                db.registerMeal(elderly_username, "2023-10-5", item, hourString, note);
+                db.registerMeal(elderly_username, date, item, hourString, note);
 
             }
         });
