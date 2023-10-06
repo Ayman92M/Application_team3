@@ -28,6 +28,7 @@ import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -49,6 +50,18 @@ public class Elderly_Scheduler extends AppCompatActivity {
         chosenDate = findViewById(R.id.day_and_date);
         Intent incomingIntent = getIntent();
         String date = incomingIntent.getStringExtra("date");
+
+        Calendar day_calendar = Calendar.getInstance();
+        int year = day_calendar.get(Calendar.YEAR);
+        int month = day_calendar.get(Calendar.MONTH);
+        int day = day_calendar.get(Calendar.DAY_OF_MONTH);
+
+// Adding 1 to month to get the human-readable month representation
+
+        if(date == null){
+            date = year + "-" + (month + 1) + "-" + day;
+        }
+
         Log.d("incoming intent", "chosen date" + date);
         chosenDate.setText(date);
 
