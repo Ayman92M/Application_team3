@@ -46,7 +46,7 @@ public class Elderly_Scheduler extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_elderly_scheduler);
 
-        chosenDate = findViewById(R.id.textView5);
+        chosenDate = findViewById(R.id.day_and_date);
         Intent incomingIntent = getIntent();
         String date = incomingIntent.getStringExtra("date");
         Log.d("incoming intent", "chosen date" + date);
