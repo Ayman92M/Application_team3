@@ -321,8 +321,9 @@ public class ViewNavigator {
                 else {
                     if (user.isValidName(_name) &&
                             user.isValidEmail(_email) && _pass.matches(_pass2) && user.isValidPassword(_pass) ){
-                        notis("200");
+                        notis("Success");
                         db.registerCaregiver(_name, _user_name, _pass, null);
+                        caregiverLogIn_process(_user_name, _pass);
 
                     }
                 }
