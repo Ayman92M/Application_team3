@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         _test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                noti.setAlarm(MainActivity.this);
+                noti.setAlarm(MainActivity.this, "4:20");
             }
         });
 

@@ -1,6 +1,8 @@
 package com.example.application_team3;
 
 
+import static android.provider.Settings.System.getString;
+
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -29,10 +31,23 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     public void showNotification(Context context, Intent intent, String textTitle, String textContent) {
 
+        String ACTION_YES = "Yes";
+        String ACTION_NO = "No";
+
+        Intent YesIntent = new Intent(context, MainActivity.class);
+        YesIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingYesIntent =
+                PendingIntent.getActivity(context, 3, YesIntent, PendingIntent.FLAG_IMMUTABLE);
+
+        Intent NoIntent = new Intent(context, MainActivity.class);
+        NoIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingNoIntent =
+                PendingIntent.getActivity(context, 2, NoIntent, PendingIntent.FLAG_IMMUTABLE);
+
         Intent i = new Intent(context, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent =
-        PendingIntent.getActivity(context, 1, i, PendingIntent.FLAG_IMMUTABLE);
+                PendingIntent.getActivity(context, 1, i, PendingIntent.FLAG_IMMUTABLE);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
         .setSmallIcon(R.drawable.notification_icon)
@@ -41,7 +56,12 @@ public class AlarmReceiver extends BroadcastReceiver {
         .setContentIntent(pendingIntent)
         .setDefaults(NotificationCompat.DEFAULT_ALL) // must requires VIBRATE permission
         .setPriority(NotificationCompat.PRIORITY_HIGH) //must give priority to High, Max which will considered as heads-up notification
-        .setAutoCancel(true);
+        .setAutoCancel(true)
+        .addAction(R.drawable.ic_extra_action_button_yes, ACTION_YES,
+                pendingYesIntent)
+        .addAction(R.drawable.ic_extra_action_button_no, ACTION_NO,
+                pendingNoIntent);
+
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
         // TODO: Consider calling
