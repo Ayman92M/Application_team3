@@ -33,6 +33,7 @@ public class Notification {
         pendingIntent = PendingIntent.getBroadcast(context, 1,intent, PendingIntent.FLAG_IMMUTABLE);
 
         Calendar calendar = Calendar.getInstance();
+
         calendar.set(Calendar.HOUR, hour);
         calendar.set(Calendar.MINUTE, min);
         calendar.set(Calendar.SECOND, 0);

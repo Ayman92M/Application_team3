@@ -56,7 +56,7 @@ public class Elderly_Scheduler extends AppCompatActivity {
         int month = day_calendar.get(Calendar.MONTH);
         int day = day_calendar.get(Calendar.DAY_OF_MONTH);
 
-// Adding 1 to month to get the human-readable month representation
+        // Adding 1 to month to get the human-readable month representation
 
         if(date == null){
             date = year + "-" + (month + 1) + "-" + day;

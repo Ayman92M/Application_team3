@@ -6,6 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity {
     ViewNavigator navigator = new ViewNavigator(this);
     private Notification noti = new Notification();
@@ -32,9 +36,22 @@ public class MainActivity extends AppCompatActivity {
         _test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                noti.setAlarm(MainActivity.this, "4:20");
+                noti.setAlarm(MainActivity.this, "4:58");
+                convertStringToMillis("2023-10-6 4:58");
             }
         });
 
+    }
+
+    public long convertStringToMillis(String dateString) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-d HH:mm");
+        try {
+            Date date = dateFormat.parse(dateString);
+            System.out.println("conert: "+date.getTime());
+            return date.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 }
