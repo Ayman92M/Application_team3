@@ -363,7 +363,7 @@ public class ViewNavigator {
                 System.out.println("caregiver_username: "+ _caregiver_username + " remove "
                         + "elderly_username: "+ _elderly_username);
 
-                //db.removeElderly(_caregiver_username,_elderly_username);
+                db.removeElderly(_caregiver_username,_elderly_username);
                 notis("Done");
                 goToNextActivity(Caregiver_dash.class);
             }
@@ -438,8 +438,8 @@ public class ViewNavigator {
                 String[] nameParts = selectedItem.split(", ");
 
 
-                goToNextActivity(CargiverElderlyPageActivity.class, "Elderly username skickas till databasen för att få Elderly overview"
-                                + nameParts[0]+ " " + nameParts[1],
+                goToNextActivity(CargiverElderlyPageActivity.class, "Elderly name: "
+                                + nameParts[0]+ " & Elderly username: " + nameParts[1],
                         "elderlyName", nameParts[0], "elderlyUserName", nameParts[1],
                         "caregiverName",caregiverName, "caregiverUserName", caregiverUserName);
 

@@ -37,11 +37,11 @@ public class Caregiver_dash extends AppCompatActivity {
         logut();
 
         TextView newElderly = findViewById(R.id.TextView_newElderly);
-        navigator.goToNextActivity(newElderly, Signup_elderly.class);
+        //navigator.goToNextActivity(newElderly, Signup_elderly.class);
 
-        /*navigator.goToNextActivity(newElderly, Signup_elderly.class,
+        navigator.goToNextActivity(newElderly, Signup_elderly.class,
                 "caregiverUserName",_caregiverUserName ,
-                "caregiverName", _caregiverName);*/
+                "caregiverName", _caregiverName);
 
         TextView addElderly = findViewById(R.id.TextView_addElderly);
         addElderly.setOnClickListener(new View.OnClickListener() {
