@@ -27,7 +27,7 @@ public class Calendar_Overview extends AppCompatActivity {
                 Log.d(TAG,"OnSelectedDayChange: date: " + date);
 
 
-                Intent intent = new Intent(Calendar_Overview.this, Elderly_Scheduler.class);
+                Intent intent = new Intent(Calendar_Overview.this, Meal_register.class); //Elderly_Scheduler
                 intent.putExtra("date", date);
                 //intent.putExtra("elderlyUserName", "rem12");
                 intent.putExtra("elderlyName", "rem");

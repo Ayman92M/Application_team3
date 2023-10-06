@@ -36,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
         _test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                noti.setAlarm(MainActivity.this, "4:58");
-                convertStringToMillis("2023-10-6 4:58");
+                noti.setAlarm(MainActivity.this, "05:01");
+                convertStringToMillis("2023-10-6 05:01");
             }
         });
 
