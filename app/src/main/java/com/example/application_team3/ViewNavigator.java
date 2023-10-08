@@ -28,6 +28,8 @@ import com.google.firebase.database.DataSnapshot;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -58,12 +60,13 @@ import java.util.List;
  */
 public class ViewNavigator {
     private Context context;
-    private Notification noti = new Notification();
+    private Notification notification = new Notification();
     String elderlyString, mealString;
     List<String> elderlyStrings = new ArrayList<>();
     List<String> mealStrings =  new ArrayList<>();
     Database db = new Database();
     UserAccountControl user = new UserAccountControl();
+
     private SharedPreferences preferences;
 
     public void notis(String msg){
@@ -291,6 +294,7 @@ public class ViewNavigator {
                 DataSnapshot elderly = elderlyTask.getResult();
                 String elderly_name = elderly.child("name").getValue().toString();
                 goToNextActivity(Elderly_Scheduler.class, "True", "elderlyUserName", _user_name, "elderlyName", elderly_name);
+                createNotification(_user_name);
             }
             else
                 notis("False");
@@ -458,7 +462,22 @@ public class ViewNavigator {
 
 
 
+    public void createNotification(String elderly_username){
 
+        Task<List<MealEntry>> mealListTask = db.MealPlanList(elderly_username);
+        Tasks.whenAll(mealListTask).addOnCompleteListener(task ->
+        { List<MealEntry> mealList = mealListTask.getResult();
+
+            if(mealList != null )
+                for (MealEntry meal : mealList){
+                    notification.createNotificationChannel(context, meal.getMealType());
+                    //System.out.println(" __" + meal.getMealType() + " " + meal.getDate() + " " + meal.getTime());
+                    notification.setAlarm(context, meal.getMealType(), convertStringToMillis(meal.getDate()+ " " + meal.getTime()));
+                }
+
+        });
+
+    }
 
 
     //MEAL LIST MANAGER
@@ -475,6 +494,8 @@ public class ViewNavigator {
                     mealString = meal.getMealType() +", " + meal.getTime()+", "
                             + meal.getNote() +", "+ meal.isHasEaten() + ", "+  date;
                     mealStrings.add(mealString);
+
+                    //notification.setAlarm(context, meal.getMealType(), convertStringToMillis(date + " " + meal.getTime()));
                 }
             }
 
@@ -547,7 +568,7 @@ public class ViewNavigator {
                 String current_time = getCurrentTime();
                 long current_time_ToMillisMiss = convertStringToMillis(current_time);
 
-                notis(itemParts[4] + " " + itemParts[1] +  " --> MissTime: " + missTime + " -- Now: " + current_time);
+                //notis(itemParts[4] + " " + itemParts[1] +  " --> MissTime: " + missTime + " -- Now: " + current_time);
 
                 if("false".equals(itemParts[3]) && dateToMillisMiss <= current_time_ToMillisMiss){
                     textView1.setError("miss");
@@ -663,8 +684,8 @@ public class ViewNavigator {
             try {
                 SimpleDateFormat dateFormat = new SimpleDateFormat(format);
                 Date date = dateFormat.parse(dateString);
-                System.out.println("convert: "+ date);
-                System.out.println("convert: "+ date.getTime());
+                //System.out.println("convert: "+ date);
+                //System.out.println("convert: "+ date.getTime());
                 return date.getTime();
             } catch (ParseException ignored) {
                 // Ignorera ParseException för detta format, fortsätt med nästa
@@ -801,7 +822,6 @@ public class ViewNavigator {
              */
         }
     }
-
 
 
 }

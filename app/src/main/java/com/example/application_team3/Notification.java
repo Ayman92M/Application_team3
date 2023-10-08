@@ -11,46 +11,78 @@ import android.os.Build;
 import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Notification {
 
-    private static final String CHANNEL_ID = "channel1";
+    //private static final String CHANNEL_ID = "channel1";
     private AlarmManager alarmManager;
     private PendingIntent pendingIntent;
 
+    Integer id;
+
     @SuppressLint("ScheduleExactAlarm")
-    public void setAlarm(Context context, String time, long triggerTimeInMillis, int id) {
-        /*
-        String[] timeParts = time.split(":") ;
-        System.out.println(" hour: "+timeParts[0]);
-        System.out.println(" min: "+timeParts[1]);
-        int hour = Integer.parseInt(timeParts[0]);
-        int min = Integer.parseInt(timeParts[1]);
-        */
+    public void setAlarm(Context context, String mealType, long triggerTimeInMillis) {
+
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
         Intent intent = new Intent(context, AlarmReceiver.class);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            intent.setAction("unique_action_string");
+        } else {
+            // Use BOOT_COMPLETED action for pre-Oreo devices
+            intent.setAction(Intent.ACTION_BOOT_COMPLETED);
+        }
+
+        intent.putExtra("mealType", mealType);
+
+        id = getMealId(triggerTimeInMillis);
+
 
         pendingIntent = PendingIntent.getBroadcast(context, id,intent, PendingIntent.FLAG_IMMUTABLE);
-        /*
-        Calendar calendar = Calendar.getInstance();
-
-        calendar.set(Calendar.HOUR_OF_DAY, hour);
-        calendar.set(Calendar.MINUTE, min);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        */
-
-        System.out.println("Milliseconds "+ triggerTimeInMillis);
-
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTimeInMillis, pendingIntent);
-
-        Toast.makeText(context, "Alarm set successfully", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "setAlarm for: " + mealType + " -> ID: " + id + " at: " + triggerTimeInMillis, Toast.LENGTH_SHORT).show();
+        System.out.println("setAlarm for: " + mealType + " -> ID: " + id + " at: " + triggerTimeInMillis);
     }
 
-    public void cancelAlarm(Context context, int id) {
+    public int getMealId(long triggerTimeInMillis) {
 
+        if (triggerTimeInMillis >= Integer.MIN_VALUE && triggerTimeInMillis <= Integer.MAX_VALUE) {
+            int id = (int) (triggerTimeInMillis / 1000);
+            return id;
+        }
+        else{
+            int id = (int) triggerTimeInMillis;
+            return id;
+        }
+
+    }
+    /*
+    public int getMealId(String mealType) {
+        Integer id;
+        if("Breakfast".equals(mealType))
+            return id = 1;
+        else if ("Lunch".equals(mealType)) {
+            return id = 2;
+        } else if ("Dinner".equals(mealType)) {
+            return id = 3;
+        } else if ("Snack".equals(mealType)) {
+            return id = 4;
+        } else {
+            throw new IllegalArgumentException("Ogiltig måltidstyp: " + mealType);
+        }
+    }
+     */
+
+
+
+    public void cancelAlarm(Context context, String mealType) {
+
+        //id = getMealId(mealType);
         Intent intent = new Intent(context, AlarmReceiver.class);
-        pendingIntent = PendingIntent.getBroadcast(context,id,intent,PendingIntent.FLAG_IMMUTABLE);
+        pendingIntent = PendingIntent.getBroadcast(context, id, intent,PendingIntent.FLAG_IMMUTABLE);
 
         if(alarmManager == null) {
             alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -59,16 +91,16 @@ public class Notification {
 
         Toast.makeText(context, "Alarm canceled", Toast.LENGTH_SHORT).show();
     }
-    public void createNotificationChannel(Context context) {
+    public void createNotificationChannel(Context context, String mealType) {
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String name = "channel_name_1";
-            String description = "Channel 1 description";
+            //String name = "channel_name_1";
+            //String description = "Channel 1 description";
 
             int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel notificationChannel =
-                    new NotificationChannel(CHANNEL_ID, name, importance);
-            notificationChannel.setDescription(description);
+                    new NotificationChannel(mealType, mealType, importance);
+            notificationChannel.setDescription(mealType + " description");
             notificationChannel.enableVibration(true);
 
             NotificationManager notificationManager = context.getSystemService(NotificationManager.class);

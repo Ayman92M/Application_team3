@@ -14,7 +14,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     ViewNavigator navigator = new ViewNavigator(this);
-    private Notification noti = new Notification();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         navigator.goToNextActivity(_caregiver, Log_in.class);
 
 
-        noti.createNotificationChannel(MainActivity.this);
+
         Button _test = findViewById(R.id.testButton);
         //Delete Elderly_home_test.class and write the name of your class
         //className.class
@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
         _test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                noti.setAlarm(MainActivity.this, "17:32", convertStringToMillis("2023-10-6 9:48"), 2023-10-6-944);
 
             }
         });
