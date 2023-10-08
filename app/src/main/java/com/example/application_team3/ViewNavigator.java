@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,9 +26,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.DataSnapshot;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 /*
@@ -510,6 +517,7 @@ public class ViewNavigator {
     }
 
     private void setupMealListView(ListView listView, int layoutResourceId, String elderlyUserName, String elderlyName){
+
         // Skapa en adapter för att koppla data till ListView
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 context.getApplicationContext(), // Använd den aktuella kontexten -- context.getApplicationContext(),
@@ -519,6 +527,7 @@ public class ViewNavigator {
         ) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
+
                 View row = super.getView(position, convertView, parent);
                 String[] itemParts = getItem(position).split(", ");
                 TextView textView1 = row.findViewById(R.id.meal);
@@ -530,11 +539,19 @@ public class ViewNavigator {
                 textView2.setText(itemParts[1]); // Undertext (subitem)
                 mealListChangeColor(txt_bakground, position);
 
-                if("false".equals(itemParts[3])){
+                long dateToMillis = convertStringToMillis(itemParts[4] + " " + itemParts[1]);
+
+                String missTime = addMinutesToTime(itemParts[1], 135);
+                long dateToMillisMiss = convertStringToMillis(itemParts[4] + " " + missTime);
+
+                String current_time = getCurrentTime();
+                long current_time_ToMillisMiss = convertStringToMillis(current_time);
+
+                notis(itemParts[4] + " " + itemParts[1] +  " --> MissTime: " + missTime + " -- Now: " + current_time);
+
+                if("false".equals(itemParts[3]) && dateToMillisMiss <= current_time_ToMillisMiss){
                     textView1.setError("miss");
                 }
-
-
 
                 return row;
             }
@@ -635,13 +652,80 @@ public class ViewNavigator {
 
     }
 
+    public long convertStringToMillis(String dateString) {
+        List<String> possibleFormats = new ArrayList<>();
+        possibleFormats.add("yyyy-MM-dd HH:mm");
+        possibleFormats.add("yyyy-MM-d HH:mm");
+        possibleFormats.add("yyyy-M-dd HH:mm");
+        possibleFormats.add("yyyy-MM-d H:mm");
 
+        for (String format : possibleFormats) {
+            try {
+                SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+                Date date = dateFormat.parse(dateString);
+                System.out.println("convert: "+ date);
+                System.out.println("convert: "+ date.getTime());
+                return date.getTime();
+            } catch (ParseException ignored) {
+                // Ignorera ParseException för detta format, fortsätt med nästa
+            }
+        }
 
+        // Ingen matchande format hittades
+        return -1;
+    }
 
+    public static String addMinutesToTime(String timeStr, int minutesToAdd) {
+        // Define an array of possible patterns
+        String[] patterns = {"HH:mm", "H:mm", "HH,M", "H,M", "HH:m", "H:m"};
 
+        // Attempt to parse the input time using each pattern
+        LocalTime originalTime = null;
+        for (String pattern : patterns) {
+            try {
+                DateTimeFormatter formatter = null;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    formatter = DateTimeFormatter.ofPattern(pattern);
+                }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    originalTime = LocalTime.parse(timeStr, formatter);
+                }
+                break; // Break if parsing is successful
+            } catch (Exception e) {
+            // Continue to the next pattern if parsing fails
+            }
+        }
 
+        if (originalTime == null) {
+            throw new IllegalArgumentException("Unsupported time format: " + timeStr);
+        }
 
+        // Add minutes to the original time
+        LocalTime newTime = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            newTime = originalTime.plusMinutes(minutesToAdd);
+        }
 
+        // Format the result back to the original time format
+        String resultTimeStr = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            resultTimeStr = newTime.format(DateTimeFormatter.ofPattern("HH:mm"));
+        }
+
+        return resultTimeStr;
+    }
+
+    public String getCurrentTime(){
+        Calendar day_calendar = Calendar.getInstance();
+        int year = day_calendar.get(Calendar.YEAR);
+        int month = day_calendar.get(Calendar.MONTH);
+        int day = day_calendar.get(Calendar.DAY_OF_MONTH);
+        int hour = day_calendar.get(Calendar.HOUR_OF_DAY);
+        int min = day_calendar.get(Calendar.MINUTE);
+
+        String current_time = year + "-" + (month + 1) + "-" + day + " " + hour + ":" + min;
+        return current_time;
+    }
 
     //SharedPreferences
     public void saveInputToPreferences(String username, String password, boolean rememberMe) {
