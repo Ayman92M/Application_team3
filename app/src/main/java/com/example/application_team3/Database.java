@@ -13,7 +13,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +68,9 @@ public class Database {
     public void registerMeal(String pid, String date, String mealType, String time, String note){
         MealEntry mealEntry = new MealEntry(mealType, time, note, false);
         mealPlanRef.child(pid).child(date).child(mealType).setValue(mealEntry);
+    }
+    public void hasEatenMeal(String pid, String date, String mealType){
+        mealPlanRef.child(pid).child(date).child(mealType).child("hasEaten").setValue(true);
     }
 
     public Task<DataSnapshot> fetchMealPlan(String pid){
