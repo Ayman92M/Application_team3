@@ -17,6 +17,7 @@ import com.google.android.material.textfield.TextInputEditText;
 public class Meal_register extends AppCompatActivity {
     String[] mealtype = {"Breakfast", "Lunch", "Dinner", "Snack"};
     AutoCompleteTextView autoCompleteTextView;
+    ViewNavigator navigator = new ViewNavigator(this);
     Database db = new Database();
     ArrayAdapter<String> adapterItems;
     Intent get_info;
@@ -66,6 +67,7 @@ public class Meal_register extends AppCompatActivity {
 
                 //Toast.makeText(Meal_register.this, elderly_username , Toast.LENGTH_SHORT).show();
                 db.registerMeal(elderly_username, date, item, hourString, note);
+                navigator.notis("Done");
 
             }
         });

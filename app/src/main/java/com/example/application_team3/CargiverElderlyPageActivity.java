@@ -31,11 +31,13 @@ public class CargiverElderlyPageActivity extends AppCompatActivity {
         meal_reg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(CargiverElderlyPageActivity.this, Calendar_Overview.class);
+                Intent intent = new Intent(CargiverElderlyPageActivity.this, CalenderOverviewCaregiver.class);
                 get_info = getIntent();
                 String elderly_username = get_info.getStringExtra("elderlyUserName");
+                String elderly_name = get_info.getStringExtra("elderlyName");
                 intent.putExtra("elderlyUserName", elderly_username);
-                navigator.notis(elderly_username);
+                intent.putExtra("elderlyName", elderly_name);
+                //navigator.notis(elderly_username);
                 startActivity(intent);
             }
         });

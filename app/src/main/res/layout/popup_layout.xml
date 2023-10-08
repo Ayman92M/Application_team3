@@ -29,19 +29,10 @@
             android:background="@drawable/rounded_corner"
             android:backgroundTint="@color/green_light"
             android:text="    Meal "
+            android:gravity="center_vertical"
             android:textColor="@color/white"
-            android:textSize="35dp" />
-
-        <Button
-            android:id="@+id/i_have_eaten"
-            style="style/widget.MaterialComponents.Button.Icon"
-            android:layout_width="147dp"
-            android:layout_height="80dp"
-            android:layout_marginLeft="100dp"
-            android:layout_marginTop="360dp"
-            android:background="@drawable/rounded_corner"
-            android:text="I have eaten this meal"
-            app:icon="@drawable/baseline_check_24" />
+            android:textSize="42dp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textView7"
@@ -50,7 +41,7 @@
             android:layout_marginTop="110dp"
             android:background="@color/grey"
             android:text="Meal info"
-            android:textSize="25dp" />
+            android:textSize="32dp" />
 
         <Button
             android:id="@+id/closePopupBtn"
@@ -60,6 +51,30 @@
             android:backgroundTint="@color/red"
             android:text="X"
             android:textSize="28dp"/>
+
+        <Button
+            android:id="@+id/bt_sant"
+            android:layout_width="111dp"
+            android:layout_height="69dp"
+            android:layout_marginStart="75dp"
+            android:layout_marginTop="355dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="202dp"
+            android:text="DONE"
+            app:icon="@drawable/baseline_check_24"
+            android:backgroundTint="@color/green"/>
+
+        <Button
+            android:id="@+id/bt_falsk"
+            android:layout_width="111dp"
+            android:layout_height="69dp"
+            android:layout_marginStart="200dp"
+            android:layout_marginTop="355dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="202dp"
+            android:backgroundTint="@color/red"
+
+            android:text="NOT YET" />
 
 
     </FrameLayout>

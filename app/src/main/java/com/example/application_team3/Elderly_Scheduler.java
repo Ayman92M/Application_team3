@@ -75,7 +75,7 @@ public class Elderly_Scheduler extends AppCompatActivity {
 
         listView = findViewById(R.id.listView_elderly_scheduler);
 
-        navigator.showMealList(listView, elderly_username, elderly_name, date);
+        navigator.showMealList(listView, R.layout.activity_list_item_elderlyscheduler, elderly_username, elderly_name, date);
 
     }
 }

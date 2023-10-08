@@ -455,7 +455,7 @@ public class ViewNavigator {
 
 
     //MEAL LIST MANAGER
-    public void showMealList(ListView listView, String elderlyUserName, String elderlyName, String date){
+    public void showMealList(ListView listView, int layoutResourceId, String elderlyUserName, String elderlyName, String date){
         // Hämta en lista av ElderlyEntry-objekt som tillhör en caregiver (som har caregiverUserName som username)
         Task<DataSnapshot> mealPlanTask = db.fetchMealPlanDate(elderlyUserName, date);
         // Hämta resultatet
@@ -481,7 +481,7 @@ public class ViewNavigator {
             for (String mealString : mealStrings)
                 System.out.println(mealString);
 
-            setupMealListView(listView, elderlyUserName, elderlyName);
+            setupMealListView(listView, layoutResourceId, elderlyUserName, elderlyName);
 
         });
     }
@@ -509,11 +509,11 @@ public class ViewNavigator {
         });
     }
 
-    private void setupMealListView(ListView listView, String elderlyUserName, String elderlyName){
+    private void setupMealListView(ListView listView, int layoutResourceId, String elderlyUserName, String elderlyName){
         // Skapa en adapter för att koppla data till ListView
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 context.getApplicationContext(), // Använd den aktuella kontexten -- context.getApplicationContext(),
-                R.layout.activity_list_item_elderlyscheduler,
+                layoutResourceId,
                 R.id.meal,
                 mealStrings
         ) {
@@ -529,6 +529,10 @@ public class ViewNavigator {
                 textView1.setText(itemParts[0]); // Huvudtext (item)
                 textView2.setText(itemParts[1]); // Undertext (subitem)
                 mealListChangeColor(txt_bakground, position);
+
+                if("false".equals(itemParts[3]))
+                    textView1.setError("miss");
+
 
                 return row;
             }
@@ -592,8 +596,35 @@ public class ViewNavigator {
                         popupWindow.dismiss();
                     }
                 });
+
+                TextView meal_type = popupView.findViewById(R.id.meal_info);
+                meal_type.setText("     " + nameParts[0]);
+
+                TextView note = popupView.findViewById(R.id.textView7);
+                note.setText(" " + nameParts[2]);
+
+
                 // Show the popup at the center of the screen
                 popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+
+                Button bt_sant = popupView.findViewById(R.id.bt_sant);
+                bt_sant.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ////////////////
+                        notis("send to database - Sant. "+ elderlyUserName + " " + elderlyName + " " + nameParts[0] + " " + nameParts[1]);
+                    }
+                });
+
+                Button bt_falsk = popupView.findViewById(R.id.bt_falsk);
+                bt_falsk.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ///////////////////
+                        notis("send to database - Falsk. "+ elderlyUserName + " " + elderlyName + " " + nameParts[0] + " " + nameParts[1]);
+                    }
+                });
 
             }
         });
