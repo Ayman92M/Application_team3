@@ -67,7 +67,14 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".AlarmReceiver"></receiver>
+        <receiver android:name=".AlarmReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="unique_action_string" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+
+        </receiver>
 
         <meta-data
             android:name="preloaded_fonts"

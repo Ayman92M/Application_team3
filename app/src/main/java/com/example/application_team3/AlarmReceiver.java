@@ -16,7 +16,6 @@ import androidx.core.app.NotificationManagerCompat;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
-    private static final String textTitle = "Breakfast Time";
     private static final String textContent = "Eat your meal!";
 
     private static final int NOTIFICATION_ID = 1;
@@ -25,7 +24,10 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        showNotification(context, intent, textTitle, textContent);
+
+        String meal_type = intent.getStringExtra("mealType");
+        //System.out.println("- - - - -" + meal_type);
+        showNotification(context, intent, meal_type, textContent);
 
         }
 
