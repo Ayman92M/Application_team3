@@ -466,7 +466,7 @@ public class ViewNavigator {
                 for(DataSnapshot mealData : mealsData.getChildren()) {
                     MealEntry meal = mealData.getValue(MealEntry.class);
                     mealString = meal.getMealType() +", " + meal.getTime()+", "
-                            + meal.getNote() +", "+ meal.isHasEaten();
+                            + meal.getNote() +", "+ meal.isHasEaten() + ", "+  date;
                     mealStrings.add(mealString);
                 }
             }
@@ -530,8 +530,10 @@ public class ViewNavigator {
                 textView2.setText(itemParts[1]); // Undertext (subitem)
                 mealListChangeColor(txt_bakground, position);
 
-                if("false".equals(itemParts[3]))
+                if("false".equals(itemParts[3])){
                     textView1.setError("miss");
+                }
+
 
 
                 return row;
@@ -613,7 +615,9 @@ public class ViewNavigator {
                     @Override
                     public void onClick(View view) {
                         ////////////////
-                        notis("send to database - Sant. "+ elderlyUserName + " " + elderlyName + " " + nameParts[0] + " " + nameParts[1]);
+                        notis("send to database - Sant. -- "+ elderlyUserName  + nameParts[0] + " -- " + nameParts[1] + " " + elderlyName);
+                        db.hasEatenMeal(elderlyUserName, nameParts[4], nameParts[0]);
+
                     }
                 });
 
