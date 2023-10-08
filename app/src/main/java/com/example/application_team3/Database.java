@@ -66,7 +66,7 @@ public class Database {
         elderlyRef.child(elderly.getPid()).setValue(elderly);
     }
     public void registerMeal(String pid, String date, String mealType, String time, String note){
-        MealEntry mealEntry = new MealEntry(mealType, time, note, false);
+        MealEntry mealEntry = new MealEntry(date, mealType, time, note, false);
         mealPlanRef.child(pid).child(date).child(mealType).setValue(mealEntry);
     }
     public void hasEatenMeal(String pid, String date, String mealType){
