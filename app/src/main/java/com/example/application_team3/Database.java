@@ -238,13 +238,18 @@ public class Database {
             DataSnapshot mealPlanDB = mealPlanTask.getResult();
             MealEntry meal;
             List<MealEntry> mealList = new ArrayList<>();
+            if (mealPlanDB.hasChildren()) {
+                for(DataSnapshot mealPlans : mealPlanDB.getChildren()){
+                    if(mealPlans.hasChildren()){
+                        for(DataSnapshot mealPlan : mealPlans.getChildren()){
+                            meal = mealPlan.getValue(MealEntry.class);
+                            mealList.add(meal);
+                        }
+                    }
 
-            for(DataSnapshot mealPlans : mealPlanDB.getChildren()){
-                for(DataSnapshot mealPlan : mealPlans.getChildren()){
-                    meal = mealPlan.getValue(MealEntry.class);
-                    mealList.add(meal);
                 }
             }
+
 
             listTaskSource.setResult(mealList);
         });
