@@ -7,6 +7,7 @@ public class MealEntry {
     private String time;
     private String note;
     private boolean hasEaten;
+    private String notificationID;
 
     private MealEntry() {}
     public MealEntry(String date, String mealType, String time, String note, boolean hasEaten) {
@@ -55,5 +56,13 @@ public class MealEntry {
 
     public void setHasEaten(boolean hasEaten) {
         this.hasEaten = hasEaten;
+    }
+
+    public String getNotificationID() {
+        return notificationID;
+    }
+
+    public void setNotificationID(String notificationID) {
+        this.notificationID = notificationID;
     }
 }

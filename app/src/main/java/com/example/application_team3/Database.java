@@ -69,6 +69,10 @@ public class Database {
         MealEntry mealEntry = new MealEntry(date, mealType, time, note, false);
         mealPlanRef.child(pid).child(date).child(mealType).setValue(mealEntry);
     }
+    public void updateMeal(String pid, MealEntry meal)
+    {
+        mealPlanRef.child(pid).child(meal.getDate()).setValue(meal);
+    }
     public void hasEatenMeal(String pid, String date, String mealType){
         mealPlanRef.child(pid).child(date).child(mealType).child("hasEaten").setValue(true);
     }
