@@ -225,6 +225,27 @@ public class Database {
         });
         return listTask;
     }
+    public Task<List<MealEntry>> MealPlanList(String elderlyPID){
+        TaskCompletionSource<List<MealEntry>> listTaskSource = new TaskCompletionSource<>();
+        Task<List<MealEntry>> listTask = listTaskSource.getTask();
+        Task<DataSnapshot> mealPlanTask = fetchMealPlan(elderlyPID);
+
+        Tasks.whenAll(mealPlanTask).addOnCompleteListener(task -> {
+            DataSnapshot mealPlanDB = mealPlanTask.getResult();
+            MealEntry meal;
+            List<MealEntry> mealList = new ArrayList<>();
+
+            for(DataSnapshot mealPlans : mealPlanDB.getChildren()){
+                for(DataSnapshot mealPlan : mealPlans.getChildren()){
+                    meal = mealPlan.getValue(MealEntry.class);
+                    mealList.add(meal);
+                }
+            }
+
+            listTaskSource.setResult(mealList);
+        });
+        return listTask;
+    }
     public void assignElderly(String caregiver_pid, String caregiver_name, String elderly_pid, String elderly_name){
         Task<DataSnapshot> elderlyDBTask = fetchElderlyDB();
         Tasks.whenAll(elderlyDBTask).addOnCompleteListener(task -> {
