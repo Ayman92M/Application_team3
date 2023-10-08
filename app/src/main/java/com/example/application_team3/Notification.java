@@ -17,6 +17,8 @@ public class Notification {
     private static final String CHANNEL_ID = "channel1";
     private AlarmManager alarmManager;
     private PendingIntent pendingIntent;
+    private static final String NOTIFICATION_ACTION_SHOW = "com.app.action.SHOW";
+
 
     @SuppressLint("ScheduleExactAlarm")
     public void setAlarm(Context context, String time, long triggerTimeInMillis, int id) {
@@ -29,7 +31,7 @@ public class Notification {
         */
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlarmReceiver.class);
-
+        intent.setAction(NOTIFICATION_ACTION_SHOW);
         pendingIntent = PendingIntent.getBroadcast(context, id,intent, PendingIntent.FLAG_IMMUTABLE);
         /*
         Calendar calendar = Calendar.getInstance();

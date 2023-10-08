@@ -67,7 +67,20 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".AlarmReceiver"></receiver>
+        <receiver
+            android:name=".AlarmReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.app.action.YES">
+                </action>
+                <action android:name="com.app.action.NO">
+                </action>
+                <action android:name="com.app.action.SHOW">
+                </action>
+                <action android:name="com.app.action.CLICK">
+                </action>
+            </intent-filter>
+        </receiver>
 
         <meta-data
             android:name="preloaded_fonts"
