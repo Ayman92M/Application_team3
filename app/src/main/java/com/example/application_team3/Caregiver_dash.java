@@ -14,10 +14,14 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.google.android.material.bottomappbar.BottomAppBar;
+
 public class Caregiver_dash extends AppCompatActivity {
     private ListView listView;
     ViewNavigator navigator = new ViewNavigator(this);
     String _caregiverName, _caregiverUserName;
+
+    BottomAppBar bottomAppBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
