@@ -2,11 +2,13 @@ package com.example.application_team3;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -14,6 +16,8 @@ import android.widget.CalendarView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.google.android.material.bottomappbar.BottomAppBar;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -23,11 +27,24 @@ public class CalenderOverviewCaregiver extends AppCompatActivity {
     ListView listView;
     String date;
     ViewNavigator navigator = new ViewNavigator(this);
+    BottomAppBar bottomAppBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calender_overview_caregiver);
+
+        bottomAppBar = findViewById(R.id.bottomAppBar);
+        bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId()==R.id.bottomNav_back){
+                    Intent intent = new Intent(CalenderOverviewCaregiver.this, CargiverElderlyPageActivity.class);
+                    startActivity(intent);
+                }
+                return false;
+            }
+        });
 
         Intent get_elderlyUserName = getIntent();
         String elderly_username = get_elderlyUserName.getStringExtra("elderlyUserName");

@@ -21,8 +21,6 @@ public class Caregiver_dash extends AppCompatActivity {
     ViewNavigator navigator = new ViewNavigator(this);
     String _caregiverName, _caregiverUserName;
 
-    BottomAppBar bottomAppBar;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

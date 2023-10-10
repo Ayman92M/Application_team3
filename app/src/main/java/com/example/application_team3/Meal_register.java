@@ -1,9 +1,11 @@
 package com.example.application_team3;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -12,6 +14,7 @@ import android.widget.Button;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class Meal_register extends AppCompatActivity {
@@ -22,12 +25,24 @@ public class Meal_register extends AppCompatActivity {
     ArrayAdapter<String> adapterItems;
     Intent get_info;
     String item, note;
-
+    BottomAppBar bottomAppBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meal_register);
+
+        bottomAppBar = findViewById(R.id.bottomAppBar);
+        bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId()==R.id.bottomNav_back){
+                    Intent intent = new Intent(Meal_register.this, CalenderOverviewCaregiver.class);
+                    startActivity(intent);
+                }
+                return false;
+            }
+        });
 
         autoCompleteTextView = findViewById(R.id.auto_complete_text);
         adapterItems = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, mealtype);
