@@ -484,20 +484,23 @@ public class ViewNavigator {
 
 
     //MEAL LIST MANAGER
-    public void showMealList(ListView listView, int layoutResourceId, String elderlyUserName, String elderlyName, String date){
+    public void showMealList(ListView listView, int layoutResourceId, boolean elderlyView, String elderlyUserName, String elderlyName, String date){
         // Hämta en lista av ElderlyEntry-objekt som tillhör en caregiver (som har caregiverUserName som username)
+        System.out.println("showMealList() - date:  " +date +" - "+ elderlyUserName);
         Task<DataSnapshot> mealPlanTask = db.fetchMealPlanDate(elderlyUserName, date);
         // Hämta resultatet
         Tasks.whenAll(mealPlanTask).addOnCompleteListener(task -> {
             DataSnapshot mealsData = mealPlanTask.getResult();
             mealStrings.clear();
             if(mealsData != null && mealsData.hasChildren()){
+                System.out.println("IF - SATS");
                 for(DataSnapshot mealData : mealsData.getChildren()) {
                     MealEntry meal = mealData.getValue(MealEntry.class);
                     mealString = meal.getMealType() +", " + meal.getTime()+", "
                             + meal.getNote() +", "+ meal.isHasEaten() + ", "+  date;
                     mealStrings.add(mealString);
-
+                    System.out.println(elderlyName + " " + date);
+                    System.out.println(mealString);
                     //notification.setAlarm(context, meal.getMealType(), convertStringToMillis(date + " " + meal.getTime()));
                 }
             }
@@ -512,7 +515,7 @@ public class ViewNavigator {
             for (String mealString : mealStrings)
                 System.out.println(mealString);
 
-            setupMealListView(listView, layoutResourceId, elderlyUserName, elderlyName);
+            setupMealListView(listView, layoutResourceId,  elderlyView, elderlyUserName, elderlyName);
 
         });
     }
@@ -540,7 +543,7 @@ public class ViewNavigator {
         });
     }
 
-    private void setupMealListView(ListView listView, int layoutResourceId, String elderlyUserName, String elderlyName){
+    private void setupMealListView(ListView listView, int layoutResourceId, boolean elderlyView, String elderlyUserName, String elderlyName){
 
         // Skapa en adapter för att koppla data till ListView
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
@@ -583,7 +586,7 @@ public class ViewNavigator {
         // Koppla adaptern till ListView
         listView.setAdapter(adapter);
 
-        elderlyMealListActionListener(listView, elderlyUserName, elderlyName);
+        elderlyMealListActionListener(listView, elderlyView,  elderlyUserName, elderlyName);
     }
 
     private void mealListChangeColor(TextView txt_bakground, int position){
@@ -602,7 +605,7 @@ public class ViewNavigator {
         txt_bakground.setBackground(gradientDrawable);
     }
 
-    public void elderlyMealListActionListener(ListView listView, String elderlyUserName, String elderlyName){
+    public void elderlyMealListActionListener(ListView listView, boolean elderlyView,  String elderlyUserName, String elderlyName){
         String[] mealArray = mealStrings.toArray(new String[mealStrings.size()]);
 
         // Sätter en klickhändelse för ListView
@@ -615,61 +618,117 @@ public class ViewNavigator {
                 String[] nameParts = selectedItem.split(", ");
 
 
-                //goToNextActivity(Meal_info.class, "----"
-                //              + nameParts[0]+ " -- " + nameParts[1] +" -- " + nameParts[2] +" -- " + nameParts[3] ,
-                //    "elderlyName",elderlyName, "elderlyUserName", elderlyUserName,
-                //  "mealType", nameParts[0], "mealTime", nameParts[1], "mealNote", nameParts[2], "hasEaten", nameParts[3]);
 
-                Context context = view.getContext();
-                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View popupView = inflater.inflate(R.layout.popup_layout, null);
-
-                // Create a PopupWindow
-                int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-                int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-                boolean focusable = true; // let taps outside the popup also dismiss it
-                final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
-
-                // Set a click listener for the close button in the popup
-                Button closePopupBtn = popupView.findViewById(R.id.closePopupBtn);
-                closePopupBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // Dismiss the popup
-                        popupWindow.dismiss();
-                    }
-                });
-
-                TextView meal_type = popupView.findViewById(R.id.meal_info);
-                meal_type.setText("     " + nameParts[0]);
-
-                TextView note = popupView.findViewById(R.id.textView7);
-                note.setText(" " + nameParts[2]);
+                if(elderlyView)
+                    mealInfo_elderly(view, nameParts, elderlyUserName, elderlyName);
+                else
+                    mealInfo_caregiver(view, nameParts, elderlyUserName, elderlyName);
+                /*
+                goToNextActivity(Meal_info.class, "----"
+                              + nameParts[0]+ " -- " + nameParts[1] +" -- " + nameParts[2] +" -- " + nameParts[3] ,
+                    "elderlyName",elderlyName, "elderlyUserName", elderlyUserName,
+                  "mealType", nameParts[0], "mealTime", nameParts[1], "mealNote", nameParts[2], "hasEaten", nameParts[3]);
 
 
-                // Show the popup at the center of the screen
-                popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+                 */
+
+            }
+        });
+
+    }
+
+    private void mealInfo_elderly(View view, String[] nameParts, String elderlyUserName, String elderlyName){
+        Context context = view.getContext();
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.popup_meal_info_elderly, null);
+
+        // Create a PopupWindow
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true; // let taps outside the popup also dismiss it
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+        // Set a click listener for the close button in the popup
+        Button closePopupBtn = popupView.findViewById(R.id.closePopupBtn);
+        closePopupBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Dismiss the popup
+                popupWindow.dismiss();
+            }
+        });
+
+        TextView meal_type = popupView.findViewById(R.id.meal_info);
+        meal_type.setText("     " + nameParts[0]);
+
+        TextView note = popupView.findViewById(R.id.textView7);
+        note.setText(" " + nameParts[2]);
 
 
-                Button bt_sant = popupView.findViewById(R.id.bt_sant);
-                bt_sant.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        ////////////////
-                        notis("send to database - Sant. -- "+ elderlyUserName  + nameParts[0] + " -- " + nameParts[1] + " " + elderlyName);
-                        db.hasEatenMeal(elderlyUserName, nameParts[4], nameParts[0]);
+        // Show the popup at the center of the screen
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
-                    }
-                });
 
-                Button bt_falsk = popupView.findViewById(R.id.bt_falsk);
-                bt_falsk.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        ///////////////////
-                        notis("send to database - Falsk. "+ elderlyUserName + " " + elderlyName + " " + nameParts[0] + " " + nameParts[1]);
-                    }
-                });
+        Button bt_sant = popupView.findViewById(R.id.bt_sant);
+        bt_sant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ////////////////
+                notis("send to database - Sant. -- "+ elderlyUserName  + nameParts[0] + " -- " + nameParts[1] + " " + elderlyName);
+                db.hasEatenMeal(elderlyUserName, nameParts[4], nameParts[0]);
+
+            }
+        });
+
+        Button bt_falsk = popupView.findViewById(R.id.bt_falsk);
+        bt_falsk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ///////////////////
+                notis("send to database - Falsk. "+ elderlyUserName + " " + elderlyName + " " + nameParts[0] + " " + nameParts[1]);
+            }
+        });
+
+    }
+
+    private void mealInfo_caregiver(View view, String[] nameParts, String elderlyUserName, String elderlyName){
+        Context context = view.getContext();
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.popup_meal_info_caregiver, null);
+
+        // Create a PopupWindow
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true; // let taps outside the popup also dismiss it
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+        // Set a click listener for the close button in the popup
+        Button closePopupBtn = popupView.findViewById(R.id.closePopupBtn);
+        closePopupBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Dismiss the popup
+                popupWindow.dismiss();
+            }
+        });
+
+        TextView meal_type = popupView.findViewById(R.id.meal_info);
+        meal_type.setText("     " + nameParts[0]);
+
+        TextView note = popupView.findViewById(R.id.textView7);
+        note.setText(" " + nameParts[2]);
+
+
+        // Show the popup at the center of the screen
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+
+        Button bt_sant = popupView.findViewById(R.id.deleteMeal);
+        bt_sant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ////////////////
+                notis("TODO");
 
             }
         });

@@ -62,7 +62,7 @@ public class CalenderOverviewCaregiver extends AppCompatActivity {
                 date = year +"-" + (month + 1) + "-" + day;
 
                 listView = findViewById(R.id.listView_caregiver_scheduler);
-                navigator.showMealList(listView, R.layout.activity_list_item_caregiverscheduler, elderly_username, elderly_name, date);
+                navigator.showMealList(listView, R.layout.activity_list_item_caregiverscheduler, false,elderly_username, elderly_name, date);
 
                 Button bt_addMeal = findViewById(R.id.button_AddMeal);
                 addMeal(bt_addMeal, elderly_username, elderly_name);
@@ -95,7 +95,7 @@ public class CalenderOverviewCaregiver extends AppCompatActivity {
             listView = findViewById(R.id.listView_caregiver_scheduler);
             date = year + "-" + (month + 1) + "-" + day;
             System.out.println(date);
-            navigator.showMealList(listView, R.layout.activity_list_item_caregiverscheduler, elderly_username, elderly_name, date);
+            navigator.showMealList(listView, R.layout.activity_list_item_caregiverscheduler, false, elderly_username, elderly_name, date);
 
             //db.listenForMealPlan(elderly_username);
         }

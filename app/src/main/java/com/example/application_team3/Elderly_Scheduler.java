@@ -64,7 +64,8 @@ public class Elderly_Scheduler extends AppCompatActivity {
 
         if(date == null){
             date = year + "-" + (month + 1) + "-" + day;
-            db.listenForMealPlan(elderly_username);
+            System.out.println("date == null");
+            //db.listenForMealPlan(elderly_username);
         }
 
         Log.d("incoming intent", "chosen date" + date);
@@ -72,10 +73,10 @@ public class Elderly_Scheduler extends AppCompatActivity {
 
 
 
-
+        System.out.println(date);
         listView = findViewById(R.id.listView_elderly_scheduler);
 
-        navigator.showMealList(listView, R.layout.activity_list_item_elderlyscheduler, elderly_username, elderly_name, date);
+        navigator.showMealList(listView, R.layout.activity_list_item_elderlyscheduler, true, elderly_username, elderly_name, date);
 
     }
 }
