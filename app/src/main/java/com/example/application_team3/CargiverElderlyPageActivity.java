@@ -67,5 +67,14 @@ public class CargiverElderlyPageActivity extends AppCompatActivity {
             }
         });
 
+        Button personal_info = findViewById(R.id.personalnformation);
+
+        personal_info.setOnClickListener(view -> {
+                Intent intent = new Intent(CargiverElderlyPageActivity.this, PersonalInfoActivity.class);
+                String elderlyUserName = get_info.getStringExtra("elderlyUserName");
+                intent.putExtra("elderlyUserName", elderlyUserName);
+                startActivity(intent);
+        });
+
     }
 }
