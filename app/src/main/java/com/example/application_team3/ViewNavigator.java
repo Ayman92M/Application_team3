@@ -459,8 +459,10 @@ public class ViewNavigator {
     }
 
 
-
     public void createNotification(String elderly_username){
+
+        String current_time = getCurrentTime();
+        long current_time_ToMillis = convertStringToMillis(current_time);
 
         Task<List<MealEntry>> mealListTask = db.MealPlanList(elderly_username);
         Tasks.whenAll(mealListTask).addOnCompleteListener(task ->
@@ -469,13 +471,16 @@ public class ViewNavigator {
             if(mealList != null )
                 for (MealEntry meal : mealList){
                     notification.createNotificationChannel(context, meal.getMealType());
+                    long dateToMillis = convertStringToMillis(meal.getDate()+ " " + meal.getTime());
                     //System.out.println(" __" + meal.getMealType() + " " + meal.getDate() + " " + meal.getTime());
-                    notification.setAlarm(context, meal.getMealType(), convertStringToMillis(meal.getDate()+ " " + meal.getTime()));
+                    if(dateToMillis >= current_time_ToMillis)
+                        notification.setAlarm(context, meal.getMealType(), dateToMillis);
                 }
 
         });
 
     }
+
 
 
     //MEAL LIST MANAGER
