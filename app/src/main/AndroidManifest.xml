@@ -27,6 +27,8 @@
         <activity
             android:name=".Calendar_Overview"
             android:exported="false" />
+        <activity android:name="CalenderOverviewCaregiver"
+            android:exported="false"/>
         <activity
             android:name=".Login_elderly"
             android:exported="false" />
