@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
+import android.provider.Settings;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -664,12 +665,22 @@ public class ViewNavigator {
         TextView note = popupView.findViewById(R.id.textView7);
         note.setText(" " + nameParts[2]);
 
-
         // Show the popup at the center of the screen
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
 
         Button bt_sant = popupView.findViewById(R.id.bt_sant);
+        Button bt_falsk = popupView.findViewById(R.id.bt_falsk);
+
+        String current_time = getCurrentTime();
+        long current_time_ToMillis = convertStringToMillis(current_time);
+        long mealTime_ToMillis = convertStringToMillis(nameParts[4] + " " + nameParts[1]);
+        //System.out.println("current_time: " + current_time +" --  dateToMillisMiss "+ nameParts[4] + " " + missTime);
+
+        if(current_time_ToMillis >= mealTime_ToMillis){
+            bt_sant.setEnabled(false);
+            bt_falsk.setEnabled(false);
+        }
         bt_sant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -680,7 +691,6 @@ public class ViewNavigator {
             }
         });
 
-        Button bt_falsk = popupView.findViewById(R.id.bt_falsk);
         bt_falsk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -723,8 +733,18 @@ public class ViewNavigator {
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
 
-        Button bt_sant = popupView.findViewById(R.id.deleteMeal);
-        bt_sant.setOnClickListener(new View.OnClickListener() {
+        Button bt_delete_meal = popupView.findViewById(R.id.deleteMeal);
+        String current_time = getCurrentTime();
+        long current_time_ToMillis = convertStringToMillis(current_time);
+
+        String missTime = addMinutesToTime(nameParts[1], 135);
+        long dateToMillisMiss = convertStringToMillis(nameParts[4] + " " + missTime);
+
+        if(dateToMillisMiss <= current_time_ToMillis){
+            bt_delete_meal.setEnabled(false);
+        }
+
+        bt_delete_meal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ////////////////
