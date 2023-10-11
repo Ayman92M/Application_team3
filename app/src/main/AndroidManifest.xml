@@ -36,7 +36,7 @@
             android:name=".Signup_elderly"
             android:exported="false" />
         <activity
-            android:name=".CargiverElderlyPageActivity"
+            android:name=".CaregiverElderlyPageActivity"
             android:exported="false" />
         <activity
             android:name=".Meal_register"

@@ -2,26 +2,17 @@ package com.example.application_team3;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CalendarView;
-import android.widget.FrameLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 
 import java.util.Calendar;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 public class CalenderOverviewCaregiver extends AppCompatActivity {
     ListView listView;
@@ -43,16 +34,16 @@ public class CalenderOverviewCaregiver extends AppCompatActivity {
         String caregiver_name = get_info.getStringExtra("caregiverName");
 
         bottomAppBar = findViewById(R.id.bottomAppBar);
-        bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId()==R.id.bottomNav_back){
-                    navigator.goToNextActivity(CargiverElderlyPageActivity.class,"Elderly name: "
-                                    + elderly_name+ " & Elderly username: " + elderly_username,"elderlyName", elderly_name, "elderlyUserName", elderly_username,
-                            "caregiverName", caregiver_name, "caregiverUserName", caregiver_username);
-                }
-                return false;
+        bottomAppBar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId()==R.id.bottomNav_back){
+                Intent intent = new Intent(CalenderOverviewCaregiver.this, CaregiverElderlyPageActivity.class);
+                intent.putExtra("elderlyUserName", elderly_username);
+                intent.putExtra("elderlyName", elderly_name);
+                intent.putExtra("caregiverUserName", caregiver_username);
+                intent.putExtra("caregiverName", caregiver_name);
+                startActivity(intent);
             }
+            return false;
         });
 
         date = getTodayList(elderly_username, elderly_name);

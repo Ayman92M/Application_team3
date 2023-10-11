@@ -1,18 +1,16 @@
 package com.example.application_team3;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 
-public class CargiverElderlyPageActivity extends AppCompatActivity {
+public class CaregiverElderlyPageActivity extends AppCompatActivity {
     Intent get_info;
     ViewNavigator navigator = new ViewNavigator(this);
 
@@ -29,19 +27,16 @@ public class CargiverElderlyPageActivity extends AppCompatActivity {
         String caregiver_username = get_info.getStringExtra("caregiverUserName");
         String caregiver_name = get_info.getStringExtra("caregiverName");
 
-        bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId()==R.id.bottomNav_back){
-                    navigator.goToNextActivity(Caregiver_dash.class,"Elderly name: "
-                            + elderly_name+ " & Elderly username: " + elderly_username,"elderlyName", elderly_name, "elderlyUserName", elderly_username,
-                            "caregiverName", caregiver_name, "caregiverUserName", caregiver_username);
-
-                    /*Intent intent = new Intent(CargiverElderlyPageActivity.this, Caregiver_dash.class);
-                    startActivity(intent);*/
-                }
-                return false;
+        bottomAppBar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId()==R.id.bottomNav_back){
+                Intent intent = new Intent(CaregiverElderlyPageActivity.this, Caregiver_dash.class);
+                intent.putExtra("elderlyUserName", elderly_username);
+                intent.putExtra("elderlyName", elderly_name);
+                intent.putExtra("caregiverUserName", caregiver_username);
+                intent.putExtra("caregiverName", caregiver_name);
+                startActivity(intent);
             }
+            return false;
         });
 
         ( (TextView) findViewById(R.id.elderly_name)).setText("          Elderly " + elderly_name);
@@ -54,7 +49,7 @@ public class CargiverElderlyPageActivity extends AppCompatActivity {
         meal_reg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(CargiverElderlyPageActivity.this, CalenderOverviewCaregiver.class);
+                Intent intent = new Intent(CaregiverElderlyPageActivity.this, CalenderOverviewCaregiver.class);
                 get_info = getIntent();
                 String elderly_username = get_info.getStringExtra("elderlyUserName");
                 String elderly_name = get_info.getStringExtra("elderlyName");
@@ -70,9 +65,12 @@ public class CargiverElderlyPageActivity extends AppCompatActivity {
         Button personal_info = findViewById(R.id.personalnformation);
 
         personal_info.setOnClickListener(view -> {
-                Intent intent = new Intent(CargiverElderlyPageActivity.this, PersonalInfoActivity.class);
+                Intent intent = new Intent(CaregiverElderlyPageActivity.this, PersonalInfoActivity.class);
                 String elderlyUserName = get_info.getStringExtra("elderlyUserName");
-                intent.putExtra("elderlyUserName", elderlyUserName);
+                intent.putExtra("elderlyUserName", elderly_username);
+                intent.putExtra("elderlyName", elderly_name);
+                intent.putExtra("caregiverUserName", caregiver_username);
+                intent.putExtra("caregiverName", caregiver_name);
                 startActivity(intent);
         });
 

@@ -1,12 +1,10 @@
 package com.example.application_team3;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -40,20 +38,17 @@ public class Meal_register extends AppCompatActivity {
         String elderly_username = get_info.getStringExtra("elderlyUserName");
         String caregiver_username = get_info.getStringExtra("caregiverUserName");
         String caregiver_name = get_info.getStringExtra("caregiverName");
-        Log.d("elderlyUserName", elderly_username);
 
-        bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (item.getItemId()==R.id.bottomNav_back){
-                    navigator.goToNextActivity(CargiverElderlyPageActivity.class,"Elderly name: "
-                                    + elderly_name+ " & Elderly username: " + elderly_username,"elderlyName", elderly_name, "elderlyUserName", elderly_username,
-                            "caregiverName", caregiver_name, "caregiverUserName", caregiver_username);
-                   /* Intent intent = new Intent(Meal_register.this, CalenderOverviewCaregiver.class);
-                    startActivity(intent);*/
-                }
-                return false;
+        bottomAppBar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId()==R.id.bottomNav_back){
+                Intent intent = new Intent(Meal_register.this, CaregiverElderlyPageActivity.class);
+                intent.putExtra("elderlyName", elderly_name);
+                intent.putExtra("elderlyUserName", elderly_username);
+                intent.putExtra("caregiverName", caregiver_name);
+                intent.putExtra("caregiverUserName", caregiver_username);
+                startActivity(intent);
             }
+            return false;
         });
 
         autoCompleteTextView = findViewById(R.id.auto_complete_text);

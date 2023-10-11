@@ -28,8 +28,6 @@ import com.google.firebase.database.DataSnapshot;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -450,7 +448,7 @@ public class ViewNavigator {
                 String[] nameParts = selectedItem.split(", ");
 
 
-                goToNextActivity(CargiverElderlyPageActivity.class, "Elderly name: "
+                goToNextActivity(CaregiverElderlyPageActivity.class, "Elderly name: "
                                 + nameParts[0]+ " & Elderly username: " + nameParts[1],
                         "elderlyName", nameParts[0], "elderlyUserName", nameParts[1],
                         "caregiverName",caregiverName, "caregiverUserName", caregiverUserName);
