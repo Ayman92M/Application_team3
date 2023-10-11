@@ -22,11 +22,12 @@
     <ListView
         android:id="@+id/listView_caregiver_scheduler"
         android:layout_width="403dp"
-        android:layout_height="362dp"
+        android:layout_height="310dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/CalendarView_calender_ID" />
+        app:layout_constraintTop_toBottomOf="@+id/CalendarView_calender_ID"
+        app:layout_constraintVertical_bias="0.43" />
 
     <Button
         android:id="@+id/button_AddMeal"
@@ -37,6 +38,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/CalendarView_calender_ID" />
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/listView_caregiver_scheduler"
+        tools:ignore="MissingConstraints">
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottomAppBar"
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/green"
+            android:backgroundTint="@color/green"
+            app:menu="@menu/bottom_navigation_menu"
+            app:menuAlignmentMode="start">
+
+        </com.google.android.material.bottomappbar.BottomAppBar>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
