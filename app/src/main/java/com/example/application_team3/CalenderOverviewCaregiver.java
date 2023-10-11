@@ -2,11 +2,13 @@ package com.example.application_team3;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -14,6 +16,8 @@ import android.widget.CalendarView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.google.android.material.bottomappbar.BottomAppBar;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -23,15 +27,33 @@ public class CalenderOverviewCaregiver extends AppCompatActivity {
     ListView listView;
     String date;
     ViewNavigator navigator = new ViewNavigator(this);
+    BottomAppBar bottomAppBar;
+
+    Intent get_info;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calender_overview_caregiver);
 
-        Intent get_elderlyUserName = getIntent();
-        String elderly_username = get_elderlyUserName.getStringExtra("elderlyUserName");
-        String elderly_name = get_elderlyUserName.getStringExtra("elderlyName");
+        get_info = getIntent();
+        String elderly_name = get_info.getStringExtra("elderlyName");
+        String elderly_username = get_info.getStringExtra("elderlyUserName");
+        String caregiver_username = get_info.getStringExtra("caregiverUserName");
+        String caregiver_name = get_info.getStringExtra("caregiverName");
+
+        bottomAppBar = findViewById(R.id.bottomAppBar);
+        bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId()==R.id.bottomNav_back){
+                    navigator.goToNextActivity(CargiverElderlyPageActivity.class,"Elderly name: "
+                                    + elderly_name+ " & Elderly username: " + elderly_username,"elderlyName", elderly_name, "elderlyUserName", elderly_username,
+                            "caregiverName", caregiver_name, "caregiverUserName", caregiver_username);
+                }
+                return false;
+            }
+        });
 
         date = getTodayList(elderly_username, elderly_name);
         Button bt_addMeal = findViewById(R.id.button_AddMeal);

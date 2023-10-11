@@ -62,11 +62,10 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/please_enter_a_description_for_this_meal"
-        android:textSize="20sp"
+        android:layout_marginBottom="10dp"
         android:gravity="start"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp" />
+        android:text="@string/please_enter_a_description_for_this_meal"
+        android:textSize="20sp" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/TextInputEditText_EnterMeal"
@@ -81,5 +80,24 @@
         android:layout_marginTop="10dp"
         android:text="@string/create_meal_button"
         android:textSize="20sp" />
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/Button_createMeal"
+        tools:ignore="MissingConstraints">
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottomAppBar"
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/green"
+            android:backgroundTint="@color/green"
+            app:menu="@menu/bottom_navigation_menu"
+            app:menuAlignmentMode="start">
+
+        </com.google.android.material.bottomappbar.BottomAppBar>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </LinearLayout>
