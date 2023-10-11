@@ -145,7 +145,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_button"
         app:menu="@menu/bottom_navigation_menu"
-        app:menuAlignmentMode="start">
+        app:menuAlignmentMode="start"
+        tools:ignore="BottomAppBar">
 
     </com.google.android.material.bottomappbar.BottomAppBar>
 
