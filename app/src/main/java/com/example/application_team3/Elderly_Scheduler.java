@@ -57,13 +57,12 @@ public class Elderly_Scheduler extends AppCompatActivity {
         int month = day_calendar.get(Calendar.MONTH);
         int day = day_calendar.get(Calendar.DAY_OF_MONTH);
 
-        // Adding 1 to month to get the human-readable month representation
         Intent get_info = getIntent();
         String elderly_username = get_info.getStringExtra("elderlyUserName");
         String elderly_name = get_info.getStringExtra("elderlyName");
 
         if(date == null){
-            date = year + "-" + (month + 1) + "-" + day;
+            date = String.format("%04d:%02d:%02d", year, month + 1, day);
             System.out.println("date == null");
             //db.listenForMealPlan(elderly_username);
         }
