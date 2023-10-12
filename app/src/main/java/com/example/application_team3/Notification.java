@@ -19,11 +19,12 @@ public class Notification {
     //private static final String CHANNEL_ID = "channel1";
     private AlarmManager alarmManager;
     private PendingIntent pendingIntent;
+    private static final String NOTIFICATION_ACTION_SHOW = "com.app.action.SHOW";
 
     Integer id;
 
     @SuppressLint("ScheduleExactAlarm")
-    public void setAlarm(Context context, String mealType, long triggerTimeInMillis) {
+    public void setAlarm(Context context, String elderly_username, String mealDate, String mealType, long triggerTimeInMillis) {
 
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
@@ -34,9 +35,14 @@ public class Notification {
         } else {
             // Use BOOT_COMPLETED action for pre-Oreo devices
             intent.setAction(Intent.ACTION_BOOT_COMPLETED);
-        }
 
+        }
+        intent.setAction(NOTIFICATION_ACTION_SHOW);
         intent.putExtra("mealType", mealType);
+        intent.putExtra("mealDate", mealDate);
+        intent.putExtra("elderlyUserName", elderly_username);
+        System.out.println(elderly_username + " - - setAlarm - - " + mealDate + " "+ mealType);
+
 
         id = getMealId(triggerTimeInMillis);
 
@@ -88,6 +94,7 @@ public class Notification {
             alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         }
         alarmManager.cancel(pendingIntent);
+
 
         Toast.makeText(context, "Alarm canceled", Toast.LENGTH_SHORT).show();
     }

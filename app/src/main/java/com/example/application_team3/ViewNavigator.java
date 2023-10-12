@@ -475,7 +475,7 @@ public class ViewNavigator {
                     long dateToMillis = convertStringToMillis(meal.getDate()+ " " + meal.getTime());
                     //System.out.println(" __" + meal.getMealType() + " " + meal.getDate() + " " + meal.getTime());
                     if(dateToMillis >= current_time_ToMillis)
-                        notification.setAlarm(context, meal.getMealType(), dateToMillis);
+                        notification.setAlarm(context, elderly_username, meal.getDate(),meal.getMealType(), dateToMillis);
                 }
 
         });
