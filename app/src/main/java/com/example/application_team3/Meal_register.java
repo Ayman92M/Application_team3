@@ -41,7 +41,7 @@ public class Meal_register extends AppCompatActivity {
 
         bottomAppBar.setOnMenuItemClickListener(item -> {
             if (item.getItemId()==R.id.bottomNav_back){
-                Intent intent = new Intent(Meal_register.this, CaregiverElderlyPageActivity.class);
+                Intent intent = new Intent(Meal_register.this, CalenderOverviewCaregiver.class);
                 intent.putExtra("elderlyName", elderly_name);
                 intent.putExtra("elderlyUserName", elderly_username);
                 intent.putExtra("caregiverName", caregiver_name);

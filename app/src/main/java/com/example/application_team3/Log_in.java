@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.Task;
 
 import com.google.android.gms.tasks.Tasks;
+import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.firebase.database.DataSnapshot;
 
 
@@ -21,11 +22,13 @@ public class Log_in extends AppCompatActivity {
     ViewNavigator navigator = new ViewNavigator(this);
     private CheckBox checkBoxRememberMe;
     private static final String EXTRA_LOGOUT = "logout";
+    BottomAppBar bottomAppBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
+        bottomAppBar = findViewById(R.id.bottomAppBar);
 
         logUt();
         signUp_button();
@@ -34,6 +37,14 @@ public class Log_in extends AppCompatActivity {
         checkBoxRememberMe = findViewById(R.id.checkBox_rememberMe);
         navigator.setRememberMeValues(this, R.id.editTextText,
                         R.id.editTextNumberPassword, checkBoxRememberMe);
+
+        bottomAppBar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId()==R.id.bottomNav_back){
+                Intent intent = new Intent(Log_in.this, MainActivity.class);
+                startActivity(intent);
+            }
+            return false;
+        });
 
     }
 
