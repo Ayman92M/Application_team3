@@ -25,5 +25,7 @@
     <string name="user_name_info">User name</string>
     <string name="pin">PIN</string>
     <string name="edit">Edit</string>
+    <string name="framåt"><![CDATA[>>]]></string>
+    <string name="backåt"><![CDATA[<<]]></string>
 
 </resources>
