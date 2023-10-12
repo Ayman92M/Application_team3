@@ -9,17 +9,22 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.database.DataSnapshot;
 
 public class Caregiver_dash extends AppCompatActivity {
     private ListView listView;
     ViewNavigator navigator = new ViewNavigator(this);
     String _caregiverName, _caregiverUserName;
+
+    Database db = new Database();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,15 +65,37 @@ public class Caregiver_dash extends AppCompatActivity {
                 boolean focusable = true; // let taps outside the popup also dismiss it
                 final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
 
-                //Button Database
+
                 // Set a click listener for the close button in the popup
                 Button closePopupBtn = popupView.findViewById(R.id.Button_cancel);
-                closePopupBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // Dismiss the popup
-                        popupWindow.dismiss();
-                    }
+                closePopupBtn.setOnClickListener(v -> {
+                    // Dismiss the popup
+                    popupWindow.dismiss();
+                });
+
+                Button add_btn = popupView.findViewById(R.id.Button_add);
+
+                add_btn.setOnClickListener(v -> {
+                    Task<DataSnapshot> elderlyDBTask = db.fetchElderlyDB();
+
+                    Tasks.whenAll(elderlyDBTask).addOnCompleteListener(task -> {
+                        EditText usernameText = popupView.findViewById(R.id.textView_username);
+                        DataSnapshot elderlyDB = elderlyDBTask.getResult();
+                        String elderly_username = usernameText.getText().toString();
+
+                        if(elderlyDB.hasChild(elderly_username)){
+                            ElderlyEntry elderly = elderlyDB.child(elderly_username).getValue(ElderlyEntry.class);
+                            Task<DataSnapshot> assignTask = db.assignElderly(_caregiverUserName, _caregiverName, elderly.getPid(), elderly.getName());
+                            Tasks.whenAll(assignTask).addOnCompleteListener(task2 -> {
+                                popupWindow.dismiss();
+                                navigator.showElderlyList(listView, _caregiverUserName, _caregiverName);
+                            });
+
+                        }
+                        else {
+                            navigator.notis("Elderly " + elderly_username + " does not exist");
+                        }
+                    });
                 });
                 // Show the popup at the center of the screen
                 popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
@@ -83,12 +110,9 @@ public class Caregiver_dash extends AppCompatActivity {
 
     private void logut() {
         TextView logut = findViewById(R.id.TextView_logut);
-        logut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //navigator.logout(Caregiver_dash.this, Log_in.class);
-                navigator.goToNextActivity(Log_in.class, "null", "logut", "true", null, null);
-            }
+        logut.setOnClickListener(view -> {
+            //navigator.logout(Caregiver_dash.this, Log_in.class);
+            navigator.goToNextActivity(Log_in.class, "null", "logut", "true", null, null);
         });
 
     }
