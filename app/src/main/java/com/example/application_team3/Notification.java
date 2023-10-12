@@ -95,8 +95,6 @@ public class Notification {
     public void createNotificationChannel(Context context, String mealType) {
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            //String name = "channel_name_1";
-            //String description = "Channel 1 description";
 
             int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel notificationChannel =

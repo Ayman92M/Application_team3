@@ -85,10 +85,12 @@ public class Meal_register extends AppCompatActivity {
                 get_info = getIntent();
                 //String elderly_username = get_info.getStringExtra("elderlyUserName");
                 int hour = picker.getHour();    int minute = picker.getMinute();
-                String hourString = hour + ":" +minute ;
+                String hourString = String.format("%02d", hour);
+                String minuteString = String.format("%02d", minute);
+                String formattedTime = hourString + ":" + minuteString;
 
                 //Toast.makeText(Meal_register.this, elderly_username , Toast.LENGTH_SHORT).show();
-                db.registerMeal(elderly_username, date, item, hourString, note);
+                db.registerMeal(elderly_username, date, item, formattedTime, note);
                 navigator.notis("Done");
 
             }
