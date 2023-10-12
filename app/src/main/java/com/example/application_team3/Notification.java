@@ -23,7 +23,7 @@ public class Notification {
     Integer id;
 
     @SuppressLint("ScheduleExactAlarm")
-    public void setAlarm(Context context, String mealType, long triggerTimeInMillis) {
+    public void setAlarm(Context context, String mealType, String pid, long triggerTimeInMillis) {
 
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
@@ -37,6 +37,7 @@ public class Notification {
         }
 
         intent.putExtra("mealType", mealType);
+        intent.putExtra("elderlyUserName", pid);
 
         id = getMealId(triggerTimeInMillis);
 
@@ -94,8 +95,6 @@ public class Notification {
     public void createNotificationChannel(Context context, String mealType) {
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            //String name = "channel_name_1";
-            //String description = "Channel 1 description";
 
             int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel notificationChannel =
