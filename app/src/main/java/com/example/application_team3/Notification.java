@@ -38,13 +38,14 @@ public class Notification {
 
         intent.putExtra("mealType", mealType);
         intent.putExtra("elderlyUserName", pid);
+        //intent.putExtra()
 
         id = getMealId(triggerTimeInMillis);
 
 
         pendingIntent = PendingIntent.getBroadcast(context, id,intent, PendingIntent.FLAG_IMMUTABLE);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTimeInMillis, pendingIntent);
-        Toast.makeText(context, "setAlarm for: " + mealType + " -> ID: " + id + " at: " + triggerTimeInMillis, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, "setAlarm for: " + mealType + " -> ID: " + id , Toast.LENGTH_SHORT).show();
         System.out.println("setAlarm for: " + mealType + " -> ID: " + id + " at: " + triggerTimeInMillis);
     }
 

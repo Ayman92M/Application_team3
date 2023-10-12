@@ -18,6 +18,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     private static final String textContent = "Eat your meal!";
 
+
     private static final int NOTIFICATION_ID = 1;
     private static final String CHANNEL_ID = "channel1";
 

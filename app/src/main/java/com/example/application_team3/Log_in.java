@@ -63,6 +63,7 @@ public class Log_in extends AppCompatActivity {
 
                 navigator.saveInputToPreferences(_user_name, _pass, checkBoxRememberMe.isChecked());
                 navigator.caregiverLogIn_process(_user_name, _pass);
+
             }
         });
     }

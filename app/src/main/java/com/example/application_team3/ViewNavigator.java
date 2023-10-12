@@ -475,14 +475,44 @@ public class ViewNavigator {
                     notification.createNotificationChannel(context, meal.getMealType());
                     long dateToMillis = convertStringToMillis(meal.getDate()+ " " + meal.getTime());
                     //System.out.println(" __" + meal.getMealType() + " " + meal.getDate() + " " + meal.getTime());
-                    if(dateToMillis >= current_time_ToMillis)
+                    if(dateToMillis >= current_time_ToMillis){
                         notification.setAlarm(context, meal.getMealType(), elderly_username, dateToMillis);
+                        notis(meal.getMealType() + " alarm at: "+ meal.getDate() + " " + meal.getTime());
+                    }
+
                 }
 
         });
 
     }
 
+    public void createNotificationCaregiver(String caregiver_username){
+
+        String current_time = getCurrentTime();
+        long current_time_ToMillis = convertStringToMillis(current_time);
+
+        Task<List<MealEntry>> mealListTask = db.MealPlanList(caregiver_username);
+        Tasks.whenAll(mealListTask).addOnCompleteListener(task ->
+        { List<MealEntry> mealList = mealListTask.getResult();
+
+            if(mealList != null ){
+                for (MealEntry meal : mealList){
+                    if(!meal.isHasEaten()){
+                        String missTime = addMinutesToTime(meal.getTime(), 135);
+                        long dateToMillisMiss = convertStringToMillis(meal.getDate() + " " + missTime);
+                        if(dateToMillisMiss >= current_time_ToMillis){
+                            notification.createNotificationChannel(context, meal.getMealType());
+                            notification.setAlarm(context, meal.getMealType(), caregiver_username, current_time_ToMillis);
+                            notis(meal.getMealType() + " alarm at: "+ meal.getDate() + " " + meal.getTime());
+                        }
+                    }
+                }
+            }
+
+
+        });
+
+    }
 
 
     //MEAL LIST MANAGER
@@ -675,15 +705,18 @@ public class ViewNavigator {
         Button bt_sant = popupView.findViewById(R.id.bt_sant);
         Button bt_falsk = popupView.findViewById(R.id.bt_falsk);
 
-        String current_time = getCurrentTime();
-        long current_time_ToMillis = convertStringToMillis(current_time);
-        long mealTime_ToMillis = convertStringToMillis(nameParts[4] + " " + nameParts[1]);
+        String current_time = getCurrentdate(); //2023-10-12
+
+        String today = nameParts[4]; //2023-11-12
+
         //System.out.println("current_time: " + current_time +" --  dateToMillisMiss "+ nameParts[4] + " " + missTime);
 
-        if(current_time_ToMillis >= mealTime_ToMillis){
+        if(!nameParts[4].equals(current_time) ){
             bt_sant.setEnabled(false);
             bt_falsk.setEnabled(false);
         }
+
+
         bt_sant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -703,7 +736,28 @@ public class ViewNavigator {
         });
 
     }
+    public String getADay(String currentDate, int x) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
+        try {
+            // Parse the input date string
+            Date date = sdf.parse(currentDate);
+
+            // Create a Calendar instance and set it to the parsed date
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+
+            // Increment the day by 1
+            calendar.add(Calendar.DAY_OF_MONTH, x);
+
+            // Format the updated date into "yyyy:MM:dd" format
+            return sdf.format(calendar.getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+            // Handle parsing exception if needed
+            return null;
+        }
+    }
     private void mealInfo_caregiver(View view, String[] nameParts, String elderlyUserName, String elderlyName){
         Context context = view.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -832,6 +886,19 @@ public class ViewNavigator {
 
         // Format the date and time into "yyyy-MM-dd HH:mm" format
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+        System.out.println("sdf.format(calendar.getTime()): " + sdf.format(calendar.getTime()));
+        return sdf.format(calendar.getTime());
+    }
+
+    public String getCurrentdate(){
+        Calendar calendar = Calendar.getInstance();
+
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1; // Months are 0-based, so we add 1
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        // Format the date and time into "yyyy-MM-dd HH:mm" format
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         System.out.println("sdf.format(calendar.getTime()): " + sdf.format(calendar.getTime()));
         return sdf.format(calendar.getTime());
     }
