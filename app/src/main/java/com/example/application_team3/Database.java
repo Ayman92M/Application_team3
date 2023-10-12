@@ -255,16 +255,21 @@ public class Database {
         });
         return listTask;
     }
-    public void assignElderly(String caregiver_pid, String caregiver_name, String elderly_pid, String elderly_name){
+    public Task<DataSnapshot> assignElderly(String caregiver_pid, String caregiver_name, String elderly_pid, String elderly_name){
         Task<DataSnapshot> elderlyDBTask = fetchElderlyDB();
-        Tasks.whenAll(elderlyDBTask).addOnCompleteListener(task -> {
+        Task<DataSnapshot> caregiverTask = fetchCaregiver(caregiver_pid);
+        TaskCompletionSource<DataSnapshot> caregiverListTaskSource = new TaskCompletionSource<>();
+        Task<DataSnapshot> caregiverListTask = caregiverListTaskSource.getTask();
+        Tasks.whenAll(elderlyDBTask, caregiverTask).addOnCompleteListener(task -> {
             DataSnapshot elderlyDB = elderlyDBTask.getResult();
+            DataSnapshot caregiver = caregiverTask.getResult();
             if(elderlyDB.child(elderly_pid).exists()){
                 caregiverRef.child(caregiver_pid).child("elderly").child(elderly_pid).setValue(elderly_name);
                 elderlyRef.child(elderly_pid).child("caregivers").child(caregiver_pid).setValue(caregiver_name);
             }
+            caregiverListTaskSource.setResult(caregiver.child("elderly"));
         });
-
+        return caregiverListTask;
     }
     public void removeElderly(String caregiver, String elderly){
         caregiverRef.child(caregiver).child("elderly").child(elderly).removeValue();
