@@ -67,6 +67,13 @@ public class CaregiverElderlyPageActivity extends AppCompatActivity {
             }
         });
 
+        Button meal_history = findViewById(R.id.mealHistory);
+
+        meal_history.setOnClickListener(view -> {
+            Intent intent = new Intent(CaregiverElderlyPageActivity.this, MealHistoryActivity.class);
+            startActivity(intent);
+        });
+
         Button personal_info = findViewById(R.id.personalnformation);
 
         personal_info.setOnClickListener(view -> {
