@@ -37,6 +37,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /*
     För att kunna använda de här funktioner,
@@ -576,7 +577,7 @@ public class ViewNavigator {
                 long current_time_ToMillisMiss = convertStringToMillis(current_time);
 
                 //notis(itemParts[4] + " " + itemParts[1] +  " --> MissTime: " + missTime + " -- Now: " + current_time);
-
+                System.out.println("----" + itemParts[4] + " " + itemParts[1] +  " --> MissTime: " + missTime + " -- Now: " + current_time);
                 if("false".equals(itemParts[3]) && dateToMillisMiss <= current_time_ToMillisMiss){
                     textView1.setError("miss");
                 }
@@ -589,6 +590,8 @@ public class ViewNavigator {
 
         elderlyMealListActionListener(listView, elderlyView,  elderlyUserName, elderlyName);
     }
+
+
 
     private void mealListChangeColor(TextView txt_bakground, int position){
 
@@ -819,15 +822,18 @@ public class ViewNavigator {
     }
 
     public String getCurrentTime(){
-        Calendar day_calendar = Calendar.getInstance();
-        int year = day_calendar.get(Calendar.YEAR);
-        int month = day_calendar.get(Calendar.MONTH);
-        int day = day_calendar.get(Calendar.DAY_OF_MONTH);
-        int hour = day_calendar.get(Calendar.HOUR_OF_DAY);
-        int min = day_calendar.get(Calendar.MINUTE);
+        Calendar calendar = Calendar.getInstance();
 
-        String current_time = year + "-" + (month + 1) + "-" + day + " " + hour + ":" + min;
-        return current_time;
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1; // Months are 0-based, so we add 1
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+
+        // Format the date and time into "yyyy-MM-dd HH:mm" format
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
+        System.out.println("sdf.format(calendar.getTime()): " + sdf.format(calendar.getTime()));
+        return sdf.format(calendar.getTime());
     }
 
     //SharedPreferences
