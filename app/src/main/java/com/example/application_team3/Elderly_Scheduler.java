@@ -72,9 +72,18 @@ public class Elderly_Scheduler extends AppCompatActivity {
         chosenDate.setText(date);
 
 
-
         System.out.println(date);
         listView = findViewById(R.id.listView_elderly_scheduler);
+
+        if (elderly_username == null){
+            elderly_username = navigator.getUsernameFromPreferences(Elderly_Scheduler.this);
+            navigator.notis("elderly_username null :" + elderly_username);
+
+        }
+        else{
+            navigator.saveInputToPreferencesElderlySchedular(elderly_username);
+        }
+
 
         navigator.showMealList(listView, R.layout.activity_list_item_elderlyscheduler, true, elderly_username, elderly_name, date);
 

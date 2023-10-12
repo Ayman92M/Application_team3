@@ -475,7 +475,7 @@ public class ViewNavigator {
                     long dateToMillis = convertStringToMillis(meal.getDate()+ " " + meal.getTime());
                     //System.out.println(" __" + meal.getMealType() + " " + meal.getDate() + " " + meal.getTime());
                     if(dateToMillis >= current_time_ToMillis)
-                        notification.setAlarm(context, meal.getMealType(), dateToMillis);
+                        notification.setAlarm(context, meal.getMealType(), elderly_username, dateToMillis);
                 }
 
         });
@@ -841,6 +841,15 @@ public class ViewNavigator {
         //if (checkBoxRememberMe.isChecked())
     }
 
+    public void saveInputToPreferencesElderlySchedular(String username) {
+        SharedPreferences preferences = context.getSharedPreferences("elderly_scheduler", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("_username", username);
+        notis(username);
+        editor.apply();
+
+    }
+
     public void setRememberMeValues(Activity activity, int editTextUsernameId, int editTextPasswordId, CheckBox checkBoxRemember) {
         preferences = activity.getPreferences(Context.MODE_PRIVATE);
 
@@ -855,6 +864,7 @@ public class ViewNavigator {
             checkBoxRemember.setChecked(true);
         }
     }
+
 
     private void saveRememberMeStatus(boolean status) {
         // Save the "Remember Me" status in SharedPreferences
@@ -873,6 +883,20 @@ public class ViewNavigator {
             String username = preferences.getString("username", "");
             setEditTextValue(editTextId, username);
         }
+    }
+
+    public String getUsernameFromPreferences(Activity activity) {
+        SharedPreferences preferences = context.getSharedPreferences("elderly_scheduler", Context.MODE_PRIVATE);
+        return preferences.getString("_username", "");
+
+    }
+
+    public void saveInputToPreferencesUserName(String username) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("username", username);
+
+        editor.apply();
+
     }
 
     public void autoLogIn(Activity activity, CheckBox checkBoxRemember) {

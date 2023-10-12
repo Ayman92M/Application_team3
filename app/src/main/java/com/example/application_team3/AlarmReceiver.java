@@ -26,12 +26,13 @@ public class AlarmReceiver extends BroadcastReceiver {
 
 
         String meal_type = intent.getStringExtra("mealType");
+        String elderlyUserName = intent.getStringExtra("elderlyUserName");
         //System.out.println("- - - - -" + meal_type);
-        showNotification(context, intent, meal_type, textContent);
+        showNotification(context, intent, meal_type, elderlyUserName, textContent);
 
         }
 
-    public void showNotification(Context context, Intent intent, String textTitle, String textContent) {
+    public void showNotification(Context context, Intent intent, String textTitle, String elderlyUserName, String textContent) {
 
         String ACTION_YES = "Yes";
         String ACTION_NO = "No";
@@ -46,7 +47,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         PendingIntent pendingNoIntent =
                 PendingIntent.getActivity(context, 2, NoIntent, PendingIntent.FLAG_IMMUTABLE);
 
-        Intent i = new Intent(context, MainActivity.class);
+        Intent i = new Intent(context, Elderly_Scheduler.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(context, 1, i, PendingIntent.FLAG_IMMUTABLE);
