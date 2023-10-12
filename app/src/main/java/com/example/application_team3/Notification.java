@@ -8,6 +8,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.widget.Toast;
 
 import java.util.Calendar;
@@ -29,9 +30,15 @@ public class Notification {
         int hour = Integer.parseInt(timeParts[0]);
         int min = Integer.parseInt(timeParts[1]);
         */
+
+        String mealtype = "Lunch";
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlarmReceiver.class);
         intent.setAction(NOTIFICATION_ACTION_SHOW);
+
+        Bundle extras = new Bundle();
+        extras.putCharSequence("mealType", mealtype);
+        intent.putExtras(extras);
         pendingIntent = PendingIntent.getBroadcast(context, id,intent, PendingIntent.FLAG_IMMUTABLE);
         /*
         Calendar calendar = Calendar.getInstance();

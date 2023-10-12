@@ -8,6 +8,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
@@ -30,14 +31,24 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         String action = intent.getAction();
+        Bundle extras = new Bundle();
+        extras = intent.getExtras();
+
+        if(extras != null)
+            System.out.println(extras.getString("mealType"));
+        else
+            System.out.println("Exras is null");
 
         System.out.println(action);
 
         switch (action) {
             case NOTIFICATION_ACTION_NO:
+                System.out.println("No");
                 // If click extra action button no
                 break;
             case NOTIFICATION_ACTION_YES:
+                System.out.println("Yes");
+
                 // If click extra action button yes
                 break;
             case NOTIFICATION_ACTION_CLICK:
@@ -57,21 +68,32 @@ public class AlarmReceiver extends BroadcastReceiver {
         String ACTION_YES = "Yes";
         String ACTION_NO = "No";
 
+        String action = intent.getAction();
+        Bundle extras = intent.getExtras();
+
+        if(extras != null)
+            System.out.println(extras.getString("mealType"));
+        else
+            System.out.println("Exras is null");
+
         Intent YesIntent = new Intent(context, AlarmReceiver.class);
         YesIntent.setAction(NOTIFICATION_ACTION_YES);
         YesIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        YesIntent.putExtras(extras);
         PendingIntent pendingYesIntent =
                 PendingIntent.getBroadcast(context, 3, YesIntent, PendingIntent.FLAG_IMMUTABLE);
 
         Intent NoIntent = new Intent(context, AlarmReceiver.class);
         NoIntent.setAction(NOTIFICATION_ACTION_NO);
         NoIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        NoIntent.putExtras(extras);
         PendingIntent pendingNoIntent =
                 PendingIntent.getBroadcast(context, 2, NoIntent, PendingIntent.FLAG_IMMUTABLE);
 
         Intent i = new Intent(context, MainActivity.class);
         i.setAction(NOTIFICATION_ACTION_CLICK);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        i.putExtras(extras);
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(context, 1, i, PendingIntent.FLAG_IMMUTABLE);
 
