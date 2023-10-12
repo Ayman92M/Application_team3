@@ -12,21 +12,33 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
+import com.google.android.material.bottomappbar.BottomAppBar;
 
 public class Login_elderly extends AppCompatActivity {
     String _user_name, _pass;
     ViewNavigator navigator = new ViewNavigator(this);
     private CheckBox checkBoxRememberMe;
 
+    BottomAppBar bottomAppBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_elderly);
         logIn_button();
+        bottomAppBar =findViewById(R.id.bottomAppBar);
 
         checkBoxRememberMe = findViewById(R.id.checkBox_rememberPassword);
         navigator.setRememberMeValues(this, R.id.editTextText,
               R.id.editTextNumberPassword, checkBoxRememberMe);
+
+        bottomAppBar.setOnMenuItemClickListener(item -> {
+            if (item.getItemId()==R.id.bottomNav_back){
+                Intent intent = new Intent(Login_elderly.this, MainActivity.class);
+                startActivity(intent);
+            }
+            return false;
+        });
 
     }
 
