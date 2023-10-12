@@ -618,7 +618,7 @@ public class ViewNavigator {
         // Koppla adaptern till ListView
         listView.setAdapter(adapter);
 
-        elderlyMealListActionListener(listView, elderlyView,  elderlyUserName, elderlyName);
+        elderlyMealListActionListener(listView,layoutResourceId, elderlyView,  elderlyUserName, elderlyName);
     }
 
 
@@ -639,7 +639,7 @@ public class ViewNavigator {
         txt_bakground.setBackground(gradientDrawable);
     }
 
-    public void elderlyMealListActionListener(ListView listView, boolean elderlyView,  String elderlyUserName, String elderlyName){
+    public void elderlyMealListActionListener(ListView listView, int layoutResourceId, boolean elderlyView,  String elderlyUserName, String elderlyName){
         String[] mealArray = mealStrings.toArray(new String[mealStrings.size()]);
 
         // Sätter en klickhändelse för ListView
@@ -654,7 +654,7 @@ public class ViewNavigator {
 
 
                 if(elderlyView)
-                    mealInfo_elderly(view, nameParts, elderlyUserName, elderlyName);
+                    mealInfo_elderly(listView, layoutResourceId, elderlyView, view, nameParts, elderlyUserName, elderlyName);
                 else
                     mealInfo_caregiver(view, nameParts, elderlyUserName, elderlyName);
                 /*
@@ -671,7 +671,7 @@ public class ViewNavigator {
 
     }
 
-    private void mealInfo_elderly(View view, String[] nameParts, String elderlyUserName, String elderlyName){
+    private void mealInfo_elderly(ListView listView, int layoutResourceId, boolean elderlyView, View view, String[] nameParts, String elderlyUserName, String elderlyName){
         Context context = view.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.popup_meal_info_elderly, null);
@@ -723,6 +723,7 @@ public class ViewNavigator {
                 ////////////////
                 notis("send to database - Sant. -- "+ elderlyUserName  + nameParts[0] + " -- " + nameParts[1] + " " + elderlyName);
                 db.hasEatenMeal(elderlyUserName, nameParts[4], nameParts[0]);
+                showMealList(listView, layoutResourceId, elderlyView, elderlyUserName, elderlyName, nameParts[4]);
 
             }
         });
