@@ -178,7 +178,7 @@
         android:id="@+id/personal_info_pin"
         android:layout_width="31dp"
         android:layout_height="14dp"
-        android:text="PIN"
+        android:text="@string/pin"
         app:layout_constraintBottom_toBottomOf="@+id/editTextText10"
         app:layout_constraintEnd_toEndOf="@+id/editTextText10"
         app:layout_constraintHorizontal_bias="0.009"

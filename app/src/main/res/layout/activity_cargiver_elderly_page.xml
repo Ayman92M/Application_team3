@@ -25,7 +25,7 @@
             android:layout_marginLeft="195dp"
             android:layout_marginTop="40dp"
             android:background="@drawable/rounded_corner"
-            android:text="Meal History"
+            android:text="@string/meal_history"
             app:icon="@drawable/baseline_history_24" />
 
         <Button
@@ -37,7 +37,7 @@
             android:layout_marginTop="40dp"
             android:background="@drawable/rounded_corner"
             android:backgroundTint="@color/grey"
-            android:text="Meal Planner"
+            android:text="@string/meal_planner"
             app:icon="@drawable/baseline_fastfood_24" />
 
         <Button
@@ -48,7 +48,7 @@
             android:layout_marginLeft="15dp"
             android:layout_marginTop="300dp"
             android:background="@drawable/rounded_corner"
-            android:text="Personal Information"
+            android:text="@string/personal_information_elderly"
             android:textSize="12dp"
             app:icon="@drawable/baseline_person_24" />
 
@@ -60,7 +60,7 @@
             android:layout_marginLeft="195dp"
             android:layout_marginTop="300dp"
             android:background="@drawable/rounded_corner"
-            android:text="Delete"
+            android:text="@string/delete"
             app:icon="@drawable/delete_icon" />
 
 

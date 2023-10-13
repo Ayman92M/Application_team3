@@ -23,7 +23,6 @@ public class Caregiver_dash extends AppCompatActivity {
     private ListView listView;
     ViewNavigator navigator = new ViewNavigator(this);
     String _caregiverName, _caregiverUserName;
-
     Database db = new Database();
 
     @Override
@@ -36,7 +35,8 @@ public class Caregiver_dash extends AppCompatActivity {
         _caregiverName = get_info.getStringExtra("caregiverName");
         _caregiverUserName = get_info.getStringExtra("caregiverUserName");
 
-        ((TextView) findViewById(R.id.textView_Welcome)).setText("Welcome " + _caregiverName);
+
+        ((TextView) findViewById(R.id.textView_Welcome)).setText("Welcome" +" "+ _caregiverName);
 
         listView = findViewById(R.id.listView);
         navigator.showElderlyList(listView, _caregiverUserName, _caregiverName);

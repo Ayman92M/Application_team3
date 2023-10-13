@@ -41,7 +41,7 @@
             android:layout_weight="1"
             android:drawableStart="@drawable/baseline_person_add_24"
             android:gravity="center"
-            android:text="New "
+            android:text="@string/register_new"
             android:textSize="24sp" />
 
         <View
@@ -56,7 +56,7 @@
             android:layout_weight="1"
             android:drawableLeft="@drawable/baseline_person_add_24"
             android:gravity="center"
-            android:text="Add "
+            android:text="@string/add"
             android:textSize="24sp" />
 
         <View
@@ -71,7 +71,7 @@
             android:layout_weight="1"
             android:drawableLeft="@drawable/baseline_settings_24"
             android:gravity="center"
-            android:text="Log ut"
+            android:text="@string/log_ut"
             android:textSize="24sp" />
 
     </LinearLayout>
@@ -87,7 +87,7 @@
         android:layout_marginTop="0dp"
         android:layout_marginEnd="13dp"
         android:fontFamily="serif"
-        android:text="TextView"
+        android:text="@string/welcome "
         android:textSize="34sp"
         android:textStyle="bold"
         android:background="@color/green"/>
