@@ -1,8 +1,9 @@
 package com.example.application_team3;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class ElderlyEntry {
+public class ElderlyEntry implements Serializable{
     private String name;
     private String pid;
     private String phoneNo;
@@ -12,7 +13,7 @@ public class ElderlyEntry {
 
     HashMap<String, String> caregivers = new HashMap<>();
 
-        private ElderlyEntry() {}
+    private ElderlyEntry() {}
     public ElderlyEntry(String name, String pid, String pin, String phoneNo) {
         this.name = name;
         this.pid = pid;

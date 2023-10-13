@@ -14,11 +14,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Database {
+public class Database implements Serializable {
 
     FirebaseDatabase rootNode;
     DatabaseReference caregiverRef;
@@ -71,7 +72,10 @@ public class Database {
     }
     public void updateMeal(String pid, MealEntry meal)
     {
-        mealPlanRef.child(pid).child(meal.getDate()).setValue(meal);
+        mealPlanRef.child(pid).child(meal.getDate()).child(meal.getMealType()).setValue(meal);
+    }
+    public void deleteMeal(String pid, String date, String mealType){
+        mealPlanRef.child(pid).child(date).child(mealType).removeValue();
     }
     public void hasEatenMeal(String pid, String date, String mealType){
         mealPlanRef.child(pid).child(date).child(mealType).child("hasEaten").setValue(true);

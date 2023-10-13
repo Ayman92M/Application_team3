@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -19,100 +18,87 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.DataSnapshot;
 
+import java.util.List;
+
 public class Caregiver_dash extends AppCompatActivity {
     private ListView listView;
-    ViewNavigator navigator = new ViewNavigator(this);
-    String _caregiverName, _caregiverUserName;
-
-    Database db = new Database();
+    Controller control;
+    CaregiverEntry user;
+    List<String> elderlyStrings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_caregiverdash);
 
-        //getIntent() används för att hämta data som har skickats till den här aktiviteten via intent.
         Intent get_info = getIntent();
-        _caregiverName = get_info.getStringExtra("caregiverName");
-        _caregiverUserName = get_info.getStringExtra("caregiverUserName");
+        control = (Controller) get_info.getSerializableExtra("controller");
+        user = control.getCaregiverUser();
 
-        ((TextView) findViewById(R.id.textView_Welcome)).setText("Welcome " + _caregiverName);
+        TextView welcomeText = findViewById(R.id.textView_Welcome);
+        welcomeText.setText("Welcome " + user.getName());
 
         listView = findViewById(R.id.listView);
-        navigator.showElderlyList(listView, _caregiverUserName, _caregiverName);
+        elderlyStrings = control.getView().setupElderlyListView(user, listView, this);
+        elderlyListActionListener();
 
-        logut();
+        TextView logout = findViewById(R.id.TextView_logut);
+        logout.setOnClickListener(view -> control.logout(Caregiver_dash.this, MainActivity.class));
 
         TextView newElderly = findViewById(R.id.TextView_newElderly);
-        //navigator.goToNextActivity(newElderly, Signup_elderly.class);
-
-        navigator.goToNextActivity(newElderly, Signup_elderly.class,
-                "caregiverUserName",_caregiverUserName ,
-                "caregiverName", _caregiverName);
+        newElderly.setOnClickListener(view -> control.goToActivity(Caregiver_dash.this, Signup_elderly.class));
 
         TextView addElderly = findViewById(R.id.TextView_addElderly);
-        addElderly.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        addElderly.setOnClickListener(view -> {
+            LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View popupView = inflater.inflate(R.layout.popup_add_elderly, null);
+            PopupWindow popupWindow = control.getView().buildPopup(popupView);
 
-                Context context = view.getContext();
-                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View popupView = inflater.inflate(R.layout.popup_add_elderly, null);
+            Button add_btn = popupView.findViewById(R.id.Button_add);
+            add_btn.setOnClickListener(v -> {
+                Task<DataSnapshot> elderlyDBTask = control.getDb().fetchElderlyDB();
 
-                // Create a PopupWindow
-                int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-                int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-                boolean focusable = true; // let taps outside the popup also dismiss it
-                final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+                Tasks.whenAll(elderlyDBTask).addOnCompleteListener(task -> {
+                    EditText usernameText = popupView.findViewById(R.id.textView_username);
+                    DataSnapshot elderlyDB = elderlyDBTask.getResult();
+                    String elderly_username = usernameText.getText().toString();
 
+                    if(elderlyDB.hasChild(elderly_username)){
+                        ElderlyEntry elderly = elderlyDB.child(elderly_username).getValue(ElderlyEntry.class);
+                        Task<DataSnapshot> assignTask = control.getDb().assignElderly(user.getPid(), user.getName(), elderly.getPid(), elderly.getName());
+                        Tasks.whenAll(assignTask).addOnCompleteListener(task2 -> {
+                            popupWindow.dismiss();
+                            control.getView().setupElderlyListView(user, listView, Caregiver_dash.this);
+                        });
 
-                // Set a click listener for the close button in the popup
-                Button closePopupBtn = popupView.findViewById(R.id.Button_cancel);
-                closePopupBtn.setOnClickListener(v -> {
-                    // Dismiss the popup
-                    popupWindow.dismiss();
+                    }
+                    else {
+                        control.getView().notis("Elderly " + elderly_username + " does not exist", Caregiver_dash.this);
+                    }
                 });
-
-                Button add_btn = popupView.findViewById(R.id.Button_add);
-
-                add_btn.setOnClickListener(v -> {
-                    Task<DataSnapshot> elderlyDBTask = db.fetchElderlyDB();
-
-                    Tasks.whenAll(elderlyDBTask).addOnCompleteListener(task -> {
-                        EditText usernameText = popupView.findViewById(R.id.textView_username);
-                        DataSnapshot elderlyDB = elderlyDBTask.getResult();
-                        String elderly_username = usernameText.getText().toString();
-
-                        if(elderlyDB.hasChild(elderly_username)){
-                            ElderlyEntry elderly = elderlyDB.child(elderly_username).getValue(ElderlyEntry.class);
-                            Task<DataSnapshot> assignTask = db.assignElderly(_caregiverUserName, _caregiverName, elderly.getPid(), elderly.getName());
-                            Tasks.whenAll(assignTask).addOnCompleteListener(task2 -> {
-                                popupWindow.dismiss();
-                                navigator.showElderlyList(listView, _caregiverUserName, _caregiverName);
-                            });
-
-                        }
-                        else {
-                            navigator.notis("Elderly " + elderly_username + " does not exist");
-                        }
-                    });
-                });
-                // Show the popup at the center of the screen
-                popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-            }
+            });
+            // Show the popup at the center of the screen
+            popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
         });
 
-        //navigator.addElderlyToCaregiver(addElderly, _caregiverUserName, _caregiverName);
-
-
-
     }
+    public void elderlyListActionListener(){
+        String[] elderlyArray = elderlyStrings.toArray(new String[0]);
 
-    private void logut() {
-        TextView logut = findViewById(R.id.TextView_logut);
-        logut.setOnClickListener(view -> {
-            //navigator.logout(Caregiver_dash.this, Log_in.class);
-            navigator.goToNextActivity(Log_in.class, "null", "logut", "true", null, null);
+        // Sätter en klickhändelse för ListView
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            // Hämtar det valda elementet från listan baserat på positionen
+            String selectedItem = elderlyArray[position];
+            // Delar upp det valda elementet i delar med hjälp av ", " som separator.
+            String[] nameParts = selectedItem.split(", ");
+
+            Task<DataSnapshot> elderlyTask = control.getDb().fetchElderly(nameParts[1]);
+
+            Tasks.whenAll(elderlyTask).addOnCompleteListener(task -> {
+                ElderlyEntry elderly = elderlyTask.getResult().getValue(ElderlyEntry.class);
+                control.setElderlyUser(elderly);
+                control.goToActivity(Caregiver_dash.this, CaregiverElderlyPageActivity.class);
+            });
         });
 
     }

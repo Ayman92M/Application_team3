@@ -1,9 +1,10 @@
 package com.example.application_team3;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 
-public class CaregiverEntry {
+public class CaregiverEntry implements Serializable {
     private String name;
     private String pid;
     private String password;

@@ -2,41 +2,41 @@ package com.example.application_team3;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.Task;
-
-import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.bottomappbar.BottomAppBar;
-import com.google.firebase.database.DataSnapshot;
 
 
 public class Log_in extends AppCompatActivity {
-    ViewNavigator navigator = new ViewNavigator(this);
     private CheckBox checkBoxRememberMe;
-    private static final String EXTRA_LOGOUT = "logout";
+
     BottomAppBar bottomAppBar;
+    SharedPreferences preferences;
+
+    Controller control;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
+        Intent get_info = getIntent();
+        control = (Controller) get_info.getSerializableExtra("controller");
         bottomAppBar = findViewById(R.id.bottomAppBar);
 
         logUt();
-        signUp_button();
         logIn_button();
 
-        checkBoxRememberMe = findViewById(R.id.checkBox_rememberMe);
-        navigator.setRememberMeValues(this, R.id.editTextText,
-                        R.id.editTextNumberPassword, checkBoxRememberMe);
+        TextView signup_btn = findViewById(R.id.textView_signup);
+        signup_btn.setOnClickListener(view -> control.goToActivity(Log_in.this, Signup_caregiver.class));
+
+        setRememberMeValues();
 
         bottomAppBar.setOnMenuItemClickListener(item -> {
             if (item.getItemId()==R.id.bottomNav_back){
@@ -48,22 +48,39 @@ public class Log_in extends AppCompatActivity {
 
     }
 
-    private void signUp_button(){
-        TextView signup_bt = findViewById(R.id.textView_signup);
-        navigator.goToNextActivity(signup_bt, Signup_caregiver.class, null, null, null, null);
+    public void setRememberMeValues() {
+        preferences = this.getPreferences(Context.MODE_PRIVATE);
+
+        String username = preferences.getString("username", "");
+        EditText usernameText = findViewById(R.id.editTextText);
+        usernameText.setText(username);
+
+
+        if (getRememberMeStatus()) {
+            String password = preferences.getString("password", "");
+            EditText passwordText = findViewById(R.id.editTextNumberPassword);
+            passwordText.setText(password);
+
+            checkBoxRememberMe = findViewById(R.id.checkBox_rememberMe);
+            checkBoxRememberMe.setChecked(true);
+        }
+    }
+
+    public boolean getRememberMeStatus() {
+        // Retrieve the "Remember Me" status from SharedPreferences
+        return preferences.getBoolean("rememberMe", false);
     }
 
     private void logIn_button(){
         Button button_login = findViewById(R.id.button3);
-        button_login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String _user_name = navigator.getEditTextValue(R.id.editTextText);
-                String _pass = navigator.getEditTextValue(R.id.editTextNumberPassword);
+        button_login.setOnClickListener(view -> {
+            EditText usernameText = findViewById(R.id.editTextText);
+            String _user_name = usernameText.getText().toString();
+            EditText passwordText = findViewById(R.id.editTextNumberPassword);
+            String _pass = passwordText.getText().toString();
 
-                navigator.saveInputToPreferences(_user_name, _pass, checkBoxRememberMe.isChecked());
-                navigator.caregiverLogIn_process(_user_name, _pass);
-            }
+            saveInputToPreferences(_user_name, _pass, checkBoxRememberMe.isChecked());
+            control.caregiverLogIn(_user_name, _pass, Log_in.this);
         });
     }
 
@@ -73,8 +90,15 @@ public class Log_in extends AppCompatActivity {
         System.out.println(" log ut activity " + bool);
         if (bool != null && bool.equals("true")){
             System.out.println(" log ut activity If" + bool);
-            navigator.logout(this, MainActivity.class);
+            control.logout(this, MainActivity.class);
         }
     }
 
+    public void saveInputToPreferences(String username, String password, boolean rememberMe) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("username", username);
+        editor.putString("password", password);
+        editor.putBoolean("rememberMe", rememberMe);
+        editor.apply();
+    }
 }

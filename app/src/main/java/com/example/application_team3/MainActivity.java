@@ -13,7 +13,8 @@ import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    ViewNavigator navigator = new ViewNavigator(this);
+
+    Controller control = new Controller();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,10 +23,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_language);
 
         Button _elderly = findViewById(R.id.button);
-        navigator.goToNextActivity(_elderly, Login_elderly.class);
+        _elderly.setOnClickListener(view -> control.goToActivity(MainActivity.this, Login_elderly.class));
 
         Button _caregiver = findViewById(R.id.button2);
-        navigator.goToNextActivity(_caregiver, Log_in.class);
+
+        _caregiver.setOnClickListener(view -> control.goToActivity(MainActivity.this, Log_in.class));
 
 
 
@@ -35,36 +37,10 @@ public class MainActivity extends AppCompatActivity {
         //navigator.goToNextActivity(_caregiver, className.class);
         // --navigator.goToNextActivity(_test, CargiverElderlyPageActivity.class);
         //you can Merge into Master only if it works.
-        _test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        _test.setOnClickListener(view -> {
 
-            }
         });
 
-    }
-
-    public long convertStringToMillis(String dateString) {
-        List<String> possibleFormats = new ArrayList<>();
-        possibleFormats.add("yyyy-MM-dd HH:mm");
-        possibleFormats.add("yyyy-MM-d HH:mm");
-        possibleFormats.add("yyyy-M-dd HH:mm");
-        possibleFormats.add("yyyy-MM-d H:mm");
-
-        for (String format : possibleFormats) {
-            try {
-                SimpleDateFormat dateFormat = new SimpleDateFormat(format);
-                Date date = dateFormat.parse(dateString);
-                System.out.println("convert: "+ date);
-                System.out.println("convert: "+ date.getTime());
-                return date.getTime();
-            } catch (ParseException ignored) {
-                // Ignorera ParseException för detta format, fortsätt med nästa
-            }
-        }
-
-        // Ingen matchande format hittades
-        return -1;
     }
 
 }
