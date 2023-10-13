@@ -38,12 +38,12 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         if (elderlyName != null){
             showNotification(context, intent, meal_type, elderlyUserName, elderlyName + " has miss a meal!");
-            navigator.createNotificationCaregiver(elderlyUserName, elderlyName);
+            navigator.updateNotificationCaregiver(elderlyUserName, elderlyName);
         }
 
         else{
             showNotification(context, intent, meal_type, elderlyUserName, textContent);
-            navigator.createNotification(elderlyUserName);
+            navigator.updateNotification(elderlyUserName);
         }
 
 

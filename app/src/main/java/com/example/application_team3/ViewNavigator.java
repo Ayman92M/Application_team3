@@ -460,7 +460,7 @@ public class ViewNavigator {
     }
 
 
-    public void createNotification(String elderly_username){
+    public void updateNotification(String elderly_username){
 
         String current_time = getCurrentTime();
         long current_time_ToMillis = convertStringToMillis(current_time);
@@ -482,15 +482,12 @@ public class ViewNavigator {
                             notis(meal.getMealType() + " alarm at: "+ meal.getDate() + " " + meal.getTime());
                         }
                     }
-
-
                 }
-
         });
 
     }
 
-    public void createNotificationCaregiver(String elderly_username, String elderly_name){
+    public void updateNotificationCaregiver(String elderly_username, String elderly_name){
 
         String current_time = getCurrentTime();
         long current_time_ToMillis = convertStringToMillis(current_time);
@@ -514,6 +511,59 @@ public class ViewNavigator {
                                 notis(meal.getMealType() + " alarm at: "+ meal.getDate() + " " + meal.getTime());
                             }
 
+                        }
+                    }
+                }
+            }
+
+
+        });
+
+    }
+
+    public void createNotification(String elderly_username){
+
+        String current_time = getCurrentTime();
+        long current_time_ToMillis = convertStringToMillis(current_time);
+
+        Task<List<MealEntry>> mealListTask = db.MealPlanList(elderly_username);
+        Tasks.whenAll(mealListTask).addOnCompleteListener(task ->
+        { List<MealEntry> mealList = mealListTask.getResult();
+
+            if(mealList != null )
+                for (MealEntry meal : mealList){
+                    notification.createNotificationChannel(context, meal.getMealType());
+                    long dateToMillis = convertStringToMillis(meal.getDate()+ " " + meal.getTime());
+                    //System.out.println(" __" + meal.getMealType() + " " + meal.getDate() + " " + meal.getTime());
+                    if(dateToMillis >= current_time_ToMillis){
+                        notification.setAlarm(context, meal.getMealType(), elderly_username, null, dateToMillis);
+                        notis(meal.getMealType() + " alarm at: "+ meal.getDate() + " " + meal.getTime());
+                    }
+
+                }
+
+        });
+
+    }
+
+    public void createNotificationCaregiver(String elderly_username, String elderly_name){
+
+        String current_time = getCurrentTime();
+        long current_time_ToMillis = convertStringToMillis(current_time);
+
+        Task<List<MealEntry>> mealListTask = db.MealPlanList(elderly_username);
+        Tasks.whenAll(mealListTask).addOnCompleteListener(task ->
+        { List<MealEntry> mealList = mealListTask.getResult();
+
+            if(mealList != null ){
+                for (MealEntry meal : mealList){
+                    if(!meal.isHasEaten()){
+                        String missTime = addMinutesToTime(meal.getTime(), 135);
+                        long dateToMillisMiss = convertStringToMillis(meal.getDate() + " " + missTime);
+                        if(dateToMillisMiss >= current_time_ToMillis){
+                            notification.createNotificationChannel(context, meal.getMealType());
+                            notification.setAlarm(context, meal.getMealType(), elderly_username, elderly_name, current_time_ToMillis);
+                            notis(meal.getMealType() + " alarm at: "+ meal.getDate() + " " + meal.getTime());
                         }
                     }
                 }
