@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class ViewBuilder implements Serializable {
-    Controller control;
+
     List<String> elderlyStrings = new ArrayList<>();
     public ViewBuilder() {
     }
@@ -34,24 +34,21 @@ public class ViewBuilder implements Serializable {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
 
-    public void setControl(Controller control){
-        this.control = control;
-    }
-
     public PopupWindow buildPopup(View _popupView){
-
+        System.out.println("popup start");
         // Create a PopupWindow
         int width = LinearLayout.LayoutParams.WRAP_CONTENT;
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
         boolean focusable = true; // let taps outside the popup also dismiss it
         final PopupWindow popupWindow = new PopupWindow(_popupView, width, height, focusable);
-
+        System.out.println("after block 1");
         // Set a click listener for the close button in the popup
         Button closePopupBtn = _popupView.findViewById(R.id.Button_cancel);
         closePopupBtn.setOnClickListener(v -> {
             // Dismiss the popup
             popupWindow.dismiss();
         });
+        System.out.println("after listener");
         return popupWindow;
     }
 
@@ -63,8 +60,6 @@ public class ViewBuilder implements Serializable {
             String elderlyString = name + ", " + username;
             elderlyStrings.add(elderlyString);
         });
-
-        // Skapa en adapter för att koppla data till ListView
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 context.getApplicationContext(), // Använd den aktuella kontexten
                 R.layout.activity_list_item,
@@ -88,42 +83,38 @@ public class ViewBuilder implements Serializable {
         };
         // Koppla adaptern till ListView
         listView.setAdapter(adapter);
-        // Actionlistner metod för Listan
         return elderlyStrings;
     }
 
-    public void setupMealListView(Context context, List<String> mealStrings, ListView listView, int layoutResourceId){
+    public void setupMealListView(Context context, List<MealEntry> mealList, ListView listView, int layoutResourceId){
 
         // Skapa en adapter för att koppla data till ListView
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+        ArrayAdapter<MealEntry> adapter = new ArrayAdapter<MealEntry>(
                 context.getApplicationContext(), // Använd den aktuella kontexten -- context.getApplicationContext(),
                 layoutResourceId,
                 R.id.meal,
-                mealStrings
+                mealList
         ) {
             @NonNull
             @Override
             public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
                 View row = super.getView(position, convertView, parent);
-                String[] itemParts = Objects.requireNonNull(getItem(position)).split(", ");
+                MealEntry meal = getItem(position);
                 TextView textView1 = row.findViewById(R.id.meal);
                 TextView textView2 = row.findViewById(R.id.time);
-                TextView txt_bakground = row.findViewById(R.id.TextView_background);
+                notis(meal.getMealType(), context);
 
                 // Sätt texten för användarnamn och caregiverUserName
-                textView1.setText(itemParts[0]); // Huvudtext (item)
-                textView2.setText(itemParts[1]); // Undertext (subitem)
-                //mealListChangeColor(context, txt_bakground, position);
-
+                textView1.setText(meal.getMealType()); // Huvudtext (item)
+                textView2.setText(meal.getTime()); // Undertext (subitem)
+                textView1.setTextColor(Color.rgb(0, 0, 0));
+                textView2.setTextColor(Color.rgb(0, 0, 0));
 
                 return row;
             }
         };
-        // Koppla adaptern till ListView
         listView.setAdapter(adapter);
-
-
     }
     private void mealListChangeColor(Context context, TextView txt_bakground, int position){
 

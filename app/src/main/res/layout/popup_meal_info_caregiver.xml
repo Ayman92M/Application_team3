@@ -44,7 +44,7 @@
             android:textSize="32dp" />
 
         <Button
-            android:id="@+id/closePopupBtn"
+            android:id="@+id/Button_cancel"
             android:layout_width="54dp"
             android:layout_height="66dp"
             android:layout_marginLeft="330dp"

@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.google.android.material.bottomappbar.BottomAppBar;
 
 
-public class Log_in extends AppCompatActivity {
+public class Login_Caregiver extends AppCompatActivity {
     private CheckBox checkBoxRememberMe;
 
     BottomAppBar bottomAppBar;
@@ -25,22 +25,23 @@ public class Log_in extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_log_in);
+        setContentView(R.layout.activity_login_caregiver);
         Intent get_info = getIntent();
         control = (Controller) get_info.getSerializableExtra("controller");
         bottomAppBar = findViewById(R.id.bottomAppBar);
+        checkBoxRememberMe = findViewById(R.id.checkBox_rememberMe);
 
         logUt();
         logIn_button();
 
         TextView signup_btn = findViewById(R.id.textView_signup);
-        signup_btn.setOnClickListener(view -> control.goToActivity(Log_in.this, Signup_caregiver.class));
+        signup_btn.setOnClickListener(view -> control.goToActivity(Login_Caregiver.this, Signup_caregiver.class));
 
         setRememberMeValues();
 
         bottomAppBar.setOnMenuItemClickListener(item -> {
             if (item.getItemId()==R.id.bottomNav_back){
-                Intent intent = new Intent(Log_in.this, MainActivity.class);
+                Intent intent = new Intent(Login_Caregiver.this, MainActivity.class);
                 startActivity(intent);
             }
             return false;
@@ -61,7 +62,6 @@ public class Log_in extends AppCompatActivity {
             EditText passwordText = findViewById(R.id.editTextNumberPassword);
             passwordText.setText(password);
 
-            checkBoxRememberMe = findViewById(R.id.checkBox_rememberMe);
             checkBoxRememberMe.setChecked(true);
         }
     }
@@ -80,7 +80,7 @@ public class Log_in extends AppCompatActivity {
             String _pass = passwordText.getText().toString();
 
             saveInputToPreferences(_user_name, _pass, checkBoxRememberMe.isChecked());
-            control.caregiverLogIn(_user_name, _pass, Log_in.this);
+            control.caregiverLogIn(_user_name, _pass, Login_Caregiver.this);
         });
     }
 

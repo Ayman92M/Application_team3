@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
-import android.provider.Settings;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -231,7 +230,7 @@ public class ViewNavigator {
 
                     CaregiverEntry caregiver = caregiverTask.getResult().getValue(CaregiverEntry.class);
                     if (caregiver != null)
-                        goToNextActivity(Caregiver_dash.class, "success","caregiverName",
+                        goToNextActivity(Caregiver_Dash.class, "success","caregiverName",
                                 caregiver.getName() ,"caregiverUserName", caregiver.getPid());
 
                     System.out.println("caregiverName LogIn_process: " + caregiver.getName());
@@ -376,7 +375,7 @@ public class ViewNavigator {
 
                 db.removeElderly(_caregiver_username,_elderly_username);
                 notis("Done");
-                goToNextActivity(Caregiver_dash.class);
+                goToNextActivity(Caregiver_Dash.class);
             }
         });
 
@@ -622,8 +621,6 @@ public class ViewNavigator {
 
                 if(elderlyView)
                     mealInfo_elderly(view, nameParts, elderlyUserName, elderlyName);
-                else
-                    mealInfo_caregiver(view, nameParts, elderlyUserName, elderlyName);
                 /*
                 goToNextActivity(Meal_info.class, "----"
                               + nameParts[0]+ " -- " + nameParts[1] +" -- " + nameParts[2] +" -- " + nameParts[3] ,
@@ -650,14 +647,7 @@ public class ViewNavigator {
         final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
 
         // Set a click listener for the close button in the popup
-        Button closePopupBtn = popupView.findViewById(R.id.closePopupBtn);
-        closePopupBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Dismiss the popup
-                popupWindow.dismiss();
-            }
-        });
+
 
         TextView meal_type = popupView.findViewById(R.id.meal_info);
         meal_type.setText("     " + nameParts[0]);
@@ -696,60 +686,6 @@ public class ViewNavigator {
             public void onClick(View view) {
                 ///////////////////
                 notis("send to database - Falsk. "+ elderlyUserName + " " + elderlyName + " " + nameParts[0] + " " + nameParts[1]);
-            }
-        });
-
-    }
-
-    private void mealInfo_caregiver(View view, String[] nameParts, String elderlyUserName, String elderlyName){
-        Context context = view.getContext();
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View popupView = inflater.inflate(R.layout.popup_meal_info_caregiver, null);
-
-        // Create a PopupWindow
-        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-        boolean focusable = true; // let taps outside the popup also dismiss it
-        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
-
-        // Set a click listener for the close button in the popup
-        Button closePopupBtn = popupView.findViewById(R.id.closePopupBtn);
-        closePopupBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Dismiss the popup
-                popupWindow.dismiss();
-            }
-        });
-
-        TextView meal_type = popupView.findViewById(R.id.meal_info);
-        meal_type.setText("     " + nameParts[0]);
-
-        TextView note = popupView.findViewById(R.id.textView7);
-        note.setText(" " + nameParts[2]);
-
-
-        // Show the popup at the center of the screen
-        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-
-
-        Button bt_delete_meal = popupView.findViewById(R.id.deleteMeal);
-        String current_time = getCurrentTime();
-        long current_time_ToMillis = convertStringToMillis(current_time);
-
-        String missTime = addMinutesToTime(nameParts[1], 135);
-        long dateToMillisMiss = convertStringToMillis(nameParts[4] + " " + missTime);
-
-        if(dateToMillisMiss <= current_time_ToMillis){
-            bt_delete_meal.setEnabled(false);
-        }
-
-        bt_delete_meal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ////////////////
-                notis("TODO");
-
             }
         });
 

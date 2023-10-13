@@ -3,14 +3,7 @@ package com.example.application_team3;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
         Button _caregiver = findViewById(R.id.button2);
 
-        _caregiver.setOnClickListener(view -> control.goToActivity(MainActivity.this, Log_in.class));
+        _caregiver.setOnClickListener(view -> control.goToActivity(MainActivity.this, Login_Caregiver.class));
 
 
 

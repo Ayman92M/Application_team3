@@ -29,9 +29,6 @@
             android:name=".Elderly_home_test"
             android:exported="false" />
         <activity
-            android:name=".Calendar_Overview"
-            android:exported="false" />
-        <activity
             android:name=".CalenderOverviewCaregiver"
             android:exported="false" />
         <activity
@@ -56,13 +53,13 @@
             android:name=".List_viewer"
             android:exported="false" />
         <activity
-            android:name=".Caregiver_dash"
+            android:name=".Caregiver_Dash"
             android:exported="false" />
         <activity
             android:name=".Signup_caregiver"
             android:exported="false" />
         <activity
-            android:name=".Log_in"
+            android:name=".Login_Caregiver"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

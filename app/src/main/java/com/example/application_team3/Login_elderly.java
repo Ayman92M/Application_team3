@@ -7,11 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.Toast;
-
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.bottomappbar.BottomAppBar;
 
 public class Login_elderly extends AppCompatActivity {
@@ -44,15 +39,12 @@ public class Login_elderly extends AppCompatActivity {
 
     private void logIn_button(){
         Button button_login = findViewById(R.id.button3);
-        button_login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        button_login.setOnClickListener(view -> {
 
-                _user_name = navigator.getEditTextValue(R.id.editTextText);
-                _pass = navigator.getEditTextValue(R.id.editTextNumberPassword);
-                navigator.saveInputToPreferences(_user_name, _pass, checkBoxRememberMe.isChecked());
-                navigator.logInElderly(_user_name, _pass);
-            }
+            _user_name = navigator.getEditTextValue(R.id.editTextText);
+            _pass = navigator.getEditTextValue(R.id.editTextNumberPassword);
+            navigator.saveInputToPreferences(_user_name, _pass, checkBoxRememberMe.isChecked());
+            navigator.logInElderly(_user_name, _pass);
         });
     }
 }

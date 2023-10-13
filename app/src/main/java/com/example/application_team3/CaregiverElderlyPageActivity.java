@@ -9,7 +9,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -33,8 +32,7 @@ public class CaregiverElderlyPageActivity extends AppCompatActivity {
 
         bottomAppBar.setOnMenuItemClickListener(item -> {
             if (item.getItemId()==R.id.bottomNav_back){
-                control.setElderlyUser(null);
-                control.goToActivity(CaregiverElderlyPageActivity.this, Caregiver_dash.class);
+                control.goToActivity(CaregiverElderlyPageActivity.this, Caregiver_Dash.class);
             }
             return false;
         });
@@ -49,6 +47,11 @@ public class CaregiverElderlyPageActivity extends AppCompatActivity {
 
         personal_info.setOnClickListener(view -> control.goToActivity(CaregiverElderlyPageActivity.this, PersonalInfoActivity.class));
 
+        deleteButtonListener();
+
+    }
+
+    private void deleteButtonListener(){
         Button delete_btn = findViewById(R.id.deleteElderly);
 
         delete_btn.setOnClickListener(view -> {
@@ -56,32 +59,18 @@ public class CaregiverElderlyPageActivity extends AppCompatActivity {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View popupView = inflater.inflate(R.layout.popup_confirm_delete, null);
 
-            // Create a PopupWindow
-            int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-            int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-            boolean focusable = true; // let taps outside the popup also dismiss it
-            final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+            final PopupWindow popupWindow = control.getView().buildPopup(popupView);
             TextView deleteText = popupView.findViewById(R.id.textView_delete);
             deleteText.setText("Remove " + elderly.getName() + "?");
-
-            // Set a click listener for the close button in the popup
-            Button closePopupBtn = popupView.findViewById(R.id.Button_cancel);
-            closePopupBtn.setOnClickListener(v -> {
-                // Dismiss the popup
-                popupWindow.dismiss();
-            });
 
             Button removeElderlyBtn = popupView.findViewById(R.id.Button_remove);
 
             removeElderlyBtn.setOnClickListener(v -> {
                 control.getDb().removeElderly(user.getPid(), elderly.getPid());
-                control.setElderlyUser(null);
-                control.goToActivity(CaregiverElderlyPageActivity.this, Caregiver_dash.class);
+                control.goToActivity(CaregiverElderlyPageActivity.this, Caregiver_Dash.class);
             });
             // Show the popup at the center of the screen
             popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
         });
-
-
     }
 }

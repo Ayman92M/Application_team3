@@ -47,9 +47,9 @@ public class CalenderOverviewCaregiver extends AppCompatActivity {
 
 
         Button addMeal_btn = findViewById(R.id.button_AddMeal);
-        addMeal_btn.setOnClickListener((View.OnClickListener) view -> control.goToActivity(CalenderOverviewCaregiver.this, Meal_register.class));
+        addMeal_btn.setOnClickListener(view -> control.goToActivity(CalenderOverviewCaregiver.this, Meal_register.class));
 
-        CalendarView mCalendarview = (CalendarView) findViewById(R.id.CalendarView_calender_ID);
+        CalendarView mCalendarview = findViewById(R.id.CalendarView_calender_ID);
         mCalendarview.setOnDateChangeListener((calendarView, year, month, day) -> {
             date = year +"-" + (month + 1) + "-" + day;
             control.setActiveDate(date);
@@ -58,95 +58,66 @@ public class CalenderOverviewCaregiver extends AppCompatActivity {
             //navigator.showMealList(listView, R.layout.activity_list_item_caregiverscheduler, false,elderly_username, elderly_name, date);
 
         });
+        getTodayList();
     }
 
     private void getTodayList(){
-        Calendar day_calendar = Calendar.getInstance();
-        int year = day_calendar.get(Calendar.YEAR);
-        int month = day_calendar.get(Calendar.MONTH);
-        int day = day_calendar.get(Calendar.DAY_OF_MONTH);
-
         if(date == null){
-            listView = findViewById(R.id.listView_caregiver_scheduler);
-            date = year + "-" + (month + 1) + "-" + day;
-            System.out.println(date);
-            Task<List<String>> mealStringsTask = control.showMealList(CalenderOverviewCaregiver.this, listView, R.layout.activity_list_item_caregiverscheduler, false);
-
-            Tasks.whenAll(mealStringsTask).addOnCompleteListener(task -> {
-                List<String> mealStrings = mealStringsTask.getResult();
-                elderlyMealListActionListener(mealStrings, listView);
-            });
-            //db.listenForMealPlan(elderly_username);
+            Calendar day_calendar = Calendar.getInstance();
+            int year = day_calendar.get(Calendar.YEAR);
+            int month = day_calendar.get(Calendar.MONTH);
+            int day = day_calendar.get(Calendar.DAY_OF_MONTH);
+            date = year + "-" + (month+1) + "-" + day;
+            control.setActiveDate(date);
         }
+            listView = findViewById(R.id.listView_caregiver_scheduler);
+            Task<List<MealEntry>> mealListTask = control.showMealList(CalenderOverviewCaregiver.this, listView, R.layout.activity_list_item_caregiverscheduler);
+
+            Tasks.whenAll(mealListTask).addOnCompleteListener(task -> {
+                List<MealEntry> mealList = mealListTask.getResult();
+                elderlyMealListActionListener(mealList, listView);
+            });
     }
 
-    public void elderlyMealListActionListener(List<String> mealStrings, ListView listView){
-        String[] mealArray = mealStrings.toArray(new String[0]);
+    public void elderlyMealListActionListener(List<MealEntry> mealList, ListView listView){
 
-        // Sätter en klickhändelse för ListView
         listView.setOnItemClickListener((parent, view, position, id) -> {
-            // Hämtar det valda elementet från listan baserat på positionen
-            String selectedItem = mealArray[position];
-            // Delar upp det valda elementet i delar med hjälp av ", " som separator.
-            String[] nameParts = selectedItem.split(", ");
-
-
-                mealInfo_caregiver(view, nameParts);
-            /*
-            goToNextActivity(Meal_info.class, "----"
-                          + nameParts[0]+ " -- " + nameParts[1] +" -- " + nameParts[2] +" -- " + nameParts[3] ,
-                "elderlyName",elderlyName, "elderlyUserName", elderlyUserName,
-              "mealType", nameParts[0], "mealTime", nameParts[1], "mealNote", nameParts[2], "hasEaten", nameParts[3]);
-
-
-             */
+            System.out.println(mealList.get(position).getTime());
+            mealInfo_caregiver(view, mealList.get(position));
 
         });
 
     }
-    private void mealInfo_caregiver(View view, String[] nameParts) {
+    private void mealInfo_caregiver(View view, MealEntry meal) {
+        System.out.println(meal.getDate());
         Context context = view.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.popup_meal_info_caregiver, null);
-
+        System.out.println("0");
         final PopupWindow popupWindow = control.getView().buildPopup(popupView);
 
-        // Set a click listener for the close button in the popup
-        Button closePopupBtn = popupView.findViewById(R.id.closePopupBtn);
-        closePopupBtn.setOnClickListener(v -> {
-            // Dismiss the popup
-            popupWindow.dismiss();
-        });
-
+        System.out.println("1");
         TextView meal_type = popupView.findViewById(R.id.meal_info);
-        meal_type.setText("     " + nameParts[0]);
-
+        meal_type.setText("     " + meal.getMealType());
+        System.out.println("2");
         TextView note = popupView.findViewById(R.id.textView7);
-        note.setText(" " + nameParts[2]);
+        note.setText(" " + meal.getNote());
 
-
-        // Show the popup at the center of the screen
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-
-
+        System.out.println("3");
         Button deleteMeal_btn = popupView.findViewById(R.id.deleteMeal);
         String current_time = control.getCurrentTime();
         long current_time_ToMillis = control.convertStringToMillis(current_time);
+        final int addTime = 135000;
+        long missTime = current_time_ToMillis + addTime;
 
-        String missTime = control.addMinutesToTime(nameParts[1], 135);
-        long dateToMillisMiss = control.convertStringToMillis(nameParts[4] + " " + missTime);
-
-        if (dateToMillisMiss <= current_time_ToMillis) {
+        if (missTime <= current_time_ToMillis) {
             deleteMeal_btn.setEnabled(false);
         }
 
         deleteMeal_btn.setOnClickListener(view1 -> {
-            control.getDb().deleteMeal(control.getElderlyUser().getPid(), nameParts[1], nameParts[0]);
-            this.recreate();
+            control.getDb().deleteMeal(control.getElderlyUser().getPid(), meal.getDate(), meal.getMealType());
+            control.goToActivity(CalenderOverviewCaregiver.this, CalenderOverviewCaregiver.class);
         });
     }
-
-
-
-
 }

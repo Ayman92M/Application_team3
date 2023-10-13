@@ -1,8 +1,5 @@
 package com.example.application_team3;
 
-
-import static android.provider.Settings.System.getString;
-
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
