@@ -32,17 +32,21 @@ public class AlarmReceiver extends BroadcastReceiver {
         ViewNavigator navigator = new ViewNavigator(context);
 
         String meal_type = intent.getStringExtra("mealType");
+        String meal_date = intent.getStringExtra("mealDate");
         String elderlyUserName = intent.getStringExtra("elderlyUserName");
         String elderlyName = intent.getStringExtra("elderlyName");
-        //System.out.println("- - - - -" + meal_type);
+
 
         if (elderlyName != null){
             showNotification(context, intent, meal_type, elderlyUserName, elderlyName + " has miss a meal!");
+            //navigator.crateReminder(elderlyUserName, meal_type, meal_date);
             navigator.updateNotificationCaregiver(elderlyUserName, elderlyName);
+
         }
 
         else{
             showNotification(context, intent, meal_type, elderlyUserName, textContent);
+            navigator.crateReminder(elderlyUserName, meal_type, meal_date);
             navigator.updateNotification(elderlyUserName);
         }
 

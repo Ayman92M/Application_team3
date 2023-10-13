@@ -20,10 +20,10 @@ public class Notification {
     private AlarmManager alarmManager;
     private PendingIntent pendingIntent;
 
-    Integer id;
+    int id;
 
     @SuppressLint("ScheduleExactAlarm")
-    public void setAlarm(Context context, String mealType, String pid, String elderly_name, long triggerTimeInMillis) {
+    public void setAlarm(Context context, String mealType, String pid, String elderly_name, String mealDate, long triggerTimeInMillis) {
 
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
@@ -37,19 +37,22 @@ public class Notification {
         }
 
         intent.putExtra("mealType", mealType);
+        intent.putExtra("mealDate", mealDate);
         intent.putExtra("elderlyUserName", pid);
         intent.putExtra("elderlyName", elderly_name);
 
-        id = getMealId(triggerTimeInMillis);
+
+        id = getMealId(mealType,mealDate);
 
 
         pendingIntent = PendingIntent.getBroadcast(context, id,intent, PendingIntent.FLAG_IMMUTABLE);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTimeInMillis, pendingIntent);
-        //Toast.makeText(context, "setAlarm for: " + mealType + " -> ID: " + id , Toast.LENGTH_SHORT).show();
-        System.out.println("setAlarm for: " + mealType + " -> ID: " + id + " at: " + triggerTimeInMillis);
+        Toast.makeText(context, "setAlarm for: " + mealType + " -> ID: " + id , Toast.LENGTH_SHORT).show();
+        System.out.println("setAlarm for: " + mealType + " -> ID: " + id);
     }
 
-    public int getMealId(long triggerTimeInMillis) {
+    /*
+        public int getMealId(long triggerTimeInMillis) {
 
         if (triggerTimeInMillis >= Integer.MIN_VALUE && triggerTimeInMillis <= Integer.MAX_VALUE) {
             int id = (int) (triggerTimeInMillis / 1000);
@@ -61,29 +64,45 @@ public class Notification {
         }
 
     }
-    /*
-    public int getMealId(String mealType) {
+     */
+
+    public int getMealId(String mealType, String date) {
         Integer id;
-        if("Breakfast".equals(mealType))
-            return id = 1;
+        String mealInfo;
+        if("Breakfast".equals(mealType)){
+            mealInfo = "1"+date;
+            mealInfo = mealInfo.replace("-", "");
+            return id = Integer.valueOf(mealInfo);
+        }
         else if ("Lunch".equals(mealType)) {
-            return id = 2;
+            mealInfo = "2"+date;
+            mealInfo = mealInfo.replace("-", "");
+            return id = Integer.valueOf(mealInfo);
         } else if ("Dinner".equals(mealType)) {
-            return id = 3;
+            mealInfo = "3"+date;
+            mealInfo = mealInfo.replace("-", "");
+            return id = Integer.valueOf(mealInfo);
         } else if ("Snack".equals(mealType)) {
-            return id = 4;
+            mealInfo = "1"+date;
+            mealInfo = mealInfo.replace("-", "");
+            return id = Integer.valueOf(mealInfo);
         } else {
             throw new IllegalArgumentException("Ogiltig måltidstyp: " + mealType);
         }
     }
-     */
 
 
+    public void cancelAlarm(Context context, String mealType, String mealDate) {
 
-    public void cancelAlarm(Context context, String mealType) {
+        id = getMealId(mealType, mealDate);
 
-        //id = getMealId(mealType);
         Intent intent = new Intent(context, AlarmReceiver.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            intent.setAction("unique_action_string");
+        } else {
+            intent.setAction(Intent.ACTION_BOOT_COMPLETED);
+        }
+
         pendingIntent = PendingIntent.getBroadcast(context, id, intent,PendingIntent.FLAG_IMMUTABLE);
 
         if(alarmManager == null) {
@@ -91,7 +110,7 @@ public class Notification {
         }
         alarmManager.cancel(pendingIntent);
 
-        Toast.makeText(context, "Alarm canceled", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "Alarm canceled for: " + "mealId: "+ id, Toast.LENGTH_SHORT).show();
     }
     public void createNotificationChannel(Context context, String mealType) {
 
