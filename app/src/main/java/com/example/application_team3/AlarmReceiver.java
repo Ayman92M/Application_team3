@@ -34,11 +34,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         Bundle extras = new Bundle();
         extras = intent.getExtras();
 
-        if(extras != null)
-            System.out.println(extras.getString("mealType"));
-        else
-            System.out.println("Exras is null");
-
         System.out.println(action);
 
         switch (action) {
@@ -48,6 +43,11 @@ public class AlarmReceiver extends BroadcastReceiver {
                 break;
             case NOTIFICATION_ACTION_YES:
                 System.out.println("Yes");
+
+                if(extras != null)
+                    System.out.println(extras.getString("mealType"));
+                else
+                    System.out.println("Exras is null");
 
                 // If click extra action button yes
                 break;
@@ -71,31 +71,30 @@ public class AlarmReceiver extends BroadcastReceiver {
         String action = intent.getAction();
         Bundle extras = intent.getExtras();
 
-        if(extras != null)
-            System.out.println(extras.getString("mealType"));
-        else
-            System.out.println("Exras is null");
-
         Intent YesIntent = new Intent(context, AlarmReceiver.class);
         YesIntent.setAction(NOTIFICATION_ACTION_YES);
         YesIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        YesIntent.putExtras(extras);
         PendingIntent pendingYesIntent =
                 PendingIntent.getBroadcast(context, 3, YesIntent, PendingIntent.FLAG_IMMUTABLE);
 
         Intent NoIntent = new Intent(context, AlarmReceiver.class);
         NoIntent.setAction(NOTIFICATION_ACTION_NO);
         NoIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        NoIntent.putExtras(extras);
         PendingIntent pendingNoIntent =
                 PendingIntent.getBroadcast(context, 2, NoIntent, PendingIntent.FLAG_IMMUTABLE);
 
         Intent i = new Intent(context, MainActivity.class);
         i.setAction(NOTIFICATION_ACTION_CLICK);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        i.putExtras(extras);
+
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(context, 1, i, PendingIntent.FLAG_IMMUTABLE);
+
+        if(extras != null) {
+            YesIntent.putExtras(extras);
+            NoIntent.putExtras(extras);
+            i.putExtras(extras);
+        }
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
         .setSmallIcon(R.drawable.notification_icon)
