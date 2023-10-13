@@ -13,12 +13,15 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
+
+import java.util.List;
+
 
 public class AlarmReceiver extends BroadcastReceiver {
 
     private static final String textContent = "Eat your meal!";
-    ViewNavigator navigator = new ViewNavigator(this);
-
 
     private static final int NOTIFICATION_ID = 1;
     private static final String CHANNEL_ID = "channel1";
@@ -26,6 +29,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
+        ViewNavigator navigator = new ViewNavigator(context);
 
         String meal_type = intent.getStringExtra("mealType");
         String elderlyUserName = intent.getStringExtra("elderlyUserName");
@@ -65,6 +69,8 @@ public class AlarmReceiver extends BroadcastReceiver {
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(context, 1, i, PendingIntent.FLAG_IMMUTABLE);
 
+
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
         .setSmallIcon(R.drawable.notification_icon)
         .setContentTitle(textTitle)
@@ -91,4 +97,5 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
         notificationManager.notify(NOTIFICATION_ID, builder.build());
         }
+
 }

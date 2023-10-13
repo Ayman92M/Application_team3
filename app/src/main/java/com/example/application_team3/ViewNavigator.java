@@ -69,9 +69,6 @@ public class ViewNavigator {
 
     private SharedPreferences preferences;
 
-    public ViewNavigator(AlarmReceiver alarmReceiver) {
-    }
-
     public void notis(String msg){
 
         // Skapar en toast-notifiering med ett meddelande (msg)
@@ -489,12 +486,12 @@ public class ViewNavigator {
 
     }
 
-    public void createNotificationCaregiver(String caregiver_username, String elderly_name){
+    public void createNotificationCaregiver(String elderly_username, String elderly_name){
 
         String current_time = getCurrentTime();
         long current_time_ToMillis = convertStringToMillis(current_time);
 
-        Task<List<MealEntry>> mealListTask = db.MealPlanList(caregiver_username);
+        Task<List<MealEntry>> mealListTask = db.MealPlanList(elderly_username);
         Tasks.whenAll(mealListTask).addOnCompleteListener(task ->
         { List<MealEntry> mealList = mealListTask.getResult();
 
@@ -505,7 +502,7 @@ public class ViewNavigator {
                         long dateToMillisMiss = convertStringToMillis(meal.getDate() + " " + missTime);
                         if(dateToMillisMiss <= current_time_ToMillis){
                             notification.createNotificationChannel(context, meal.getMealType());
-                            notification.setAlarm(context, meal.getMealType(), caregiver_username, elderly_name, current_time_ToMillis);
+                            notification.setAlarm(context, meal.getMealType(), elderly_username, elderly_name, current_time_ToMillis);
                             notis(meal.getMealType() + " alarm at: "+ meal.getDate() + " " + meal.getTime());
                         }
                     }
