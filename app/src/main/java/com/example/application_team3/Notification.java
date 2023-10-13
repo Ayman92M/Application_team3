@@ -16,7 +16,7 @@ import java.util.Map;
 
 public class Notification {
 
-    //private static final String CHANNEL_ID = "channel1";
+    private static final String CHANNEL_ID = "channel1";
     private AlarmManager alarmManager;
     private PendingIntent pendingIntent;
 
@@ -99,7 +99,7 @@ public class Notification {
 
             int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel notificationChannel =
-                    new NotificationChannel(mealType, mealType, importance);
+                    new NotificationChannel(CHANNEL_ID, "1", importance);
             notificationChannel.setDescription(mealType + " description");
             notificationChannel.enableVibration(true);
 
