@@ -69,6 +69,9 @@ public class ViewNavigator {
 
     private SharedPreferences preferences;
 
+    public ViewNavigator(AlarmReceiver alarmReceiver) {
+    }
+
     public void notis(String msg){
 
         // Skapar en toast-notifiering med ett meddelande (msg)

@@ -17,6 +17,7 @@ import androidx.core.app.NotificationManagerCompat;
 public class AlarmReceiver extends BroadcastReceiver {
 
     private static final String textContent = "Eat your meal!";
+    ViewNavigator navigator = new ViewNavigator(this);
 
 
     private static final int NOTIFICATION_ID = 1;
@@ -31,10 +32,16 @@ public class AlarmReceiver extends BroadcastReceiver {
         String elderlyName = intent.getStringExtra("elderlyName");
         //System.out.println("- - - - -" + meal_type);
 
-        if(elderlyName != null)
+        if (elderlyName != null){
             showNotification(context, intent, meal_type, elderlyUserName, elderlyName + " has miss a meal!");
-        else
-        showNotification(context, intent, meal_type, elderlyUserName, textContent);
+            navigator.createNotificationCaregiver(elderlyUserName, elderlyName);
+        }
+
+        else{
+            showNotification(context, intent, meal_type, elderlyUserName, textContent);
+            navigator.createNotification(elderlyUserName);
+        }
+
 
         }
 
