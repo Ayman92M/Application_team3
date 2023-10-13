@@ -71,7 +71,7 @@ public class Database {
     }
     public void updateMeal(String pid, MealEntry meal)
     {
-        mealPlanRef.child(pid).child(meal.getDate()).setValue(meal);
+        mealPlanRef.child(pid).child(meal.getDate()).child(meal.getMealType()).setValue(meal);
     }
     public void hasEatenMeal(String pid, String date, String mealType){
         mealPlanRef.child(pid).child(date).child(mealType).child("hasEaten").setValue(true);

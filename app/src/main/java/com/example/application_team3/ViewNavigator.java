@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
-import android.provider.Settings;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -472,13 +471,18 @@ public class ViewNavigator {
 
             if(mealList != null )
                 for (MealEntry meal : mealList){
-                    notification.createNotificationChannel(context, meal.getMealType());
-                    long dateToMillis = convertStringToMillis(meal.getDate()+ " " + meal.getTime());
-                    //System.out.println(" __" + meal.getMealType() + " " + meal.getDate() + " " + meal.getTime());
-                    if(dateToMillis >= current_time_ToMillis){
-                        notification.setAlarm(context, meal.getMealType(), elderly_username, null, dateToMillis);
-                        notis(meal.getMealType() + " alarm at: "+ meal.getDate() + " " + meal.getTime());
+                    if (meal.getElderlyNotificationID() == null){
+                        notification.createNotificationChannel(context, meal.getMealType());
+                        long dateToMillis = convertStringToMillis(meal.getDate()+ " " + meal.getTime());
+                        //System.out.println(" __" + meal.getMealType() + " " + meal.getDate() + " " + meal.getTime());
+                        if(dateToMillis >= current_time_ToMillis){
+                            notification.setAlarm(context, meal.getMealType(), elderly_username, null, dateToMillis);
+                            meal.setElderlyNotificationID(meal.getDate()+meal.getTime());
+                            db.updateMeal(elderly_username, meal);
+                            notis(meal.getMealType() + " alarm at: "+ meal.getDate() + " " + meal.getTime());
+                        }
                     }
+
 
                 }
 
@@ -501,9 +505,15 @@ public class ViewNavigator {
                         String missTime = addMinutesToTime(meal.getTime(), 135);
                         long dateToMillisMiss = convertStringToMillis(meal.getDate() + " " + missTime);
                         if(dateToMillisMiss <= current_time_ToMillis){
-                            notification.createNotificationChannel(context, meal.getMealType());
-                            notification.setAlarm(context, meal.getMealType(), elderly_username, elderly_name, current_time_ToMillis);
-                            notis(meal.getMealType() + " alarm at: "+ meal.getDate() + " " + meal.getTime());
+                            if (meal.getCaregiverNotificationID() == null){
+                                notification.createNotificationChannel(context, meal.getMealType());
+                                notification.setAlarm(context, meal.getMealType(), elderly_username, elderly_name, current_time_ToMillis);
+
+                                meal.setCaregiverNotificationID(meal.getDate()+meal.getTime());
+                                db.updateMeal(elderly_username, meal);
+                                notis(meal.getMealType() + " alarm at: "+ meal.getDate() + " " + meal.getTime());
+                            }
+
                         }
                     }
                 }
