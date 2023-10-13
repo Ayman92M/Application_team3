@@ -33,7 +33,7 @@ public class CaregiverElderlyPageActivity extends AppCompatActivity {
         String caregiver_username = get_info.getStringExtra("caregiverUserName");
         String caregiver_name = get_info.getStringExtra("caregiverName");
 
-        //navigator.createNotificationCaregiver(elderly_username);
+        navigator.createNotificationCaregiver(elderly_username, elderly_name);
 
         bottomAppBar.setOnMenuItemClickListener(item -> {
             if (item.getItemId()==R.id.bottomNav_back){

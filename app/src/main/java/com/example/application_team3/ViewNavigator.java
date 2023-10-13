@@ -476,7 +476,7 @@ public class ViewNavigator {
                     long dateToMillis = convertStringToMillis(meal.getDate()+ " " + meal.getTime());
                     //System.out.println(" __" + meal.getMealType() + " " + meal.getDate() + " " + meal.getTime());
                     if(dateToMillis >= current_time_ToMillis){
-                        notification.setAlarm(context, meal.getMealType(), elderly_username, dateToMillis);
+                        notification.setAlarm(context, meal.getMealType(), elderly_username, null, dateToMillis);
                         notis(meal.getMealType() + " alarm at: "+ meal.getDate() + " " + meal.getTime());
                     }
 
@@ -486,7 +486,7 @@ public class ViewNavigator {
 
     }
 
-    public void createNotificationCaregiver(String caregiver_username){
+    public void createNotificationCaregiver(String caregiver_username, String elderly_name){
 
         String current_time = getCurrentTime();
         long current_time_ToMillis = convertStringToMillis(current_time);
@@ -500,9 +500,9 @@ public class ViewNavigator {
                     if(!meal.isHasEaten()){
                         String missTime = addMinutesToTime(meal.getTime(), 135);
                         long dateToMillisMiss = convertStringToMillis(meal.getDate() + " " + missTime);
-                        if(dateToMillisMiss >= current_time_ToMillis){
+                        if(dateToMillisMiss <= current_time_ToMillis){
                             notification.createNotificationChannel(context, meal.getMealType());
-                            notification.setAlarm(context, meal.getMealType(), caregiver_username, current_time_ToMillis);
+                            notification.setAlarm(context, meal.getMealType(), caregiver_username, elderly_name, current_time_ToMillis);
                             notis(meal.getMealType() + " alarm at: "+ meal.getDate() + " " + meal.getTime());
                         }
                     }

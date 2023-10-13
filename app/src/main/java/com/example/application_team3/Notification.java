@@ -23,7 +23,7 @@ public class Notification {
     Integer id;
 
     @SuppressLint("ScheduleExactAlarm")
-    public void setAlarm(Context context, String mealType, String pid, long triggerTimeInMillis) {
+    public void setAlarm(Context context, String mealType, String pid, String elderly_name, long triggerTimeInMillis) {
 
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
@@ -38,7 +38,7 @@ public class Notification {
 
         intent.putExtra("mealType", mealType);
         intent.putExtra("elderlyUserName", pid);
-        //intent.putExtra()
+        intent.putExtra("elderlyName", elderly_name);
 
         id = getMealId(triggerTimeInMillis);
 
