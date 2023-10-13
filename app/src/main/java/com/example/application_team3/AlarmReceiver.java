@@ -13,11 +13,15 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
+
+import java.util.List;
+
 
 public class AlarmReceiver extends BroadcastReceiver {
 
     private static final String textContent = "Eat your meal!";
-
 
     private static final int NOTIFICATION_ID = 1;
     private static final String CHANNEL_ID = "channel1";
@@ -25,11 +29,27 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
+        ViewNavigator navigator = new ViewNavigator(context);
 
         String meal_type = intent.getStringExtra("mealType");
+        String meal_date = intent.getStringExtra("mealDate");
         String elderlyUserName = intent.getStringExtra("elderlyUserName");
-        //System.out.println("- - - - -" + meal_type);
-        showNotification(context, intent, meal_type, elderlyUserName, textContent);
+        String elderlyName = intent.getStringExtra("elderlyName");
+
+
+        if (elderlyName != null){
+            showNotification(context, intent, meal_type, elderlyUserName, elderlyName + " has miss a meal!");
+            //navigator.crateReminder(elderlyUserName, meal_type, meal_date);
+            navigator.updateNotificationCaregiver(elderlyUserName, elderlyName);
+
+        }
+
+        else{
+            showNotification(context, intent, meal_type, elderlyUserName, textContent);
+            navigator.crateReminder(elderlyUserName, meal_type, meal_date);
+            navigator.updateNotification(elderlyUserName);
+        }
+
 
         }
 
@@ -52,6 +72,8 @@ public class AlarmReceiver extends BroadcastReceiver {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(context, 1, i, PendingIntent.FLAG_IMMUTABLE);
+
+
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
         .setSmallIcon(R.drawable.notification_icon)
@@ -79,4 +101,5 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
         notificationManager.notify(NOTIFICATION_ID, builder.build());
         }
+
 }

@@ -7,7 +7,7 @@ public class MealEntry {
     private String time;
     private String note;
     private boolean hasEaten;
-    private String notificationID;
+    private String elderlyNotificationID, caregiverNotificationID;
 
     private MealEntry() {}
     public MealEntry(String date, String mealType, String time, String note, boolean hasEaten) {
@@ -58,11 +58,19 @@ public class MealEntry {
         this.hasEaten = hasEaten;
     }
 
-    public String getNotificationID() {
-        return notificationID;
+    public String getElderlyNotificationID() {
+        return elderlyNotificationID;
     }
 
-    public void setNotificationID(String notificationID) {
-        this.notificationID = notificationID;
+    public void setElderlyNotificationID(String elderlyNotificationID) {
+        this.elderlyNotificationID = elderlyNotificationID;
+    }
+
+    public String getCaregiverNotificationID() {
+        return caregiverNotificationID;
+    }
+
+    public void setCaregiverNotificationID(String caregiverNotificationID) {
+        this.caregiverNotificationID = caregiverNotificationID;
     }
 }
