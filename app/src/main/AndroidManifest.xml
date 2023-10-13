@@ -35,9 +35,6 @@
             android:name=".CalenderOverviewCaregiver"
             android:exported="false" />
         <activity
-            android:name=".Login_elderly"
-            android:exported="false" />
-        <activity
             android:name=".Signup_elderly"
             android:exported="false" />
         <activity
@@ -65,7 +62,7 @@
             android:name=".Log_in"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Login_elderly"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

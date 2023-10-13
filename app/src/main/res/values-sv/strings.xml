@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Application_team3</string>
+    <string name="log_in">Logga in</string>
+    <string name="user_name">Användarnamn</string>
+    <string name="password">Lösenord</string>
+    <string name="new_user">Ny användare</string>
+    <string name="sign_up">Registrera Ny</string>
+    <string name="choose_language">Välj språk</string>
+    <string name="sv">Svenska</string>
+    <string name="en">English</string>
+    <string name="list">Lista</string>
+    <string name="select_item">Välj måltid</string>
+    <string name="meal_creator">Skapa måltid</string>
+    <string name="pick_a_time_for_this_meal">Välj tid för måltid</string>
+    <string name="remember_me">kom ihåg mig</string>
+    <string name="caregiver">Vårdare</string>
+</resources>

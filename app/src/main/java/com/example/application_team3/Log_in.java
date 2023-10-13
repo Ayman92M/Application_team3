@@ -40,7 +40,7 @@ public class Log_in extends AppCompatActivity {
 
         bottomAppBar.setOnMenuItemClickListener(item -> {
             if (item.getItemId()==R.id.bottomNav_back){
-                Intent intent = new Intent(Log_in.this, MainActivity.class);
+                Intent intent = new Intent(Log_in.this, Login_elderly.class);
                 startActivity(intent);
             }
             return false;

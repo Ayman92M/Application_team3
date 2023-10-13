@@ -31,14 +31,14 @@ public class Login_elderly extends AppCompatActivity {
         checkBoxRememberMe = findViewById(R.id.checkBox_rememberPassword);
         navigator.setRememberMeValues(this, R.id.editTextText,
               R.id.editTextNumberPassword, checkBoxRememberMe);
-
-        bottomAppBar.setOnMenuItemClickListener(item -> {
-            if (item.getItemId()==R.id.bottomNav_back){
-                Intent intent = new Intent(Login_elderly.this, MainActivity.class);
-                startActivity(intent);
+        Button bt = findViewById(R.id.log_in_cargiver_bt);
+        bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navigator.goToNextActivity(Log_in.class);
             }
-            return false;
         });
+
 
     }
 
