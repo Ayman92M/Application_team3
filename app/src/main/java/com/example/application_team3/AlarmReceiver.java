@@ -31,9 +31,9 @@ public class AlarmReceiver extends BroadcastReceiver {
         String elderlyName = intent.getStringExtra("elderlyName");
         //System.out.println("- - - - -" + meal_type);
 
-        //if(elderlyName != null)
-          //  showNotification(context, intent, meal_type, elderlyUserName, elderlyName + " has miss a meal!");
-        //else
+        if(elderlyName != null)
+            showNotification(context, intent, meal_type, elderlyUserName, elderlyName + " has miss a meal!");
+        else
         showNotification(context, intent, meal_type, elderlyUserName, textContent);
 
         }
