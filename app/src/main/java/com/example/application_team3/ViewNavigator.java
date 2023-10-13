@@ -560,7 +560,7 @@ public class ViewNavigator {
                     if(!meal.isHasEaten()){
                         String missTime = addMinutesToTime(meal.getTime(), 135);
                         long dateToMillisMiss = convertStringToMillis(meal.getDate() + " " + missTime);
-                        if(dateToMillisMiss >= current_time_ToMillis){
+                        if(dateToMillisMiss <= current_time_ToMillis){
                             notification.createNotificationChannel(context, meal.getMealType());
                             notification.setAlarm(context, meal.getMealType(), elderly_username, elderly_name, current_time_ToMillis);
                             notis(meal.getMealType() + " alarm at: "+ meal.getDate() + " " + meal.getTime());
