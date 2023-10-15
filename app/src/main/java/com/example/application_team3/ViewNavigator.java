@@ -66,6 +66,9 @@ public class ViewNavigator {
     List<String> mealStrings =  new ArrayList<>();
     Database db = new Database();
     UserAccountControl user = new UserAccountControl();
+    final int ELDERLY_REMIND_AFTER = 1; //*45
+    final int ELDERLY_DEADLINE = 3;
+    final int CAREGIVER_DEADLINE = 135;
 
     private SharedPreferences preferences;
 
@@ -385,7 +388,6 @@ public class ViewNavigator {
     }
 
 
-
     //ELDERLY LIST MANAGER
     public void showElderlyList(ListView listView, String caregiverUserName, String caregiverName){
         // Hämta en lista av ElderlyEntry-objekt som tillhör en caregiver (som har caregiverUserName som username)
@@ -425,6 +427,8 @@ public class ViewNavigator {
                 // Sätt texten för användarnamn och caregiverUserName
                 textView1.setText(itemParts[0]); // Huvudtext (item)
                 textView2.setText(itemParts[1]); // Undertext (subitem)
+                updateNotificationCaregiver(itemParts[1], itemParts[0], textView1);
+                notification.runFunction(context, itemParts[1], itemParts[0], textView1);
 
                 return row;
             }
@@ -475,16 +479,16 @@ public class ViewNavigator {
                     if (meal.getElderlyNotificationID() == null){
 
                         long dateToMillis = convertStringToMillis(meal.getDate()+ " " + meal.getTime());
-                        //System.out.println(" __" + meal.getMealType() + " " + meal.getDate() + " " + meal.getTime());
+
                         if(dateToMillis >= current_time_ToMillis){
                             notification.createNotificationChannel(context, meal.getMealType());
-                            String timeUp = meal.getDate()+ " " + meal.getTime();
-                            timeUp = addMinutesToDateString(timeUp, 3);
-                            long timeUpToMillis = convertStringToMillis(timeUp);
+
+                            long timeUpToMillis = getTimeUp(meal.getDate()+ " " + meal.getTime(), ELDERLY_REMIND_AFTER);
+
                             notification.setAlarm(context, meal.getMealType(), elderly_username, null, meal.getDate(), dateToMillis, timeUpToMillis);
                             meal.setElderlyNotificationID(meal.getDate()+meal.getTime());
                             db.updateMeal(elderly_username, meal);
-                            //notis(meal.getMealType() + " alarm at: "+ meal.getDate() + " " + meal.getTime());
+
                         }
                     }
                 }
@@ -492,7 +496,11 @@ public class ViewNavigator {
 
     }
 
-    public void updateNotificationCaregiver(String elderly_username, String elderly_name){
+    private long getTimeUp(String date, int minutesToAdd){
+        long dateToMillisMiss;
+        return dateToMillisMiss = convertStringToMillis(addMinutesToDateString(date, minutesToAdd));
+    }
+    public void updateNotificationCaregiver(String elderly_username, String elderly_name, TextView textView){
 
         String current_time = getCurrentTime();
         long current_time_ToMillis = convertStringToMillis(current_time);
@@ -504,16 +512,17 @@ public class ViewNavigator {
             if(mealList != null ){
                 for (MealEntry meal : mealList){
                     if(!meal.isHasEaten()){
-                        String missTime = addMinutesToTime(meal.getTime(), 135);
-                        long dateToMillisMiss = convertStringToMillis(meal.getDate() + " " + missTime);
+
+                        long dateToMillisMiss = getTimeUp(meal.getDate()+ " "+ meal.getTime(), CAREGIVER_DEADLINE);
+
                         if(dateToMillisMiss <= current_time_ToMillis){
                             if (meal.getCaregiverNotificationID() == null){
+                                if (textView != null )  textView.setError("miss");
                                 notification.createNotificationChannel(context, meal.getMealType());
                                 notification.setAlarm(context, meal.getMealType(), elderly_username, elderly_name, meal.getDate(), current_time_ToMillis, current_time_ToMillis);
 
                                 meal.setCaregiverNotificationID(meal.getDate()+meal.getTime());
                                 db.updateMeal(elderly_username, meal);
-                                //notis(meal.getMealType() + " alarm at: "+ meal.getDate() + " " + meal.getTime());
                             }
 
                         }
@@ -539,19 +548,15 @@ public class ViewNavigator {
                 for (MealEntry meal : mealList){
 
                     long dateToMillis = convertStringToMillis(meal.getDate()+ " " + meal.getTime());
-                    String timeUp = meal.getDate()+ " " + meal.getTime();
-                    timeUp = addMinutesToDateString(timeUp, 3);
-                    long timeUpToMillis = convertStringToMillis(timeUp);
+                    long timeUpToMillis = getTimeUp(meal.getDate()+ " " + meal.getTime(), ELDERLY_DEADLINE);
 
                     if(dateToMillis >= current_time_ToMillis){
                         notification.createNotificationChannel(context, meal.getMealType());
                         notification.setAlarm(context, meal.getMealType(), elderly_username, null, meal.getDate(), dateToMillis, timeUpToMillis);
 
-                        System.out.println(meal.getMealType() + " " + meal.getDate() + " " + meal.getTime() +" --> TimeUp:" + timeUp);
-
                         meal.setElderlyNotificationID(meal.getDate()+meal.getTime());
                         db.updateMeal(elderly_username, meal);
-                        //notis(meal.getMealType() + " alarm at: "+ meal.getDate() + " " + meal.getTime());
+
                     }
 
                 }
@@ -564,12 +569,11 @@ public class ViewNavigator {
         notification.createNotificationChannel(context, MealType);
         String currentTime = getCurrentTime();
 
-        String reminderTime = addMinutesToDateString(currentTime, 1);
+        String reminderTime = addMinutesToDateString(currentTime, ELDERLY_REMIND_AFTER);
         long reminderTimeToMillis = convertStringToMillis(reminderTime);
 
         int reminderNum =calculateDateDifferenceInMinutes(reminderTimeToMillis, timeUpToMillis);
-        reminderNum = Math.abs(reminderNum -2) +1;
-        System.out.println("reminder num: " + reminderNum + " at: " + reminderTime);
+        reminderNum = Math.abs(reminderNum -2) +ELDERLY_REMIND_AFTER;
 
         if (reminderNum <= 3){
            System.out.println("reminder num: " + reminderNum + " at: " + reminderTime);
@@ -612,7 +616,6 @@ public class ViewNavigator {
 
     //MEAL LIST MANAGER
     public void showMealList(ListView listView, int layoutResourceId, boolean elderlyView, String elderlyUserName, String elderlyName, String date){
-        // Hämta en lista av ElderlyEntry-objekt som tillhör en caregiver (som har caregiverUserName som username)
 
         Task<DataSnapshot> mealPlanTask = db.fetchMealPlanDate(elderlyUserName, date);
         // Hämta resultatet
@@ -681,15 +684,7 @@ public class ViewNavigator {
                 textView2.setText(itemParts[1]); // Undertext (subitem)
                 mealListChangeColor(txt_bakground, position);
 
-                String date_timeMeal = itemParts[4] + " " + itemParts[1];
-                String date_timeUp = addMinutesToDateString(date_timeMeal, 135);
-                long date_timeUpToMillis = convertStringToMillis(date_timeUp);
-
-                String current_time = getCurrentTime();
-                long current_time_ToMillisMiss = convertStringToMillis(current_time);
-
-                //System.out.println("-- Meal at --" + itemParts[4] + " " + itemParts[1] +  " --> MissTime: " + date_timeUp + " -- Now: " + current_time);
-                if("false".equals(itemParts[3]) && date_timeUpToMillis <= current_time_ToMillisMiss){
+                if("false".equals(itemParts[3]) && isTimeUp(itemParts, 135)){
                     textView1.setError("miss");
                 }
 
@@ -731,19 +726,11 @@ public class ViewNavigator {
                 String[] nameParts = selectedItem.split(", ");
 
 
-
                 if(elderlyView)
                     mealInfo_elderly(listView, layoutResourceId, elderlyView, view, nameParts, elderlyUserName, elderlyName);
                 else
                     mealInfo_caregiver(view, nameParts, elderlyUserName, elderlyName);
-                /*
-                goToNextActivity(Meal_info.class, "----"
-                              + nameParts[0]+ " -- " + nameParts[1] +" -- " + nameParts[2] +" -- " + nameParts[3] ,
-                    "elderlyName",elderlyName, "elderlyUserName", elderlyUserName,
-                  "mealType", nameParts[0], "mealTime", nameParts[1], "mealNote", nameParts[2], "hasEaten", nameParts[3]);
 
-
-                 */
 
             }
         });
@@ -765,10 +752,7 @@ public class ViewNavigator {
         Button closePopupBtn = popupView.findViewById(R.id.closePopupBtn);
         closePopupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                // Dismiss the popup
-                popupWindow.dismiss();
-            }
+            public void onClick(View v) {   popupWindow.dismiss();}
         });
 
         TextView meal_type = popupView.findViewById(R.id.meal_info);
@@ -784,13 +768,7 @@ public class ViewNavigator {
         Button bt_sant = popupView.findViewById(R.id.bt_sant);
         Button bt_falsk = popupView.findViewById(R.id.bt_falsk);
 
-        String current_time = getCurrentdate(); //2023-10-12
-
-        String today = nameParts[4]; //2023-11-12
-
-        //System.out.println("current_time: " + current_time +" --  dateToMillisMiss "+ nameParts[4] + " " + missTime);
-
-        if(!nameParts[4].equals(current_time) ){
+        if(!isItToday(nameParts[4])){
             bt_sant.setEnabled(false);
             bt_falsk.setEnabled(false);
         }
@@ -808,60 +786,12 @@ public class ViewNavigator {
 
         bt_falsk.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                ///////////////////
-                notis("send to database - Falsk. "+ elderlyUserName + " " + elderlyName + " " + nameParts[0] + " " + nameParts[1]);
-            }
+            public void onClick(View view) {    popupWindow.dismiss();}
         });
 
     }
 
-    public int getMealId(String mealType, String date) {
-        Integer id;
-        String mealInfo;
-        if("Breakfast".equals(mealType)){
-            mealInfo = "1"+date;
-            mealInfo = mealInfo.replace("-", "");
-            return id = Integer.valueOf(mealInfo);
-        }
-        else if ("Lunch".equals(mealType)) {
-            mealInfo = "2"+date;
-            mealInfo = mealInfo.replace("-", "");
-            return id = Integer.valueOf(mealInfo);
-        } else if ("Dinner".equals(mealType)) {
-            mealInfo = "3"+date;
-            mealInfo = mealInfo.replace("-", "");
-            return id = Integer.valueOf(mealInfo);
-        } else if ("Snack".equals(mealType)) {
-            mealInfo = "1"+date;
-            mealInfo = mealInfo.replace("-", "");
-            return id = Integer.valueOf(mealInfo);
-        } else {
-            throw new IllegalArgumentException("Ogiltig måltidstyp: " + mealType);
-        }
-    }
-    public String getADay(String currentDate, int x) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
-        try {
-            // Parse the input date string
-            Date date = sdf.parse(currentDate);
-
-            // Create a Calendar instance and set it to the parsed date
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date);
-
-            // Increment the day by 1
-            calendar.add(Calendar.DAY_OF_MONTH, x);
-
-            // Format the updated date into "yyyy:MM:dd" format
-            return sdf.format(calendar.getTime());
-        } catch (ParseException e) {
-            e.printStackTrace();
-            // Handle parsing exception if needed
-            return null;
-        }
-    }
     private void mealInfo_caregiver(View view, String[] mealParts, String elderlyUserName, String elderlyName){
         Context context = view.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -1016,17 +946,11 @@ public class ViewNavigator {
         return sdf.format(calendar.getTime());
     }
 
-    public String getCurrentdate(){
+    public boolean isItToday(String date){
         Calendar calendar = Calendar.getInstance();
-
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH) + 1; // Months are 0-based, so we add 1
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-        // Format the date and time into "yyyy-MM-dd HH:mm" format
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
-        return sdf.format(calendar.getTime());
+        return date.equals(sdf.format(calendar.getTime()));
     }
 
     //SharedPreferences

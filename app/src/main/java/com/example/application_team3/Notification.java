@@ -8,6 +8,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Calendar;
@@ -30,7 +31,7 @@ public class Notification {
         Intent intent = new Intent(context, AlarmReceiver.class);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            intent.setAction("unique_action_string");
+            intent.setAction("MEAL_ACTION");
         } else {
             // Use BOOT_COMPLETED action for pre-Oreo devices
             intent.setAction(Intent.ACTION_BOOT_COMPLETED);
@@ -51,6 +52,44 @@ public class Notification {
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTimeInMillis, pendingIntent);
         //Toast.makeText(context, "setAlarm for: " + mealType + " -> ID: " + id , Toast.LENGTH_SHORT).show();
         System.out.println("-------> setAlarm for: " + mealType + " -> ID: " + id);
+    }
+
+
+    public void runFunction(Context context, String elderlyUserName, String elderlyName, TextView textview) {
+
+        ViewNavigator navigator = new ViewNavigator(context);
+
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        Intent intent = new Intent(context, AlarmReceiver.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            intent.setAction("RUN_FUNCTION_ACTION");
+        } else {
+            // Use BOOT_COMPLETED action for pre-Oreo devices
+            intent.setAction(Intent.ACTION_BOOT_COMPLETED);
+        }
+
+        pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+
+        // Set up a repeating alarm that starts after 1 hour and repeats every hour
+        long repeatInterval = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
+        long triggerTime = System.currentTimeMillis() + repeatInterval;
+
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, triggerTime, repeatInterval, pendingIntent);
+
+        // Use the same action for creating the notification channel
+        createNotificationChannel(context, "RUN_FUNCTION_ACTION");
+
+        if (elderlyUserName != null && elderlyName != null) {
+            intent.putExtra("elderlyUserName", elderlyUserName);
+            intent.putExtra("elderlyName", elderlyName);
+
+            // Consider whether you need a new instance of ViewNavigator for each call
+            System.out.println("---- runFunction ----");
+            navigator.updateNotificationCaregiver(elderlyUserName, elderlyName, textview);
+        }
+
+
     }
 
 

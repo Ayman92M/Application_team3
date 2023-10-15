@@ -29,6 +29,9 @@ import java.util.concurrent.TimeUnit;
 public class AlarmReceiver extends BroadcastReceiver {
 
     private static final String textContent = "Eat your meal!";
+    private static final String RUN_FUNCTION_ACTION = "RUN_FUNCTION_ACTION";
+    private static final String MEAL_ACTION = "MEAL_ACTION";
+
 
     private static final int NOTIFICATION_ID = 1;
     private static final String CHANNEL_ID = "channel1";
@@ -36,26 +39,48 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        ViewNavigator navigator = new ViewNavigator(context);
+        if (intent.getAction() != null && intent.getAction().equals(MEAL_ACTION)){
+            ViewNavigator navigator = new ViewNavigator(context);
 
-        String meal_type = intent.getStringExtra("mealType");
-        String meal_date = intent.getStringExtra("mealDate");
-        String elderlyUserName = intent.getStringExtra("elderlyUserName");
-        String elderlyName = intent.getStringExtra("elderlyName");
-        long triggerTimeInMillis = intent.getLongExtra("triggerTimeInMillis",0L);
-        long timeUpToMillis = intent.getLongExtra("timeUpToMillis",0L);
+            String meal_type = intent.getStringExtra("mealType");
+            String meal_date = intent.getStringExtra("mealDate");
+            String elderlyUserName = intent.getStringExtra("elderlyUserName");
+            String elderlyName = intent.getStringExtra("elderlyName");
+            long triggerTimeInMillis = intent.getLongExtra("triggerTimeInMillis",0L);
+            long timeUpToMillis = intent.getLongExtra("timeUpToMillis",0L);
 
-        if (elderlyName != null){
-            showNotification(context, intent, meal_type, elderlyUserName, elderlyName + " has miss a meal!");
-            //navigator.crateReminder(elderlyUserName, meal_type, meal_date);
-            navigator.updateNotificationCaregiver(elderlyUserName, elderlyName);
+            if (elderlyName != null){
+                showNotification(context, intent, elderlyName + " has miss a meal!", elderlyUserName, meal_type);
+                //navigator.updateNotificationCaregiver(elderlyUserName, elderlyName);
+
+            }
+
+            else{
+                showNotification(context, intent, meal_type,  elderlyUserName, textContent);
+                navigator.crateReminder(elderlyUserName, meal_type, meal_date, triggerTimeInMillis, timeUpToMillis);
+                navigator.updateNotification(elderlyUserName);
+            }
 
         }
 
-        else{
-            showNotification(context, intent, meal_type,  elderlyUserName, textContent);
-            navigator.crateReminder(elderlyUserName, meal_type, meal_date, triggerTimeInMillis, timeUpToMillis);
-            navigator.updateNotification(elderlyUserName);
+        if (intent.getAction() != null && intent.getAction().equals(RUN_FUNCTION_ACTION)) {
+            // Handle the repeating alarm action (runFunction)
+
+            ViewNavigator navigator = new ViewNavigator(context);
+
+            String elderlyUserName = intent.getStringExtra("elderlyUserName");
+            String elderlyName = intent.getStringExtra("elderlyName");
+            System.out.println("VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV");
+            System.out.println("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
+            System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+            System.out.println("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY");
+            System.out.println("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ");
+
+            //Notification notification = new Notification();
+            //notification.runFunction(context, elderlyUserName, elderlyName, null);
+
+            navigator.updateNotificationCaregiver(elderlyUserName, elderlyName, null);
+
         }
 
 
