@@ -51,7 +51,7 @@ public class Notification {
         pendingIntent = PendingIntent.getBroadcast(context, id,intent, PendingIntent.FLAG_IMMUTABLE);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTimeInMillis, pendingIntent);
         //Toast.makeText(context, "setAlarm for: " + mealType + " -> ID: " + id , Toast.LENGTH_SHORT).show();
-        System.out.println("-------> setAlarm for: " + mealType + " -> ID: " + id);
+        //System.out.println("-------> setAlarm for: " + mealType + " -> ID: " + id);
     }
 
 
@@ -69,26 +69,21 @@ public class Notification {
             intent.setAction(Intent.ACTION_BOOT_COMPLETED);
         }
 
-        pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
-
-        // Set up a repeating alarm that starts after 1 hour and repeats every hour
-        long repeatInterval = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
-        long triggerTime = System.currentTimeMillis() + repeatInterval;
-
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, triggerTime, repeatInterval, pendingIntent);
-
-        // Use the same action for creating the notification channel
-        createNotificationChannel(context, "RUN_FUNCTION_ACTION");
-
         if (elderlyUserName != null && elderlyName != null) {
             intent.putExtra("elderlyUserName", elderlyUserName);
             intent.putExtra("elderlyName", elderlyName);
 
-            // Consider whether you need a new instance of ViewNavigator for each call
-            System.out.println("---- runFunction ----");
-            navigator.updateNotificationCaregiver(elderlyUserName, elderlyName, textview);
+            System.out.println("---- runFunction ---- "+ " -elderlyName: " + elderlyName + " -elderlyUserName: " + elderlyUserName);
+            //navigator.updateNotificationCaregiver(elderlyUserName, elderlyName, textview);
         }
 
+
+        pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+        long repeatInterval = AlarmManager.INTERVAL_FIFTEEN_MINUTES/15;
+        long triggerTime = System.currentTimeMillis() + repeatInterval;
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, triggerTime, repeatInterval, pendingIntent);
+
+        createNotificationChannel(context, "RUN_FUNCTION_ACTION");
 
     }
 

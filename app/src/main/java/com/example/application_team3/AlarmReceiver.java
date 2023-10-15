@@ -38,9 +38,10 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        ViewNavigator navigator = new ViewNavigator(context);
 
         if (intent.getAction() != null && intent.getAction().equals(MEAL_ACTION)){
-            ViewNavigator navigator = new ViewNavigator(context);
+
 
             String meal_type = intent.getStringExtra("mealType");
             String meal_date = intent.getStringExtra("mealDate");
@@ -50,7 +51,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             long timeUpToMillis = intent.getLongExtra("timeUpToMillis",0L);
 
             if (elderlyName != null){
-                showNotification(context, intent, elderlyName + " has miss a meal!", elderlyUserName, meal_type);
+                showNotification(context, intent, elderlyName.toUpperCase() + " has miss a meal!", elderlyUserName, meal_type);
                 //navigator.updateNotificationCaregiver(elderlyUserName, elderlyName);
 
             }
@@ -66,18 +67,11 @@ public class AlarmReceiver extends BroadcastReceiver {
         if (intent.getAction() != null && intent.getAction().equals(RUN_FUNCTION_ACTION)) {
             // Handle the repeating alarm action (runFunction)
 
-            ViewNavigator navigator = new ViewNavigator(context);
 
             String elderlyUserName = intent.getStringExtra("elderlyUserName");
             String elderlyName = intent.getStringExtra("elderlyName");
-            System.out.println("VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV");
-            System.out.println("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
-            System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-            System.out.println("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY");
-            System.out.println("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ");
 
-            //Notification notification = new Notification();
-            //notification.runFunction(context, elderlyUserName, elderlyName, null);
+            System.out.println("---- AlarmReceiver ---- "+ " -elderlyName: " + elderlyName + " -elderlyUserName: " + elderlyUserName);
 
             navigator.updateNotificationCaregiver(elderlyUserName, elderlyName, null);
 

@@ -473,7 +473,7 @@ public class ViewNavigator {
         Task<List<MealEntry>> mealListTask = db.MealPlanList(elderly_username);
         Tasks.whenAll(mealListTask).addOnCompleteListener(task ->
         { List<MealEntry> mealList = mealListTask.getResult();
-
+            System.out.println(" -- updateNotification --");
             if(mealList != null )
                 for (MealEntry meal : mealList){
                     if (meal.getElderlyNotificationID() == null){
@@ -486,6 +486,7 @@ public class ViewNavigator {
                             long timeUpToMillis = getTimeUp(meal.getDate()+ " " + meal.getTime(), ELDERLY_REMIND_AFTER);
 
                             notification.setAlarm(context, meal.getMealType(), elderly_username, null, meal.getDate(), dateToMillis, timeUpToMillis);
+                            System.out.println("updateNotification ---> setAlarm for: " + meal.getMealType() + " -> at: " + meal.getDate()+ " " + meal.getTime());
                             meal.setElderlyNotificationID(meal.getDate()+meal.getTime());
                             db.updateMeal(elderly_username, meal);
 
@@ -520,7 +521,7 @@ public class ViewNavigator {
                                 if (textView != null )  textView.setError("miss");
                                 notification.createNotificationChannel(context, meal.getMealType());
                                 notification.setAlarm(context, meal.getMealType(), elderly_username, elderly_name, meal.getDate(), current_time_ToMillis, current_time_ToMillis);
-
+                                System.out.println("updateNotificationCaregiver ---> setAlarm for: " + meal.getMealType() + " -> at: " + meal.getDate()+ " " + meal.getTime());
                                 meal.setCaregiverNotificationID(meal.getDate()+meal.getTime());
                                 db.updateMeal(elderly_username, meal);
                             }
@@ -553,7 +554,7 @@ public class ViewNavigator {
                     if(dateToMillis >= current_time_ToMillis){
                         notification.createNotificationChannel(context, meal.getMealType());
                         notification.setAlarm(context, meal.getMealType(), elderly_username, null, meal.getDate(), dateToMillis, timeUpToMillis);
-
+                        System.out.println("createNotification ---> setAlarm for: " + meal.getMealType() + " -> at: " + meal.getDate()+ " " + meal.getTime());
                         meal.setElderlyNotificationID(meal.getDate()+meal.getTime());
                         db.updateMeal(elderly_username, meal);
 
