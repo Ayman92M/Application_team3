@@ -874,46 +874,6 @@ public class ViewNavigator {
         return -1;
     }
 
-    public static String addMinutesToTime(String timeStr, int minutesToAdd) {
-        // Define an array of possible patterns
-        String[] patterns = {"HH:mm", "H:mm", "HH,M", "H,M", "HH:m", "H:m"};
-
-        // Attempt to parse the input time using each pattern
-        LocalTime originalTime = null;
-        for (String pattern : patterns) {
-            try {
-                DateTimeFormatter formatter = null;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    formatter = DateTimeFormatter.ofPattern(pattern);
-                }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    originalTime = LocalTime.parse(timeStr, formatter);
-                }
-                break; // Break if parsing is successful
-            } catch (Exception e) {
-            // Continue to the next pattern if parsing fails
-            }
-        }
-
-        if (originalTime == null) {
-            throw new IllegalArgumentException("Unsupported time format: " + timeStr);
-        }
-
-        // Add minutes to the original time
-        LocalTime newTime = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            newTime = originalTime.plusMinutes(minutesToAdd);
-        }
-
-        // Format the result back to the original time format
-        String resultTimeStr = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            resultTimeStr = newTime.format(DateTimeFormatter.ofPattern("HH:mm"));
-        }
-
-        return resultTimeStr;
-    }
-
     public String addMinutesToDateString(String inputDate, int minutesToAdd) {
         // Define the date format
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
