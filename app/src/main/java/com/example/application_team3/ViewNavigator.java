@@ -37,6 +37,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 /*
     För att kunna använda de här funktioner,
@@ -477,7 +478,10 @@ public class ViewNavigator {
                         //System.out.println(" __" + meal.getMealType() + " " + meal.getDate() + " " + meal.getTime());
                         if(dateToMillis >= current_time_ToMillis){
                             notification.createNotificationChannel(context, meal.getMealType());
-                            notification.setAlarm(context, meal.getMealType(), elderly_username, null, meal.getDate(), dateToMillis);
+                            String timeUp = meal.getDate()+ " " + meal.getTime();
+                            timeUp = addMinutesToDateString(timeUp, 3);
+                            long timeUpToMillis = convertStringToMillis(timeUp);
+                            notification.setAlarm(context, meal.getMealType(), elderly_username, null, meal.getDate(), dateToMillis, timeUpToMillis);
                             meal.setElderlyNotificationID(meal.getDate()+meal.getTime());
                             db.updateMeal(elderly_username, meal);
                             //notis(meal.getMealType() + " alarm at: "+ meal.getDate() + " " + meal.getTime());
@@ -505,7 +509,7 @@ public class ViewNavigator {
                         if(dateToMillisMiss <= current_time_ToMillis){
                             if (meal.getCaregiverNotificationID() == null){
                                 notification.createNotificationChannel(context, meal.getMealType());
-                                notification.setAlarm(context, meal.getMealType(), elderly_username, elderly_name, meal.getDate(), current_time_ToMillis);
+                                notification.setAlarm(context, meal.getMealType(), elderly_username, elderly_name, meal.getDate(), current_time_ToMillis, current_time_ToMillis);
 
                                 meal.setCaregiverNotificationID(meal.getDate()+meal.getTime());
                                 db.updateMeal(elderly_username, meal);
@@ -535,10 +539,16 @@ public class ViewNavigator {
                 for (MealEntry meal : mealList){
 
                     long dateToMillis = convertStringToMillis(meal.getDate()+ " " + meal.getTime());
-                    //System.out.println(" __" + meal.getMealType() + " " + meal.getDate() + " " + meal.getTime());
+                    String timeUp = meal.getDate()+ " " + meal.getTime();
+                    timeUp = addMinutesToDateString(timeUp, 3);
+                    long timeUpToMillis = convertStringToMillis(timeUp);
+
                     if(dateToMillis >= current_time_ToMillis){
                         notification.createNotificationChannel(context, meal.getMealType());
-                        notification.setAlarm(context, meal.getMealType(), elderly_username, null, meal.getDate(), dateToMillis);
+                        notification.setAlarm(context, meal.getMealType(), elderly_username, null, meal.getDate(), dateToMillis, timeUpToMillis);
+
+                        System.out.println(meal.getMealType() + " " + meal.getDate() + " " + meal.getTime() +" --> TimeUp:" + timeUp);
+
                         meal.setElderlyNotificationID(meal.getDate()+meal.getTime());
                         db.updateMeal(elderly_username, meal);
                         //notis(meal.getMealType() + " alarm at: "+ meal.getDate() + " " + meal.getTime());
@@ -550,27 +560,32 @@ public class ViewNavigator {
 
     }
 
-    public void crateReminder(String elderly_username, String MealType, String mealDate){
+    public void crateReminder(String elderly_username, String MealType, String mealDate, long triggerTimeInMillis, long timeUpToMillis){
         notification.createNotificationChannel(context, MealType);
         String currentTime = getCurrentTime();
-        currentTime = addMinutesToDateString(currentTime, 1);
-        long currentTimeToMillis = convertStringToMillis(currentTime);
-        System.out.println("currentTime +1:" + currentTime);
 
-        String missTime = addMinutesToDateString(currentTime, 3);
-        long missTimeToMillis = convertStringToMillis(missTime);
+        String reminderTime = addMinutesToDateString(currentTime, 1);
+        long reminderTimeToMillis = convertStringToMillis(reminderTime);
 
+        int reminderNum =calculateDateDifferenceInMinutes(reminderTimeToMillis, timeUpToMillis);
+        reminderNum = Math.abs(reminderNum -2) +1;
+        System.out.println("reminder num: " + reminderNum + " at: " + reminderTime);
 
-       if (currentTimeToMillis < missTimeToMillis)
-            notification.setAlarm(context, MealType, elderly_username, null, mealDate, currentTimeToMillis);
+        if (reminderNum <= 3){
+           System.out.println("reminder num: " + reminderNum + " at: " + reminderTime);
+           notification.setAlarm(context, MealType , elderly_username, null, mealDate, reminderTimeToMillis, timeUpToMillis);
+        }
+
     }
+
+
 
     /*
      public void createNotificationCaregiver(String elderly_username, String elderly_name){
 
         String current_time = getCurrentTime();
         long current_time_ToMillis = convertStringToMillis(current_time);
-
+§
         Task<List<MealEntry>> mealListTask = db.MealPlanList(elderly_username);
         Tasks.whenAll(mealListTask).addOnCompleteListener(task ->
         { List<MealEntry> mealList = mealListTask.getResult();
@@ -598,35 +613,23 @@ public class ViewNavigator {
     //MEAL LIST MANAGER
     public void showMealList(ListView listView, int layoutResourceId, boolean elderlyView, String elderlyUserName, String elderlyName, String date){
         // Hämta en lista av ElderlyEntry-objekt som tillhör en caregiver (som har caregiverUserName som username)
-        System.out.println("showMealList() - date:  " +date +" - "+ elderlyUserName);
+
         Task<DataSnapshot> mealPlanTask = db.fetchMealPlanDate(elderlyUserName, date);
         // Hämta resultatet
         Tasks.whenAll(mealPlanTask).addOnCompleteListener(task -> {
             DataSnapshot mealsData = mealPlanTask.getResult();
             mealStrings.clear();
             if(mealsData != null && mealsData.hasChildren()){
-                System.out.println("IF - SATS");
+
                 for(DataSnapshot mealData : mealsData.getChildren()) {
                     MealEntry meal = mealData.getValue(MealEntry.class);
                     mealString = meal.getMealType() +", " + meal.getTime()+", "
                             + meal.getNote() +", "+ meal.isHasEaten() + ", "+  date;
                     mealStrings.add(mealString);
-                    System.out.println(elderlyName + " " + date);
-                    System.out.println(mealString);
-                    //notification.setAlarm(context, meal.getMealType(), convertStringToMillis(date + " " + meal.getTime()));
+
                 }
             }
-
-
-            for (String mealString : mealStrings)
-                System.out.println(mealString);
-
-
             sortMealByTime(mealStrings);
-
-            for (String mealString : mealStrings)
-                System.out.println(mealString);
-
             setupMealListView(listView, layoutResourceId,  elderlyView, elderlyUserName, elderlyName);
 
         });
@@ -678,17 +681,15 @@ public class ViewNavigator {
                 textView2.setText(itemParts[1]); // Undertext (subitem)
                 mealListChangeColor(txt_bakground, position);
 
-                long dateToMillis = convertStringToMillis(itemParts[4] + " " + itemParts[1]);
-
-                String missTime = addMinutesToTime(itemParts[1], 135);
-                long dateToMillisMiss = convertStringToMillis(itemParts[4] + " " + missTime);
+                String date_timeMeal = itemParts[4] + " " + itemParts[1];
+                String date_timeUp = addMinutesToDateString(date_timeMeal, 135);
+                long date_timeUpToMillis = convertStringToMillis(date_timeUp);
 
                 String current_time = getCurrentTime();
                 long current_time_ToMillisMiss = convertStringToMillis(current_time);
 
-                //notis(itemParts[4] + " " + itemParts[1] +  " --> MissTime: " + missTime + " -- Now: " + current_time);
-                System.out.println("----" + itemParts[4] + " " + itemParts[1] +  " --> MissTime: " + missTime + " -- Now: " + current_time);
-                if("false".equals(itemParts[3]) && dateToMillisMiss <= current_time_ToMillisMiss){
+                //System.out.println("-- Meal at --" + itemParts[4] + " " + itemParts[1] +  " --> MissTime: " + date_timeUp + " -- Now: " + current_time);
+                if("false".equals(itemParts[3]) && date_timeUpToMillis <= current_time_ToMillisMiss){
                     textView1.setError("miss");
                 }
 
@@ -861,7 +862,7 @@ public class ViewNavigator {
             return null;
         }
     }
-    private void mealInfo_caregiver(View view, String[] nameParts, String elderlyUserName, String elderlyName){
+    private void mealInfo_caregiver(View view, String[] mealParts, String elderlyUserName, String elderlyName){
         Context context = view.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.popup_meal_info_caregiver, null);
@@ -883,10 +884,10 @@ public class ViewNavigator {
         });
 
         TextView meal_type = popupView.findViewById(R.id.meal_info);
-        meal_type.setText("     " + nameParts[0]);
+        meal_type.setText("     " + mealParts[0]);
 
         TextView note = popupView.findViewById(R.id.textView7);
-        note.setText(" " + nameParts[2]);
+        note.setText(" " + mealParts[2]);
 
 
         // Show the popup at the center of the screen
@@ -894,15 +895,7 @@ public class ViewNavigator {
 
 
         Button bt_delete_meal = popupView.findViewById(R.id.deleteMeal);
-        String current_time = getCurrentTime();
-        long current_time_ToMillis = convertStringToMillis(current_time);
-
-        String missTime = addMinutesToTime(nameParts[1], 135);
-        long dateToMillisMiss = convertStringToMillis(nameParts[4] + " " + missTime);
-
-        if(dateToMillisMiss <= current_time_ToMillis){
-            bt_delete_meal.setEnabled(false);
-        }
+        bt_delete_meal.setEnabled(isTimeUp(mealParts, -720) ? false : true);
 
         bt_delete_meal.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -915,12 +908,25 @@ public class ViewNavigator {
 
     }
 
+    public int calculateDateDifferenceInMinutes(long currentTime, long timeUp) {
+        long timeDifference = timeUp - currentTime;
+        int differenceInMinutes = (int) TimeUnit.MILLISECONDS.toMinutes(timeDifference);
+        return differenceInMinutes;
+    }
+    private boolean isTimeUp(String[] itemParts, int minutesToAdd){
+        String current_time = getCurrentTime();
+        long current_time_ToMillis = convertStringToMillis(current_time);
+
+        String date_timeMeal = itemParts[4] + " " + itemParts[1];
+        String date_timeUp = addMinutesToDateString(date_timeMeal, minutesToAdd);
+        long date_timeUpToMillis = convertStringToMillis(date_timeUp);
+
+        return date_timeUpToMillis <= current_time_ToMillis;
+    }
     public long convertStringToMillis(String dateString) {
         List<String> possibleFormats = new ArrayList<>();
         possibleFormats.add("yyyy-MM-dd HH:mm");
-        possibleFormats.add("yyyy-MM-d HH:mm");
-        possibleFormats.add("yyyy-M-dd HH:mm");
-        possibleFormats.add("yyyy-MM-d H:mm");
+
 
         for (String format : possibleFormats) {
             try {
@@ -986,18 +992,14 @@ public class ViewNavigator {
             // Parse the input date string
             Date date = dateFormat.parse(inputDate);
 
-            // Create a Calendar instance and set it to the parsed date
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(date);
-
-            // Add the specified number of minutes
             calendar.add(Calendar.MINUTE, minutesToAdd);
-
-            // Format the result back to the desired string format
+            //System.out.println(inputDate +" + " + minutesToAdd + " --> " + dateFormat.format(calendar.getTime()) );
             return dateFormat.format(calendar.getTime());
         } catch (ParseException e) {
             e.printStackTrace(); // Handle the exception according to your needs
-            return null; // Return null in case of an error
+            return null;
         }
     }
     public String getCurrentTime(){

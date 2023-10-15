@@ -23,7 +23,7 @@ public class Notification {
     int id;
 
     @SuppressLint("ScheduleExactAlarm")
-    public void setAlarm(Context context, String mealType, String pid, String elderly_name, String mealDate, long triggerTimeInMillis) {
+    public void setAlarm(Context context, String mealType, String pid, String elderly_name, String mealDate, long triggerTimeInMillis, long timeUpToMillis) {
 
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
@@ -40,31 +40,19 @@ public class Notification {
         intent.putExtra("mealDate", mealDate);
         intent.putExtra("elderlyUserName", pid);
         intent.putExtra("elderlyName", elderly_name);
+        intent.putExtra("triggerTimeInMillis", triggerTimeInMillis);
+        intent.putExtra("timeUpToMillis", timeUpToMillis);
+
+
 
 
         id = getMealId(mealType,mealDate);
-
-
         pendingIntent = PendingIntent.getBroadcast(context, id,intent, PendingIntent.FLAG_IMMUTABLE);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTimeInMillis, pendingIntent);
-        Toast.makeText(context, "setAlarm for: " + mealType + " -> ID: " + id , Toast.LENGTH_SHORT).show();
-        System.out.println("setAlarm for: " + mealType + " -> ID: " + id);
+        //Toast.makeText(context, "setAlarm for: " + mealType + " -> ID: " + id , Toast.LENGTH_SHORT).show();
+        System.out.println("-------> setAlarm for: " + mealType + " -> ID: " + id);
     }
 
-    /*
-        public int getMealId(long triggerTimeInMillis) {
-
-        if (triggerTimeInMillis >= Integer.MIN_VALUE && triggerTimeInMillis <= Integer.MAX_VALUE) {
-            int id = (int) (triggerTimeInMillis / 1000);
-            return id;
-        }
-        else{
-            int id = (int) triggerTimeInMillis;
-            return id;
-        }
-
-    }
-     */
 
     public int getMealId(String mealType, String date) {
         Integer id;
@@ -90,7 +78,6 @@ public class Notification {
             throw new IllegalArgumentException("Ogiltig måltidstyp: " + mealType);
         }
     }
-
 
     public void cancelAlarm(Context context, String mealType, String mealDate) {
 

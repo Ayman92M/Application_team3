@@ -16,7 +16,14 @@ import androidx.core.app.NotificationManagerCompat;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 
 public class AlarmReceiver extends BroadcastReceiver {
@@ -35,7 +42,8 @@ public class AlarmReceiver extends BroadcastReceiver {
         String meal_date = intent.getStringExtra("mealDate");
         String elderlyUserName = intent.getStringExtra("elderlyUserName");
         String elderlyName = intent.getStringExtra("elderlyName");
-
+        long triggerTimeInMillis = intent.getLongExtra("triggerTimeInMillis",0L);
+        long timeUpToMillis = intent.getLongExtra("timeUpToMillis",0L);
 
         if (elderlyName != null){
             showNotification(context, intent, meal_type, elderlyUserName, elderlyName + " has miss a meal!");
@@ -45,13 +53,14 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
 
         else{
-            showNotification(context, intent, meal_type, elderlyUserName, textContent);
-            navigator.crateReminder(elderlyUserName, meal_type, meal_date);
+            showNotification(context, intent, meal_type,  elderlyUserName, textContent);
+            navigator.crateReminder(elderlyUserName, meal_type, meal_date, triggerTimeInMillis, timeUpToMillis);
             navigator.updateNotification(elderlyUserName);
         }
 
 
         }
+
 
     public void showNotification(Context context, Intent intent, String textTitle, String elderlyUserName, String textContent) {
 
@@ -101,5 +110,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
         notificationManager.notify(NOTIFICATION_ID, builder.build());
         }
+
 
 }
