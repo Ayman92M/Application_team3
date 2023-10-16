@@ -1,8 +1,6 @@
 package com.example.application_team3;
 
 
-import static android.provider.Settings.System.getString;
-
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -13,23 +11,13 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
-
 
 public class AlarmReceiver extends BroadcastReceiver {
 
-    private static final String textContent = "Eat your meal!";
-    private static final String RUN_FUNCTION_ACTION = "RUN_FUNCTION_ACTION";
+    private static final String ELDERLY_CONTENT = "Eat your meal!";
+    private static final String CAREGIVER_CONTENT = " has miss a meal!";
+    private static final String RUN_FUNCTION_ACTION_CAREGIVER = "RUN_FUNCTION_ACTION_CAREGIVER";
+    private static final String RUN_FUNCTION_ACTION_ELDERLY = "RUN_FUNCTION_ACTION_ELDERLY";
     private static final String MEAL_ACTION = "MEAL_ACTION";
 
 
@@ -42,46 +30,39 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         if (intent.getAction() != null && intent.getAction().equals(MEAL_ACTION)){
 
-
             String meal_type = intent.getStringExtra("mealType");
             String meal_date = intent.getStringExtra("mealDate");
             String elderlyUserName = intent.getStringExtra("elderlyUserName");
             String elderlyName = intent.getStringExtra("elderlyName");
-            long triggerTimeInMillis = intent.getLongExtra("triggerTimeInMillis",0L);
-            long timeUpToMillis = intent.getLongExtra("timeUpToMillis",0L);
 
-            if (elderlyName != null){
-                showNotification(context, intent, elderlyName.toUpperCase() + " has miss a meal!", elderlyUserName, meal_type);
-                //navigator.updateNotificationCaregiver(elderlyUserName, elderlyName);
-
-            }
-
-            else{
-                showNotification(context, intent, meal_type,  elderlyUserName, textContent);
-                navigator.crateReminder(elderlyUserName, meal_type, meal_date, triggerTimeInMillis, timeUpToMillis);
-                navigator.updateNotification(elderlyUserName);
-            }
+            if (elderlyName != null)
+                showNotification(context, intent, elderlyName.toUpperCase() + CAREGIVER_CONTENT, null, meal_type);
+            else
+                showNotification(context, intent, meal_type,  elderlyUserName, ELDERLY_CONTENT);
 
         }
 
-        if (intent.getAction() != null && intent.getAction().equals(RUN_FUNCTION_ACTION)) {
-            // Handle the repeating alarm action (runFunction)
-
-
+        if (intent.getAction() != null && intent.getAction().equals(RUN_FUNCTION_ACTION_CAREGIVER)) {
             String elderlyUserName = intent.getStringExtra("elderlyUserName");
             String elderlyName = intent.getStringExtra("elderlyName");
-
-            System.out.println("---- AlarmReceiver ---- "+ " -elderlyName: " + elderlyName + " -elderlyUserName: " + elderlyUserName);
-
+            System.out.println("AlarmReceiver_ACTION_CAREGIVER --> updateNotificationCaregiver for: elderlyName " + elderlyName);
             navigator.updateNotificationCaregiver(elderlyUserName, elderlyName, null);
 
         }
 
+        if (intent.getAction() != null && intent.getAction().equals(RUN_FUNCTION_ACTION_ELDERLY)) {
+
+            String elderlyUserName = intent.getStringExtra("elderlyUserName");
+            System.out.println("AlarmReceiver_ACTION_ELDERLY --> updateNotification for: " + elderlyUserName);
+            navigator.updateNotification(elderlyUserName);
 
         }
 
 
-    public void showNotification(Context context, Intent intent, String textTitle, String elderlyUserName, String textContent) {
+        }
+
+
+    public void showNotification(Context context, Intent intent, String textTitle, String elderly, String textContent) {
 
         String ACTION_YES = "Yes";
         String ACTION_NO = "No";
@@ -96,25 +77,43 @@ public class AlarmReceiver extends BroadcastReceiver {
         PendingIntent pendingNoIntent =
                 PendingIntent.getActivity(context, 2, NoIntent, PendingIntent.FLAG_IMMUTABLE);
 
-        Intent i = new Intent(context, Elderly_Scheduler.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent =
-                PendingIntent.getActivity(context, 1, i, PendingIntent.FLAG_IMMUTABLE);
+        NotificationCompat.Builder builder;
+        if(elderly != null){
+            Intent i = new Intent(context, Elderly_Scheduler.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            PendingIntent pendingIntent =
+                    PendingIntent.getActivity(context, 1, i, PendingIntent.FLAG_IMMUTABLE);
 
+            builder = new NotificationCompat.Builder(context, CHANNEL_ID)
+                    .setSmallIcon(R.drawable.notification_icon)
+                    .setContentTitle(textTitle)
+                    .setContentText(textContent)
+                    .setContentIntent(pendingIntent)
+                    .setDefaults(NotificationCompat.DEFAULT_ALL) // must requires VIBRATE permission
+                    .setPriority(NotificationCompat.PRIORITY_HIGH) //must give priority to High, Max which will considered as heads-up notification
+                    .setAutoCancel(true)
+                    .addAction(R.drawable.ic_extra_action_button_yes, ACTION_YES,
+                            pendingYesIntent)
+                    .addAction(R.drawable.ic_extra_action_button_no, ACTION_NO,
+                            pendingNoIntent);
+        }
+        else {
+            Intent i = new Intent(context, Caregiver_dash.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            PendingIntent pendingIntent =
+                    PendingIntent.getActivity(context, 1, i, PendingIntent.FLAG_IMMUTABLE);
 
+            builder = new NotificationCompat.Builder(context, CHANNEL_ID)
+                    .setSmallIcon(R.drawable.notification_icon)
+                    .setContentTitle(textTitle)
+                    .setContentText(textContent)
+                    .setContentIntent(pendingIntent)
+                    .setDefaults(NotificationCompat.DEFAULT_ALL) // must requires VIBRATE permission
+                    .setPriority(NotificationCompat.PRIORITY_HIGH) //must give priority to High, Max which will considered as heads-up notification
+                    .setAutoCancel(true)
+                    ;
+        }
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-        .setSmallIcon(R.drawable.notification_icon)
-        .setContentTitle(textTitle)
-        .setContentText(textContent)
-        .setContentIntent(pendingIntent)
-        .setDefaults(NotificationCompat.DEFAULT_ALL) // must requires VIBRATE permission
-        .setPriority(NotificationCompat.PRIORITY_HIGH) //must give priority to High, Max which will considered as heads-up notification
-        .setAutoCancel(true)
-        .addAction(R.drawable.ic_extra_action_button_yes, ACTION_YES,
-                pendingYesIntent)
-        .addAction(R.drawable.ic_extra_action_button_no, ACTION_NO,
-                pendingNoIntent);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {

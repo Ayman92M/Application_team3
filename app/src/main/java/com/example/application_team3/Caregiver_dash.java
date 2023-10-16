@@ -1,6 +1,7 @@
 package com.example.application_team3;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.util.Pair;
 
 import android.content.Context;
 import android.content.Intent;
@@ -34,6 +35,16 @@ public class Caregiver_dash extends AppCompatActivity {
         Intent get_info = getIntent();
         _caregiverName = get_info.getStringExtra("caregiverName");
         _caregiverUserName = get_info.getStringExtra("caregiverUserName");
+
+
+        if (_caregiverUserName == null){
+            Pair<String, String> caregiver = navigator.getPreferencesCaregiverDashboard();
+            _caregiverUserName = caregiver.first;
+            _caregiverName = caregiver.second;
+        }
+        else{
+            navigator.saveInputToPreferencesCaregiverDashboard(_caregiverUserName, _caregiverName);
+        }
 
 
         ((TextView) findViewById(R.id.textView_Welcome)).setText("Welcome" +" "+ _caregiverName);

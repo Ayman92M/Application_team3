@@ -76,7 +76,8 @@
             android:enabled="true"
             android:exported="false">
             <intent-filter>
-                <action android:name="RUN_FUNCTION_ACTION" />
+                <action android:name="RUN_FUNCTION_ACTION_CAREGIVER" />
+                <action android:name="RUN_FUNCTION_ACTION_ELDERLY" />
                 <action android:name="MEAL_ACTION" />
             </intent-filter>
         </receiver>

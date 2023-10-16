@@ -52,6 +52,7 @@ public class Login_elderly extends AppCompatActivity {
                 _pass = navigator.getEditTextValue(R.id.editTextNumberPassword);
                 navigator.saveInputToPreferences(_user_name, _pass, checkBoxRememberMe.isChecked());
                 navigator.logInElderly(_user_name, _pass);
+
             }
         });
     }
