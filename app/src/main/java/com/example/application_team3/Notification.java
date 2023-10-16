@@ -160,7 +160,7 @@ public class Notification {
         }
     }
 
-    public void copyMeal(Context context, String elderlyUserName, String date, String mealType, String time, String note){
+    public void runCopyMeal(Context context, String elderlyUserName){
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         Intent intent = new Intent(context, AlarmReceiver.class);
@@ -170,17 +170,7 @@ public class Notification {
             intent.setAction(Intent.ACTION_BOOT_COMPLETED);
         }
 
-        String mealDate = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            mealDate = getNextWeekDate(date);
-        }
         intent.putExtra("elderlyUserName", elderlyUserName);
-        intent.putExtra("mealDate", mealDate);
-        intent.putExtra("mealType", mealType);
-        intent.putExtra("mealTime", time);
-        intent.putExtra("mealNote", note);
-
-
         pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
         long repeatInterval = AlarmManager.INTERVAL_FIFTEEN_MINUTES/15;
         long triggerTime = System.currentTimeMillis() + repeatInterval;
@@ -237,17 +227,7 @@ public class Notification {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public String getNextWeekDate(String inputDate) {
-        // Skapa en DateTimeFormatter för att konvertera strängen till LocalDate
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate date = LocalDate.parse(inputDate, formatter);
 
-        LocalDate nextWeekDate = date.plusWeeks(1);
-
-
-        return nextWeekDate.format(formatter);
-    }
     private boolean isTimeUp(String[] itemParts, int minutesToAdd){
         String current_time = getCurrentTime();
         long current_time_ToMillis = convertStringToMillis(current_time);

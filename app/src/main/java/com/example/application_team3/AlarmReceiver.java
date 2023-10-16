@@ -59,17 +59,9 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
 
         if (intent.getAction() != null && intent.getAction().equals("RUN_FUNCTION_COPY_MEAL")) {
-
-            Database db = new Database();
-
             String elderlyUserName = intent.getStringExtra("elderlyUserName");
-            String mealDate = intent.getStringExtra("mealDate");
-            String mealType = intent.getStringExtra("mealType");
-            String mealTime = intent.getStringExtra("mealTime");
-            String mealNote = intent.getStringExtra("mealNote");
-
-            db.registerMeal(elderlyUserName, mealDate,mealType, mealTime, mealNote);
-            System.out.println("AlarmReceiver_ACTION_ELDERLY --> copy meal : " + mealType +" "+ mealDate + " "+ mealTime);
+            navigator.copyMealElderly(elderlyUserName);
+            System.out.println("AlarmReceiver_ACTION_ELDERLY --> copy meal : ");
 
         }
 

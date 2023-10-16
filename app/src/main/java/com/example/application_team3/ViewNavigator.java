@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.util.Pair;
 
 import com.google.android.gms.tasks.Task;
@@ -32,6 +34,8 @@ import com.google.firebase.database.DataSnapshot;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -432,6 +436,7 @@ public class ViewNavigator {
                 textView2.setText(itemParts[1]); // Undertext (subitem)
                 updateNotificationCaregiver(itemParts[1], itemParts[0], textView1);
                 notification.runFunctionCaregiver(context, itemParts[1], itemParts[0]);
+                notification.runCopyMeal(context, itemParts[1]);
 
                 return row;
             }
@@ -495,6 +500,42 @@ public class ViewNavigator {
 
         });
 
+    }
+    public void copyMealElderly(String elderly_username){
+
+        Task<DataSnapshot> mealPlanTask = db.fetchMealPlanDate(elderly_username, getToday());
+        Tasks.whenAll(mealPlanTask).addOnCompleteListener(task -> {
+            DataSnapshot mealsData = mealPlanTask.getResult();
+
+            if(mealsData != null && mealsData.hasChildren()){
+
+                for(DataSnapshot mealData : mealsData.getChildren()) {
+
+                    MealEntry meal = mealData.getValue(MealEntry.class);
+                    String mealNextDate = null;
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                        mealNextDate = getNextWeekDate(meal.getDate());
+                    }
+                    if (mealNextDate != null)
+                        db.registerMeal(elderly_username, mealNextDate, meal.getMealType(),meal.getTime(), meal.getNote());
+
+                }
+            }
+
+        });
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public String getNextWeekDate(String inputDate) {
+        // Skapa en DateTimeFormatter för att konvertera strängen till LocalDate
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date = LocalDate.parse(inputDate, formatter);
+
+        LocalDate nextWeekDate = date.plusWeeks(1);
+
+
+        return nextWeekDate.format(formatter);
     }
     private long getTimeUp(String date, int minutesToAdd){
         String timeUp = addMinutesToDateString(date, minutesToAdd);
