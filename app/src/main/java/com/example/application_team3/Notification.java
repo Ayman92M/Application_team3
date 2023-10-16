@@ -11,8 +11,12 @@ import android.os.Build;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -155,6 +159,35 @@ public class Notification {
             notificationManager.createNotificationChannel(notificationChannel);
         }
     }
+
+    public void copyMeal(Context context, String elderlyUserName, String date, String mealType, String time, String note){
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        Intent intent = new Intent(context, AlarmReceiver.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            intent.setAction("RUN_FUNCTION_COPY_MEAL");
+        } else {
+            intent.setAction(Intent.ACTION_BOOT_COMPLETED);
+        }
+
+        String mealDate = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            mealDate = getNextWeekDate(date);
+        }
+        intent.putExtra("elderlyUserName", elderlyUserName);
+        intent.putExtra("mealDate", mealDate);
+        intent.putExtra("mealType", mealType);
+        intent.putExtra("mealTime", time);
+        intent.putExtra("mealNote", note);
+
+
+        pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+        long repeatInterval = AlarmManager.INTERVAL_FIFTEEN_MINUTES/15;
+        long triggerTime = System.currentTimeMillis() + repeatInterval;
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, triggerTime, repeatInterval, pendingIntent);
+
+        System.out.println("RUN_FUNCTION_COPY_MEAL");
+    }
     public int getReminderId(String mealType, int ReminderNum) {
         String mealInfo;
         try {
@@ -202,6 +235,18 @@ public class Notification {
         } else {
             throw new IllegalArgumentException("Ogiltig måltidstyp: " + mealType);
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public String getNextWeekDate(String inputDate) {
+        // Skapa en DateTimeFormatter för att konvertera strängen till LocalDate
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date = LocalDate.parse(inputDate, formatter);
+
+        LocalDate nextWeekDate = date.plusWeeks(1);
+
+
+        return nextWeekDate.format(formatter);
     }
     private boolean isTimeUp(String[] itemParts, int minutesToAdd){
         String current_time = getCurrentTime();

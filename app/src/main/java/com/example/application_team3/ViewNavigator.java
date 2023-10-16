@@ -496,7 +496,6 @@ public class ViewNavigator {
         });
 
     }
-
     private long getTimeUp(String date, int minutesToAdd){
         String timeUp = addMinutesToDateString(date, minutesToAdd);
 
@@ -537,8 +536,8 @@ public class ViewNavigator {
 
     //MEAL LIST MANAGER
     public void showMealList(ListView listView, int layoutResourceId, boolean elderlyView, String elderlyUserName, String elderlyName, String date){
-
-        notification.runFunctionElderly(context, elderlyUserName, null);
+        if(elderlyView)
+            notification.runFunctionElderly(context, elderlyUserName, null);
 
         Task<DataSnapshot> mealPlanTask = db.fetchMealPlanDate(elderlyUserName, date);
         // Hämta resultatet
