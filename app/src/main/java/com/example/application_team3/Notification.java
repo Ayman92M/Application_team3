@@ -25,7 +25,6 @@ public class Notification {
     private static final String RUN_FUNCTION_ACTION_ELDERLY = "RUN_FUNCTION_ACTION_ELDERLY";
     private AlarmManager alarmManager;
     private PendingIntent pendingIntent;
-
     int id;
 
     @SuppressLint("ScheduleExactAlarm")
@@ -65,7 +64,6 @@ public class Notification {
                 System.out.println("-------> SET Reminder "+ id + " for : " + mealType);
             }
     }
-
     public void runFunctionCaregiver(Context context, String elderlyUserName, String elderlyName) {
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
