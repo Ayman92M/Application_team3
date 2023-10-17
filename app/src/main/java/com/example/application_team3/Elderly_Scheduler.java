@@ -7,7 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -22,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -47,6 +50,11 @@ public class Elderly_Scheduler extends AppCompatActivity {
     String elderly_username, elderly_name;
 
     TextView chosenDate;
+    private static final int COUNTDOWN_TIME = 10000; // 10 sekunder
+    private CountDownTimer countDownTimer;
+    private Button sosButton;
+    private Button cancelButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +115,24 @@ public class Elderly_Scheduler extends AppCompatActivity {
                 navigator.showMealList(listView, R.layout.activity_list_item_elderlyscheduler, true, elderly_username, elderly_name, date);
             }
         });
+
+        sosButton = findViewById(R.id.sosButton);
+
+        sosButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startCountdown();
+            }
+        });
+
+        cancelButton = findViewById(R.id.cancelButton);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cancelCountdown();
+            }
+        });
+
     }
 
     public String getADay(String currentDate, int x) {
@@ -132,5 +158,53 @@ public class Elderly_Scheduler extends AppCompatActivity {
         }
     }
 
+    private void startCountdown() {
+        sosButton.setEnabled(false);
+        sosButton.setVisibility(View.INVISIBLE);
+        cancelButton.setVisibility(View.VISIBLE);
+
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+
+        countDownTimer = new CountDownTimer(COUNTDOWN_TIME, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                int secondsRemaining = (int) (millisUntilFinished / 1000);
+                cancelButton.setText("Cancel on\n " +String.valueOf(secondsRemaining));
+            }
+
+            @Override
+            public void onFinish() {
+                sosButton.setEnabled(true);
+                sosButton.setVisibility(View.VISIBLE);
+                cancelButton.setVisibility(View.INVISIBLE);
+                sosButton.setText("SOS");
+                ringSOS();
+            }
+        }.start();
+    }
+
+    private void cancelCountdown() {
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+            sosButton.setEnabled(true);
+            sosButton.setVisibility(View.VISIBLE);
+            cancelButton.setVisibility(View.INVISIBLE);
+            sosButton.setText("SOS");
+        }
+    }
+
+    private void ringSOS() {
+        Intent callIntent = new Intent(Intent.ACTION_CALL);
+        callIntent.setData(Uri.parse("tel:112"));
+
+        try {
+            startActivity(callIntent);
+        } catch (SecurityException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Call error", Toast.LENGTH_SHORT).show();
+        }
+    }
 
 }
