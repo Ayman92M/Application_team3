@@ -4,19 +4,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.DataSnapshot;
 
-public class Signup_caregiver extends AppCompatActivity {
+public class SignupCaregiver extends AppCompatActivity {
 
-    String _name, _user_name, _pass, _pass2, _email;
     Controller control;
 
     private final UserAccountControl userControl = new UserAccountControl();
 
-    private ViewBuilder view;
+    private ViewBuilder viewBuilder;
     private Database db;
 
     @Override
@@ -25,63 +25,63 @@ public class Signup_caregiver extends AppCompatActivity {
         setContentView(R.layout.activity_signup_caregiver);
         Intent get_info = getIntent();
         control = (Controller) get_info.getSerializableExtra("controller");
-        view = control.getView();
-        db = control.getDb();
-        //signUp_button();
+        if (control != null) {
+            viewBuilder = control.getViewBuilder();
+            db = control.getDatabase();
+        }
+
+        signUp_button();
 
     }
 
-   /* private void signUp_button(){
+   private void signUp_button(){
 
-        Button sign_up_bt = findViewById(R.id.button_sign_up);
-        sign_up_bt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                _name = navigator.getEditTextValue(R.id.editTextText_name);
-                _user_name = navigator.getEditTextValue(R.id.username);
-                _email = navigator.getEditTextValue(R.id.email);
-                _pass = navigator.getEditTextValue(R.id.password);
-                _pass2 = navigator.getEditTextValue(R.id.rewritepassword);
+        Button sign_up_btn = findViewById(R.id.button_sign_up);
+        sign_up_btn.setOnClickListener(view -> {
+            String name = findViewById(R.id.editTextText_name).toString();
+            String user_name = findViewById(R.id.username).toString();
+            String email = findViewById(R.id.email).toString();
+            String pass = findViewById(R.id.password).toString();
+            String pass2 = findViewById(R.id.rewritepassword).toString();
 
-                signUpCaregiver(_name, _user_name, _email,_pass,_pass2);
+            signUpCaregiver(name, user_name, email,pass,pass2);
 
-            }
         });
-    }*/
+    }
 
     public void signUpCaregiver(String _name, String _user_name, String _email, String _pass, String _pass2){
 
         if (!userControl.isValidName(_name))
-            view.notis("invalid name", Signup_caregiver.this);
+            viewBuilder.notis("invalid name", SignupCaregiver.this);
 
         if(!userControl.isValidEmail(_email))
-            view.notis("invalid Email", Signup_caregiver.this);
+            viewBuilder.notis("invalid Email", SignupCaregiver.this);
 
         if(_pass.matches(_pass2)){
             if(!userControl.isValidPassword(_pass))
-                view.notis("invalid Password", Signup_caregiver.this);
+                viewBuilder.notis("invalid Password", SignupCaregiver.this);
 
         }
         else
-            view.notis("password doesn't match", Signup_caregiver.this);
+            viewBuilder.notis("password doesn't match", SignupCaregiver.this);
 
         if (!userControl.isValidUsername(_user_name))
-            view.notis("invalid user name", Signup_caregiver.this);
+            viewBuilder.notis("invalid user name", SignupCaregiver.this);
 
         else{
             Task<DataSnapshot> caregiverDB = db.fetchCaregiverDB();
 
             Tasks.whenAll(caregiverDB).addOnCompleteListener(task -> {
                 if(caregiverDB.getResult().child(_user_name).exists()){
-                    view.notis("User name is already exists, use a different user name", Signup_caregiver.this);
+                    viewBuilder.notis("User name is already exists, use a different user name", SignupCaregiver.this);
                 }
                 else {
                     if (userControl.isValidName(_name) &&
                             userControl.isValidEmail(_email) && _pass.matches(_pass2) && userControl.isValidPassword(_pass) ){
-                        view.notis("Success", Signup_caregiver.this);
+                        viewBuilder.notis("Success", SignupCaregiver.this);
                         db.registerCaregiver(_name, _user_name, _pass, null);
 
-                        control.caregiverLogIn(_user_name, _pass, Signup_caregiver.this);
+                        control.caregiverLogIn(_user_name, _pass, SignupCaregiver.this);
 
                     }
                 }

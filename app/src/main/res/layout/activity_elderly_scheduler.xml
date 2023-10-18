@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Elderly_Scheduler">
+    tools:context=".ElderlyScheduler">
 
 
     <ListView
@@ -47,14 +47,15 @@
         android:layout_width="253dp"
         android:layout_height="81dp"
         android:text="Day and Date"
-        android:textSize="40dp"
+        android:textSize="40sp"
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/listView_elderly_scheduler"
         app:layout_constraintEnd_toEndOf="@+id/textView5"
         app:layout_constraintHorizontal_bias="0.402"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.313" />
+        app:layout_constraintVertical_bias="0.313"
+        tools:ignore="HardcodedText" />
 
     <Button
         android:id="@+id/button6"

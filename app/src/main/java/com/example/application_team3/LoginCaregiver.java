@@ -11,13 +11,11 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.android.material.bottomappbar.BottomAppBar;
 
 
-public class Login_Caregiver extends AppCompatActivity {
+public class LoginCaregiver extends AppCompatActivity {
     private CheckBox checkBoxRememberMe;
 
-    BottomAppBar bottomAppBar;
     SharedPreferences preferences;
 
     Controller control;
@@ -28,25 +26,15 @@ public class Login_Caregiver extends AppCompatActivity {
         setContentView(R.layout.activity_login_caregiver);
         Intent get_info = getIntent();
         control = (Controller) get_info.getSerializableExtra("controller");
-        bottomAppBar = findViewById(R.id.bottomAppBar);
         checkBoxRememberMe = findViewById(R.id.checkBox_rememberMe);
 
         logUt();
         logIn_button();
 
         TextView signup_btn = findViewById(R.id.textView_signup);
-        signup_btn.setOnClickListener(view -> control.goToActivity(Login_Caregiver.this, Signup_caregiver.class));
+        signup_btn.setOnClickListener(view -> control.goToActivity(LoginCaregiver.this, SignupCaregiver.class));
 
         setRememberMeValues();
-
-        bottomAppBar.setOnMenuItemClickListener(item -> {
-            if (item.getItemId()==R.id.bottomNav_back){
-                Intent intent = new Intent(Login_Caregiver.this, MainActivity.class);
-                startActivity(intent);
-            }
-            return false;
-        });
-
     }
 
     public void setRememberMeValues() {
@@ -67,7 +55,6 @@ public class Login_Caregiver extends AppCompatActivity {
     }
 
     public boolean getRememberMeStatus() {
-        // Retrieve the "Remember Me" status from SharedPreferences
         return preferences.getBoolean("rememberMe", false);
     }
 
@@ -80,7 +67,7 @@ public class Login_Caregiver extends AppCompatActivity {
             String _pass = passwordText.getText().toString();
 
             saveInputToPreferences(_user_name, _pass, checkBoxRememberMe.isChecked());
-            control.caregiverLogIn(_user_name, _pass, Login_Caregiver.this);
+            control.caregiverLogIn(_user_name, _pass, LoginCaregiver.this);
         });
     }
 
@@ -90,7 +77,7 @@ public class Login_Caregiver extends AppCompatActivity {
         System.out.println(" log ut activity " + bool);
         if (bool != null && bool.equals("true")){
             System.out.println(" log ut activity If" + bool);
-            control.logout(this, MainActivity.class);
+            control.logout(this);
         }
     }
 

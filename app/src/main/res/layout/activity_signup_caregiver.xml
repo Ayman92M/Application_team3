@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".Signup_caregiver">
+    tools:context=".SignupCaregiver">
 
 
     <TextView
@@ -17,8 +16,8 @@
         android:layout_marginEnd="25dp"
         android:layout_marginBottom="25dp"
         android:gravity="center"
-        android:text="Sign up"
-        android:textSize="40dp"
+        android:text="@string/sign_up"
+        android:textSize="40sp"
         android:textStyle="bold|italic"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="6dp" />
@@ -32,10 +31,12 @@
         android:layout_marginTop="17dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
+        android:autofillHints="username"
         android:background="#60B8B3B3"
-        android:drawableLeft="@drawable/baseline_person_24"
+        android:drawableStart="@drawable/baseline_person_24"
         android:drawablePadding="20dp"
-        android:hint="Username"
+        android:hint="@string/username"
+        android:inputType="text"
         android:padding="20dp"
         android:textColor="@color/black"
         android:textColorHint="@color/black" />
@@ -49,10 +50,12 @@
         android:layout_marginTop="29dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
+        android:autofillHints="name"
         android:background="#60B8B3B3"
-        android:drawableLeft="@drawable/baseline_person_24"
+        android:drawableStart="@drawable/baseline_person_24"
         android:drawablePadding="20dp"
-        android:hint="Name"
+        android:hint="@string/name"
+        android:inputType="text|textPersonName"
         android:padding="20dp"
         android:textColor="@color/black"
         android:textColorHint="@color/black" />
@@ -66,10 +69,12 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
+        android:autofillHints="emailAddress"
         android:background="#60B8B3B3"
-        android:drawableLeft="@drawable/baseline_alternate_email_24"
+        android:drawableStart="@drawable/baseline_alternate_email_24"
         android:drawablePadding="20dp"
-        android:hint="Email"
+        android:hint="@string/email"
+        android:inputType="text|textEmailAddress"
         android:padding="20dp"
         android:textColor="@color/black"
         android:textColorHint="@color/black" />
@@ -84,13 +89,14 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:background="#60B8B3B3"
-        android:drawableLeft="@drawable/baseline_password_24"
+        android:drawableStart="@drawable/baseline_password_24"
         android:drawablePadding="20dp"
-        android:hint="Password"
+        android:hint="@string/password"
         android:inputType="textPassword"
         android:padding="20dp"
         android:textColor="@color/black"
-        android:textColorHint="@color/black" />
+        android:textColorHint="@color/black"
+        android:autofillHints="password" />
 
     <EditText
         android:id="@+id/rewritepassword"
@@ -102,13 +108,14 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:background="#60B8B3B3"
-        android:drawableLeft="@drawable/baseline_password_24"
+        android:drawableStart="@drawable/baseline_password_24"
         android:drawablePadding="20dp"
-        android:hint="Rewrite-Password"
+        android:hint="@string/rewritepassword"
         android:inputType="textPassword"
         android:padding="20dp"
         android:textColor="@color/black"
-        android:textColorHint="@color/black" />
+        android:textColorHint="@color/black"
+        android:autofillHints="password" />
 
     <Button
         android:id="@+id/button_sign_up"
@@ -119,8 +126,6 @@
         android:layout_alignParentEnd="true"
         android:layout_marginStart="159dp"
         android:layout_marginTop="31dp"
-        android:layout_marginEnd="161dp"
-        android:onClick="signup_function"
-        android:text="Sign UP" />
+        android:layout_marginEnd="161dp" />
 
 </RelativeLayout>

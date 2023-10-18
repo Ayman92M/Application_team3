@@ -4,12 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import com.google.android.material.bottomappbar.BottomAppBar;
 
-public class Login_elderly extends AppCompatActivity {
+public class LoginElderly extends AppCompatActivity {
     String _user_name, _pass;
     ViewNavigator navigator = new ViewNavigator(this);
     private CheckBox checkBoxRememberMe;
@@ -29,7 +28,7 @@ public class Login_elderly extends AppCompatActivity {
 
         bottomAppBar.setOnMenuItemClickListener(item -> {
             if (item.getItemId()==R.id.bottomNav_back){
-                Intent intent = new Intent(Login_elderly.this, MainActivity.class);
+                Intent intent = new Intent(LoginElderly.this, MainActivity.class);
                 startActivity(intent);
             }
             return false;

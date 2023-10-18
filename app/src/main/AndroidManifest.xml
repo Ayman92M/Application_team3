@@ -26,25 +26,22 @@
             android:name=".PersonalInfoActivity"
             android:exported="false" />
         <activity
-            android:name=".Elderly_home_test"
-            android:exported="false" />
-        <activity
             android:name=".CalenderOverviewCaregiver"
             android:exported="false" />
         <activity
-            android:name=".Login_elderly"
+            android:name=".LoginElderly"
             android:exported="false" />
         <activity
-            android:name=".Signup_elderly"
+            android:name=".SignupElderly"
             android:exported="false" />
         <activity
             android:name=".CaregiverElderlyPageActivity"
             android:exported="false" />
         <activity
-            android:name=".Meal_register"
+            android:name=".MealRegister"
             android:exported="false" />
         <activity
-            android:name=".Elderly_Scheduler"
+            android:name=".ElderlyScheduler"
             android:exported="false" />
         <activity
             android:name=".Meal_info"
@@ -53,13 +50,13 @@
             android:name=".List_viewer"
             android:exported="false" />
         <activity
-            android:name=".Caregiver_Dash"
+            android:name=".CaregiverDash"
             android:exported="false" />
         <activity
-            android:name=".Signup_caregiver"
+            android:name=".SignupCaregiver"
             android:exported="false" />
         <activity
-            android:name=".Login_Caregiver"
+            android:name=".LoginCaregiver"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

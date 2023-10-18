@@ -22,46 +22,50 @@
             style="style/widget.MaterialComponents.Button.Icon"
             android:layout_width="165dp"
             android:layout_height="172dp"
-            android:layout_marginLeft="195dp"
+            android:layout_marginStart="195dp"
             android:layout_marginTop="40dp"
             android:background="@drawable/rounded_corner"
             android:text="Meal History"
-            app:icon="@drawable/baseline_history_24" />
+            app:icon="@drawable/baseline_history_24"
+            tools:ignore="HardcodedText" />
 
         <Button
             android:id="@+id/mealPlanner"
             style="style/widget.MaterialComponents.Button.Icon"
             android:layout_width="165dp"
             android:layout_height="172dp"
-            android:layout_marginLeft="15dp"
+            android:layout_marginStart="15dp"
             android:layout_marginTop="40dp"
             android:background="@drawable/rounded_corner"
             android:backgroundTint="@color/grey"
             android:text="Meal Planner"
-            app:icon="@drawable/baseline_fastfood_24" />
+            app:icon="@drawable/baseline_fastfood_24"
+            tools:ignore="HardcodedText" />
 
         <Button
             android:id="@+id/personalnformation"
             style="style/widget.MaterialComponents.Button.Icon"
             android:layout_width="165dp"
             android:layout_height="172dp"
-            android:layout_marginLeft="15dp"
+            android:layout_marginStart="15dp"
             android:layout_marginTop="300dp"
             android:background="@drawable/rounded_corner"
             android:text="Personal Information"
-            android:textSize="12dp"
-            app:icon="@drawable/baseline_person_24" />
+            android:textSize="14sp"
+            app:icon="@drawable/baseline_person_24"
+            tools:ignore="HardcodedText" />
 
         <Button
             android:id="@+id/deleteElderly"
             style="style/widget.MaterialComponents.Button.Icon"
             android:layout_width="165dp"
             android:layout_height="172dp"
-            android:layout_marginLeft="195dp"
+            android:layout_marginStart="195dp"
             android:layout_marginTop="300dp"
             android:background="@drawable/rounded_corner"
             android:text="Delete"
-            app:icon="@drawable/delete_icon" />
+            app:icon="@drawable/delete_icon"
+            tools:ignore="HardcodedText" />
 
 
     </FrameLayout>
@@ -76,29 +80,12 @@
         android:text="     Elderly Name"
         android:textColor="@color/white"
         android:gravity="center_vertical"
-        android:textSize="40dp"
+        android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/frame"
-        tools:ignore="MissingConstraints">
-
-        <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/bottomAppBar"
-            android:layout_gravity="bottom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/green"
-            android:backgroundTint="@color/green"
-            app:menu="@menu/bottom_navigation_menu"
-            app:menuAlignmentMode="start">
-
-        </com.google.android.material.bottomappbar.BottomAppBar>
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -4,22 +4,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
-import android.widget.ListView;
 
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.DataSnapshot;
 
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -29,7 +23,7 @@ public class Controller implements Serializable {
     private static ElderlyEntry elderlyUser;
 
     private static final Database database = new Database();
-    private static final ViewBuilder view = new ViewBuilder();
+    private static final ViewBuilder viewBuilder = new ViewBuilder();
     private String activeDate;
 
     public Controller() {
@@ -64,41 +58,63 @@ public class Controller implements Serializable {
         this.activeDate = activeDate;
     }
 
-    public Database getDb() {
+    public Database getDatabase() {
         return database;
     }
 
 
-    public ViewBuilder getView() {
-        return view;
+    public ViewBuilder getViewBuilder() {
+        return viewBuilder;
     }
 
 
-    public void caregiverLogIn(String _user_name, String _pass, Context context){
+    public void caregiverLogIn(String username, String password, Context context){
         UserAccountControl userControl = new UserAccountControl();
-        if (!userControl.isValidUsername(_user_name) || !userControl.isValidPassword(_pass))
-            view.notis("invalid user name or password", context);
+        if (!userControl.isValidUsername(username) || !userControl.isValidPassword(password))
+            viewBuilder.notis("invalid user name or password", context);
         else{
-            Task<Boolean> checkLogin = database.checkLoginCaregiver(_user_name, _pass);
-            Task<DataSnapshot> caregiverTask = database.fetchCaregiver(_user_name);
+            Task<Boolean> checkLogin = database.checkLoginCaregiver(username, password);
+            Task<DataSnapshot> caregiverTask = database.fetchCaregiver(username);
             Tasks.whenAll(checkLogin, caregiverTask).addOnCompleteListener(task-> {
                 if(checkLogin.getResult()){
 
                     CaregiverEntry caregiver = caregiverTask.getResult().getValue(CaregiverEntry.class);
                     if (caregiver != null) {
                         setCaregiverUser(caregiver);
-                        goToActivity(context, Caregiver_Dash.class);
+                        goToActivity(context, CaregiverDash.class);
                     }
 
                 }
                 else{
-                    view.notis("False", context);
+                    viewBuilder.notis("False", context);
                 }
             });
         }
     }
 
-    public void logout(Activity activity, Class<?> targetActivity) {
+    public void logInElderly(String username, String password, Context context){
+        UserAccountControl userControl = new UserAccountControl();
+        if (!userControl.isValidUsername(username) || !userControl.isValidPin(password))
+            viewBuilder.notis("invalid user name or Pin", context);
+
+        Task<Boolean> loginCheck = database.checkLoginElderly(username, password);
+        Task<DataSnapshot> elderlyTask = database.fetchElderly(username);
+        Tasks.whenAll(loginCheck, elderlyTask).addOnCompleteListener(task -> {
+            if(loginCheck.getResult()) {
+                ElderlyEntry elderly = elderlyTask.getResult().getValue(ElderlyEntry.class);
+                if(elderly != null){
+                    setElderlyUser(elderly);
+                    goToActivity(context, ElderlyScheduler.class);
+                }
+            }
+            else
+                viewBuilder.notis("False", context);
+
+        });
+
+    }
+
+    public void logout(Activity activity) {
         // Clear saved credentials
         SharedPreferences preferences = activity.getPreferences(Context.MODE_PRIVATE);
 
@@ -108,33 +124,10 @@ public class Controller implements Serializable {
         editor.remove("password");
         editor.apply();
 
-        goToActivity(activity, targetActivity);
+        goToActivity(activity, MainActivity.class);
     }
 
-    public Task<List<MealEntry>> showMealList(Context context, ListView listView, int layoutResourceId){
-        TaskCompletionSource<List<MealEntry>> mealStringsTaskSource = new TaskCompletionSource<>();
-        Task<List<MealEntry>> mealStringsTask = mealStringsTaskSource.getTask();
-        Task<DataSnapshot> mealPlanTask = database.fetchMealPlanDate(elderlyUser.getPid(), activeDate);
-
-        Tasks.whenAll(mealPlanTask).addOnCompleteListener(task -> {
-            DataSnapshot mealsData = mealPlanTask.getResult();
-            List<MealEntry> mealList = new ArrayList<>();
-            if(mealsData != null && mealsData.hasChildren()){
-                for(DataSnapshot mealData : mealsData.getChildren()) {
-                    MealEntry meal = mealData.getValue(MealEntry.class);
-                    mealList.add(meal);
-                }
-            }
-
-            sortMealByTime(mealList);
-
-            view.setupMealListView(context, mealList, listView, layoutResourceId);
-            mealStringsTaskSource.setResult(mealList);
-        });
-        return mealStringsTask;
-    }
-
-    private void sortMealByTime(List<MealEntry> mealList) {
+    public void sortMealByTime(List<MealEntry> mealList) {
         mealList.sort((meal1, meal2) -> {
             // Antag att tiden är i formatet "HH:mm"
             String[] parts1 = meal1.getTime().split(":");

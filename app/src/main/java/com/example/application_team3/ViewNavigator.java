@@ -230,7 +230,7 @@ public class ViewNavigator {
 
                     CaregiverEntry caregiver = caregiverTask.getResult().getValue(CaregiverEntry.class);
                     if (caregiver != null)
-                        goToNextActivity(Caregiver_Dash.class, "success","caregiverName",
+                        goToNextActivity(CaregiverDash.class, "success","caregiverName",
                                 caregiver.getName() ,"caregiverUserName", caregiver.getPid());
 
                     System.out.println("caregiverName LogIn_process: " + caregiver.getName());
@@ -291,7 +291,7 @@ public class ViewNavigator {
             if(loginCheck.getResult()) {
                 DataSnapshot elderly = elderlyTask.getResult();
                 String elderly_name = elderly.child("name").getValue().toString();
-                goToNextActivity(Elderly_Scheduler.class, "True", "elderlyUserName", _user_name, "elderlyName", elderly_name);
+                goToNextActivity(ElderlyScheduler.class, "True", "elderlyUserName", _user_name, "elderlyName", elderly_name);
                 createNotification(_user_name);
             }
             else
@@ -375,7 +375,7 @@ public class ViewNavigator {
 
                 db.removeElderly(_caregiver_username,_elderly_username);
                 notis("Done");
-                goToNextActivity(Caregiver_Dash.class);
+                goToNextActivity(CaregiverDash.class);
             }
         });
 
