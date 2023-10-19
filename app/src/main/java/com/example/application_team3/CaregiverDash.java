@@ -115,10 +115,14 @@ public class CaregiverDash extends AppCompatActivity {
             elderlyStrings.clear();
             HashMap<String, String> elderlyList = user.getElderly();
             elderlyList.forEach((username, name) ->{
+                Notification notification = control.getNotification();
+                control.updateNotificationCaregiver(username, name, findViewById(R.id.textView_username), this);
+                notification.runFunctionCaregiver(CaregiverDash.this, username, name);
+                notification.runCopyMeal(CaregiverDash.this, username);
                 String elderlyString = name + ", " + username;
                 elderlyStrings.add(elderlyString);
             });
-            control.getViewBuilder().buildListView(
+            control.getViewBuilder().buildListView(false,
                     elderlyStrings, this, listView,
                     R.layout.activity_list_item, R.id.textView_username, R.id.textView_list_pid
             );

@@ -1,6 +1,8 @@
 package com.example.application_team3;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -13,6 +15,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+
+import org.w3c.dom.Text;
 
 import java.io.Serializable;
 import java.util.List;
@@ -42,7 +46,7 @@ public class ViewBuilder implements Serializable {
         return popupWindow;
     }
 
-    public void buildListView(List<String> content, Context context, ListView listView, int layoutResourceID, int objectResourceID1, int objectResourceID2) {
+    public void buildListView(boolean isMealList, List<String> content, Context context, ListView listView, int layoutResourceID, int objectResourceID1, int objectResourceID2) {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 context.getApplicationContext(),
                 layoutResourceID,
@@ -59,10 +63,30 @@ public class ViewBuilder implements Serializable {
 
                 textView1.setText(itemParts[0]); // item
                 textView2.setText(itemParts[1]); // subitem
+                if(isMealList){
+                    TextView txt_backround = row.findViewById(R.id.TextView_background);
+                    mealListChangeColor(txt_backround, position, row.getContext());
+                }
 
                 return row;
             }
         };
         listView.setAdapter(adapter);
     }
+    public void mealListChangeColor(TextView txt_bakground, int position, Context context){
+
+        int[] rowColors = {
+                Color.rgb(121, 165, 123),   // Grön
+                Color.rgb(255, 193, 7), // Gul
+                Color.rgb(164, 120, 241) , // Lila
+                Color.rgb(33, 150, 243)   // Blå
+        };
+
+        //txt_bakground.setBackgroundColor(rowColors[position % rowColors.length]);
+        GradientDrawable gradientDrawable = (GradientDrawable) context.getResources().getDrawable(R.drawable.rounded_corner);
+        //GradientDrawable gradientDrawable = (GradientDrawable) getResources().getDrawable(R.drawable.rounded_corner);
+        gradientDrawable.setColor(rowColors[position % rowColors.length]);
+        txt_bakground.setBackground(gradientDrawable);
+    }
+
 }

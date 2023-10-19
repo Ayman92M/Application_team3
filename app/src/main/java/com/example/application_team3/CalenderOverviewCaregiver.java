@@ -37,7 +37,6 @@ public class CalenderOverviewCaregiver extends AppCompatActivity {
         Intent get_info = getIntent();
         control = (Controller) get_info.getSerializableExtra("controller");
 
-
         Button addMeal_btn = findViewById(R.id.button_AddMeal);
         addMeal_btn.setOnClickListener(view -> control.goToActivity(CalenderOverviewCaregiver.this, MealRegister.class));
 
@@ -84,9 +83,9 @@ public class CalenderOverviewCaregiver extends AppCompatActivity {
             {
                 mealStrings.add(meal.getMealType() + ", " + meal.getTime());
             }
-            control.getViewBuilder().buildListView(
+            control.getViewBuilder().buildListView(true,
                     mealStrings, this, listView,
-                    R.layout.activity_list_item_caregiverscheduler, R.id.time, R.id.meal
+                    R.layout.activity_list_item_caregiverscheduler, R.id.meal, R.id.time
             );
             listView.setOnItemClickListener((parent, view, position, id) -> mealInfo_caregiver(view, mealList.get(position)));
         });

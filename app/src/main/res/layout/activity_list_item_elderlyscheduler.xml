@@ -45,7 +45,7 @@
         android:layout_height="57dp"
         android:text="MEAL"
         android:textColor="@color/white"
-        android:textSize="45dp"
+        android:textSize="45sp"
         app:layout_constraintBottom_toBottomOf="@+id/TextView_background"
         app:layout_constraintEnd_toEndOf="@+id/TextView_background"
         app:layout_constraintHorizontal_bias="0.496"

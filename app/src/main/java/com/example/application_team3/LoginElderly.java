@@ -9,7 +9,7 @@ import android.widget.CheckBox;
 import com.google.android.material.bottomappbar.BottomAppBar;
 
 public class LoginElderly extends AppCompatActivity {
-    String _user_name, _pass;
+   /* String _user_name, _pass;
     ViewNavigator navigator = new ViewNavigator(this);
     private CheckBox checkBoxRememberMe;
 
@@ -46,4 +46,6 @@ public class LoginElderly extends AppCompatActivity {
             navigator.logInElderly(_user_name, _pass);
         });
     }
+
+    */
 }

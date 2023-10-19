@@ -6,16 +6,35 @@
     android:layout_height="match_parent"
     tools:context=".CaregiverElderlyPageActivity">
 
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/green_light"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:text="@string/back" />
+    </LinearLayout>
+
     <FrameLayout
         android:id="@+id/frame"
         android:layout_width="375dp"
         android:layout_height="531dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginBottom="4dp"
         android:background="@color/cardview_dark_background"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.735">
+        app:layout_constraintTop_toBottomOf="@+id/elderly_name"
+        app:layout_constraintVertical_bias="1.0">
 
         <Button
             android:id="@+id/mealHistory"
@@ -77,9 +96,9 @@
         android:layout_marginTop="4dp"
         android:background="@drawable/rounded_corner"
         android:backgroundTint="@color/green_light"
+        android:gravity="center_vertical"
         android:text="     Elderly Name"
         android:textColor="@color/white"
-        android:gravity="center_vertical"
         android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

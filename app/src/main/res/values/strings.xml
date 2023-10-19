@@ -30,8 +30,8 @@
     <string name="user_name_info">User name</string>
     <string name="pin">PIN</string>
     <string name="edit">Edit</string>
-    <string name="framåt"><![CDATA[>>]]></string>
-    <string name="backåt"><![CDATA[<<]]></string>
+    <string name="forward"><![CDATA[>>]]></string>
+    <string name="back"><![CDATA[<<]]></string>
     <string name="week">Week</string>
     <string name="calender_week">Week</string>
     <string name="monday">Monday</string>

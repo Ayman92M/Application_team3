@@ -44,12 +44,6 @@
             android:name=".ElderlyScheduler"
             android:exported="false" />
         <activity
-            android:name=".Meal_info"
-            android:exported="false" />
-        <activity
-            android:name=".List_viewer"
-            android:exported="false" />
-        <activity
             android:name=".CaregiverDash"
             android:exported="false" />
         <activity
