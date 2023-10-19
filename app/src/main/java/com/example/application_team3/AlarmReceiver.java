@@ -54,7 +54,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
             String elderlyUserName = intent.getStringExtra("elderlyUserName");
             System.out.println("AlarmReceiver_ACTION_ELDERLY --> updateNotification for: " + elderlyUserName);
-            navigator.updateNotification(elderlyUserName);
+            navigator.updateNotificationElderly(elderlyUserName);
 
         }
 

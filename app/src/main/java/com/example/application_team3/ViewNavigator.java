@@ -1,8 +1,6 @@
 package com.example.application_team3;
 
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,7 +26,6 @@ import androidx.annotation.RequiresApi;
 import androidx.core.util.Pair;
 
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.DataSnapshot;
 
@@ -304,7 +301,7 @@ public class ViewNavigator {
                 String elderly_name = elderly.child("name").getValue().toString();
                 goToNextActivity(Elderly_Scheduler.class, "True", "elderlyUserName", _user_name, "elderlyName", elderly_name);
                 //createNotification(_user_name);
-                updateNotification(_user_name);
+                updateNotificationElderly(_user_name);
             }
             else
                 notis("False");
@@ -472,7 +469,9 @@ public class ViewNavigator {
 
     }
 
-    public void updateNotification(String elderly_username){
+
+    //////////////////
+    public void updateNotificationElderly(String elderly_username){
 
         Task<DataSnapshot> mealPlanTask = db.fetchMealPlanDate(elderly_username, getToday());
         Tasks.whenAll(mealPlanTask).addOnCompleteListener(task -> {
@@ -525,25 +524,6 @@ public class ViewNavigator {
         });
 
     }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public String getNextWeekDate(String inputDate) {
-        // Skapa en DateTimeFormatter för att konvertera strängen till LocalDate
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate date = LocalDate.parse(inputDate, formatter);
-
-        LocalDate nextWeekDate = date.plusWeeks(1);
-
-
-        return nextWeekDate.format(formatter);
-    }
-    private long getTimeUp(String date, int minutesToAdd){
-        String timeUp = addMinutesToDateString(date, minutesToAdd);
-
-        long dateToMillisMiss = 0;
-        dateToMillisMiss = convertStringToMillis(timeUp);
-        return dateToMillisMiss;
-    }
     public void updateNotificationCaregiver(String elderly_username, String elderly_name, TextView textView){
 
         String current_time = getCurrentTime();
@@ -574,6 +554,25 @@ public class ViewNavigator {
 
     }
 
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public String getNextWeekDate(String inputDate) {
+        // Skapa en DateTimeFormatter för att konvertera strängen till LocalDate
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date = LocalDate.parse(inputDate, formatter);
+
+        LocalDate nextWeekDate = date.plusWeeks(1);
+
+
+        return nextWeekDate.format(formatter);
+    }
+    private long getTimeUp(String date, int minutesToAdd){
+        String timeUp = addMinutesToDateString(date, minutesToAdd);
+
+        long dateToMillisMiss = 0;
+        dateToMillisMiss = convertStringToMillis(timeUp);
+        return dateToMillisMiss;
+    }
 
     //MEAL LIST MANAGER
     public void showMealList(ListView listView, int layoutResourceId, boolean elderlyView, String elderlyUserName, String elderlyName, String date){
