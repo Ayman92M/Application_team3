@@ -4,6 +4,7 @@ package com.example.application_team3;
 
 
 import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -112,41 +113,42 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         NotificationCompat.Builder builder;
         if(elderly != null){
-            Intent i = new Intent(context, ElderlyScheduler.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            PendingIntent pendingIntent =
-                    PendingIntent.getActivity(context, 1, i, PendingIntent.FLAG_IMMUTABLE);
+            // Create an Intent for the activity you want to start.
+            Intent resultIntent = new Intent(context, ElderlyScheduler.class);
+            resultIntent.putExtra("controller", control);
+            // Create the TaskStackBuilder and add the intent, which inflates the back
+            // stack.
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+            stackBuilder.addNextIntentWithParentStack(resultIntent);
+            // Get the PendingIntent containing the entire back stack.
+            PendingIntent resultPendingIntent =
+                    stackBuilder.getPendingIntent(0,
+                            PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+            builder = new NotificationCompat.Builder(context, CHANNEL_ID);
+            builder.setContentIntent(resultPendingIntent);
+            builder.setSmallIcon(R.drawable.notification_icon);
+            builder.setContentTitle(textTitle);
+            builder.setContentText(textContent);
+            builder.setAutoCancel(true);
 
-
-            builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                    .setSmallIcon(R.drawable.notification_icon)
-                    .setContentTitle(textTitle)
-                    .setContentText(textContent)
-                    .setContentIntent(pendingIntent)
-                    .setDefaults(NotificationCompat.DEFAULT_ALL) // must requires VIBRATE permission
-                    .setPriority(NotificationCompat.PRIORITY_HIGH) //must give priority to High, Max which will considered as heads-up notification
-                    .setAutoCancel(true)
-                    .addAction(R.drawable.ic_extra_action_button_yes, ACTION_YES,
-                            pendingYesIntent)
-                    .addAction(R.drawable.ic_extra_action_button_no, ACTION_NO,
-                            pendingNoIntent);
         }
         else {
-            Intent i = new Intent(context, CaregiverDash.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            PendingIntent pendingIntent =
-                    PendingIntent.getActivity(context, 1, i, PendingIntent.FLAG_IMMUTABLE);
-
-
-            builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                    .setSmallIcon(R.drawable.notification_icon)
-                    .setContentTitle(textTitle)
-                    .setContentText(textContent)
-                    .setContentIntent(pendingIntent)
-                    .setDefaults(NotificationCompat.DEFAULT_ALL) // must requires VIBRATE permission
-                    .setPriority(NotificationCompat.PRIORITY_HIGH) //must give priority to High, Max which will considered as heads-up notification
-                    .setAutoCancel(true)
-            ;
+            Intent resultIntent = new Intent(context, CaregiverDash.class);
+            resultIntent.putExtra("controller", control);
+            // Create the TaskStackBuilder and add the intent, which inflates the back
+            // stack.
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+            stackBuilder.addNextIntentWithParentStack(resultIntent);
+            // Get the PendingIntent containing the entire back stack.
+            PendingIntent resultPendingIntent =
+                    stackBuilder.getPendingIntent(0,
+                            PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+            builder = new NotificationCompat.Builder(context, CHANNEL_ID);
+            builder.setContentIntent(resultPendingIntent);
+            builder.setSmallIcon(R.drawable.notification_icon);
+            builder.setContentTitle(textTitle);
+            builder.setContentText(textContent);
+            builder.setAutoCancel(true);
         }
 
 
@@ -164,6 +166,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             return;
         }
         notificationManager.notify(NOTIFICATION_ID, builder.build());
+
     }
 
 

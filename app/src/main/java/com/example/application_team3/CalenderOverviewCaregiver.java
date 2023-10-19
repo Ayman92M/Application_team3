@@ -81,7 +81,7 @@ public class CalenderOverviewCaregiver extends AppCompatActivity {
             control.sortMealByTime(mealList);
             for(MealEntry meal : mealList)
             {
-                mealStrings.add(meal.getMealType() + ", " + meal.getTime());
+                mealStrings.add(meal.getMealType() + ", " + meal.getTime() + ", " + meal.isHasEaten() + ", " + meal.getDate());
             }
             control.getViewBuilder().buildListView(true,
                     mealStrings, this, listView,
@@ -97,7 +97,6 @@ public class CalenderOverviewCaregiver extends AppCompatActivity {
         Context context = view.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.popup_meal_info_caregiver, null);
-        System.out.println("0");
         final PopupWindow popupWindow = control.getViewBuilder().buildPopup(popupView);
 
         TextView meal_type = popupView.findViewById(R.id.meal_info);
@@ -106,16 +105,9 @@ public class CalenderOverviewCaregiver extends AppCompatActivity {
         note.setText(" " + meal.getNote());
 
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-        System.out.println("3");
         Button deleteMeal_btn = popupView.findViewById(R.id.deleteMeal);
-        String current_time = control.getCurrentTime();
-        long current_time_ToMillis = control.convertStringToMillis(current_time);
-        final int addTime = 135000;
-        long missTime = current_time_ToMillis + addTime;
 
-        if (missTime <= current_time_ToMillis) {
-            deleteMeal_btn.setEnabled(false);
-        }
+        deleteMeal_btn.setEnabled(control.isTimeUp(meal.getDate(), meal.getTime(), -720) ? false : true);
 
         deleteMeal_btn.setOnClickListener(view1 -> {
             control.getDatabase().deleteMeal(control.getElderlyUser().getPid(), meal.getDate(), meal.getMealType());

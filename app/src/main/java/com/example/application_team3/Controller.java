@@ -37,6 +37,7 @@ public class Controller implements Serializable {
     final int CAREGIVER_DEADLINE = 135;
 
     public Controller() {
+        viewBuilder.setController(this);
         notification.setController(this);
     }
 
@@ -179,6 +180,17 @@ public class Controller implements Serializable {
         // Format the date and time into "yyyy-MM-dd HH:mm" format
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
         return sdf.format(calendar.getTime());
+    }
+
+    public boolean isTimeUp(String date, String time, int minutesToAdd){
+        String current_time = getCurrentTime();
+        long current_time_ToMillis = convertStringToMillis(current_time);
+
+        String date_timeMeal = date + " " + time;
+        String date_timeUp = addMinutesToDateString(date_timeMeal, minutesToAdd);
+        long date_timeUpToMillis = convertStringToMillis(date_timeUp);
+
+        return date_timeUpToMillis <= current_time_ToMillis;
     }
 
     public boolean isItToday(String date){

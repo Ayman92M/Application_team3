@@ -111,7 +111,7 @@ public class ElderlyScheduler extends AppCompatActivity {
             control.sortMealByTime(mealList);
             for(MealEntry meal : mealList)
             {
-                mealStrings.add(meal.getMealType() + ", " + meal.getTime());
+                mealStrings.add(meal.getMealType() + ", " + meal.getTime() + ", " + meal.isHasEaten() + ", " + meal.getDate());
             }
             control.getViewBuilder().buildListView(true,
                     mealStrings, this, listView,

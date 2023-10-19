@@ -97,7 +97,7 @@ public void setController(Controller _control){ control = _control; }
             intent.setAction(Intent.ACTION_BOOT_COMPLETED);
         }
 
-
+        intent.putExtra("controller", control);
         if (elderlyUserName != null)    intent.putExtra("elderlyUserName", elderlyUserName);
         if (elderlyName != null)        intent.putExtra("elderlyName", elderlyName);
 
@@ -126,7 +126,7 @@ public void setController(Controller _control){ control = _control; }
             intent.setAction(Intent.ACTION_BOOT_COMPLETED);
         }
 
-
+        intent.putExtra("controller", control);
         if (elderlyUserName != null)    intent.putExtra("elderlyUserName", elderlyUserName);
         if (elderlyName != null)        intent.putExtra("elderlyName", elderlyName);
 

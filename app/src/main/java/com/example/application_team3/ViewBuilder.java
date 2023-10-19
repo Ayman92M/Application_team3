@@ -24,9 +24,14 @@ import java.util.Objects;
 
 public class ViewBuilder implements Serializable {
 
+    private Controller control;
+
     public ViewBuilder() {
     }
 
+    public void setController(Controller _control){
+        control = _control;
+    }
     public void notis(String msg, Context context) {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
@@ -66,6 +71,9 @@ public class ViewBuilder implements Serializable {
                 if(isMealList){
                     TextView txt_backround = row.findViewById(R.id.TextView_background);
                     mealListChangeColor(txt_backround, position, row.getContext());
+                    if("false".equals(itemParts[2]) && control.isTimeUp(itemParts[3], itemParts[1], 135)){
+                        textView1.setError("miss");
+                    }
                 }
 
                 return row;

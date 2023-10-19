@@ -48,8 +48,8 @@ public class MainActivity extends AppCompatActivity {
         signUpText = findViewById(R.id.signUpTextButton);
         userTypeSwitch = findViewById(R.id.userTypeSwitch);
 
-        setupUserType();
         setRememberMeValues();
+        setupUserType();
 
         userTypeSwitch.setOnClickListener(view -> setupUserType());
 
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private void login(){
         String username = usernameText.getText().toString();
         String password = passwordText.getText().toString();
-        saveInputToPreferences(username, password, rememberCheckBox.isChecked());
+        saveInputToPreferences(username, password, rememberCheckBox.isChecked(), userTypeSwitch.isChecked());
         Task<Boolean> loginTask;
         if(isCaregiver){
             loginTask = db.checkLoginCaregiver(username, password);
@@ -104,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
 
         String username = preferences.getString("username", "");
         usernameText.setText(username);
+        isCaregiver = preferences.getBoolean("userType", false);
+        userTypeSwitch.setChecked(isCaregiver);
 
 
         if (getRememberMeStatus()) {
@@ -119,11 +121,12 @@ public class MainActivity extends AppCompatActivity {
         return preferences.getBoolean("rememberMe", false);
     }
 
-    public void saveInputToPreferences(String username, String password, boolean rememberMe) {
+    public void saveInputToPreferences(String username, String password, boolean rememberMe, boolean userType) {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("username", username);
         editor.putString("password", password);
         editor.putBoolean("rememberMe", rememberMe);
+        editor.putBoolean("userType", userType);
         editor.apply();
     }
 
