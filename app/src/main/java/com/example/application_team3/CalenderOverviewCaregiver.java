@@ -42,7 +42,7 @@ public class CalenderOverviewCaregiver extends AppCompatActivity {
 
         CalendarView mCalendarview = findViewById(R.id.CalendarView_calender_ID);
         mCalendarview.setOnDateChangeListener((calendarView, year, month, day) -> {
-            date = year +"-" + (month + 1) + "-" + day;
+            date = String.format("%04d-%02d-%02d", year, month + 1, day);
             control.setActiveDate(date);
             listView = findViewById(R.id.listView_caregiver_scheduler);
             getTodayList();
@@ -56,7 +56,7 @@ public class CalenderOverviewCaregiver extends AppCompatActivity {
             int year = day_calendar.get(Calendar.YEAR);
             int month = day_calendar.get(Calendar.MONTH);
             int day = day_calendar.get(Calendar.DAY_OF_MONTH);
-            date = year + "-" + (month+1) + "-" + day;
+            date = String.format("%04d-%02d-%02d", year, month + 1, day);
             control.setActiveDate(date);
         }
         listView = findViewById(R.id.listView_caregiver_scheduler);

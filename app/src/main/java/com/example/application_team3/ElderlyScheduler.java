@@ -35,6 +35,7 @@ public class ElderlyScheduler extends AppCompatActivity {
 
     private static final int COUNTDOWN_TIME = 10000; // 10 sekunder
     private CountDownTimer countDownTimer;
+
     private Button sosButton;
     private Button cancelButton;
 
@@ -145,7 +146,8 @@ public class ElderlyScheduler extends AppCompatActivity {
         bt_sant.setOnClickListener(view1 -> {
             ////////////////
             control.getDatabase().hasEatenMeal(control.getElderlyUser().getPid(), meal.getDate(), meal.getMealType());
-
+            control.getNotification().cancelAlarm(view1.getContext(), meal.getMealType(), meal.getDate());
+            mealListView();
         });
 
         bt_falsk.setOnClickListener(view1 -> {
