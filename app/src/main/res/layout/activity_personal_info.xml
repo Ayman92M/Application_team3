@@ -123,32 +123,16 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextText14"
         app:layout_constraintVertical_bias="0.154" />
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/coordinatorLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/edit_button"
-        tools:ignore="MissingConstraints">
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottomAppBar"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/button_back"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginTop="17dp"
-        android:background="@color/green"
-        android:backgroundTint="@color/green"
+        android:layout_marginBottom="24dp"
+        android:text="@string/back"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_button"
-        app:menu="@menu/bottom_navigation_menu"
-        app:menuAlignmentMode="start"
-        tools:ignore="BottomAppBar">
-
-    </com.google.android.material.bottomappbar.BottomAppBar>
-
+        app:layout_constraintHorizontal_bias="0.087"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
