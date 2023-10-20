@@ -1,100 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="@color/white"
     tools:context=".MealRegister">
 
     <TextView
+        android:id="@+id/Meal_creator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
         android:text="@string/meal_creator"
         android:textSize="30sp"
-        android:gravity="center"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp" />
+        android:background="@color/grey"/>
 
     <TextView
+        android:id="@+id/choose_meal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/Meal_creator"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="start"
         android:text="@string/choose_meal_type"
         android:textSize="20sp"
-        android:gravity="start"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp" />
+        android:background="@color/grey"/>
 
     <Spinner
         android:id="@+id/mealspinner"
         android:layout_width="match_parent"
         android:layout_height="58dp"
-        android:spinnerMode="dropdown" />
+        android:layout_below="@+id/choose_meal"
+        android:spinnerMode="dropdown"
+        />
 
     <TextView
+        android:id="@+id/pick_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/mealspinner"
+        android:layout_marginTop="19dp"
+        android:gravity="center"
         android:text="@string/pick_a_time_for_this_meal"
         android:textSize="20sp"
-        android:gravity="center"
-        android:layout_marginTop="40dp" />
+        android:background="@color/grey"/>
 
     <TimePicker
         android:id="@+id/timepicker1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:timePickerMode="spinner"
+        android:layout_below="@+id/pick_time"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
         android:layout_gravity="center"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp" />
+        android:layout_marginStart="69dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="68dp"
+        android:layout_marginBottom="30dp"
+        android:timePickerMode="spinner" />
 
     <TextView
+        android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/timepicker1"
+        android:layout_marginTop="11dp"
         android:layout_marginBottom="10dp"
         android:gravity="start"
         android:text="@string/please_enter_a_description_for_this_meal"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:background="@color/grey"/>
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/TextInputEditText_EnterMeal"
         android:layout_width="match_parent"
         android:layout_height="58dp"
+        android:layout_below="@+id/description"
         android:hint="@string/enter_meal_description" />
 
     <Button
         android:id="@+id/Button_createMeal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_below="@+id/TextInputEditText_EnterMeal"
+        android:layout_marginTop="33dp"
         android:text="@string/create_meal_button"
         android:textSize="20sp" />
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/button_back"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/Button_createMeal"
-        tools:ignore="MissingConstraints">
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <Button
-            android:id="@+id/button_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:text="@string/back"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.087"
-            app:layout_constraintStart_toStartOf="parent" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="295dp"
+        android:layout_marginBottom="26dp"
+        android:text="@string/back" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</LinearLayout>
+</RelativeLayout>
