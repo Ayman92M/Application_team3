@@ -26,22 +26,11 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="10dp" />
 
-    <com.google.android.material.textfield.TextInputLayout
+    <Spinner
+        android:id="@+id/mealspinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/select_item"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-        >
-
-        <AutoCompleteTextView
-            android:id="@+id/auto_complete_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Select the type of meal"
-            android:inputType="none"
-            tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
-
-    </com.google.android.material.textfield.TextInputLayout>
+        android:layout_height="58dp"
+        android:spinnerMode="dropdown" />
 
     <TextView
         android:layout_width="match_parent"
@@ -81,23 +70,6 @@
         android:layout_marginTop="10dp"
         android:text="@string/create_meal_button"
         android:textSize="20sp" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/green_light"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <Button
-            android:id="@+id/button4"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:text="@string/back" />
-    </LinearLayout>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"

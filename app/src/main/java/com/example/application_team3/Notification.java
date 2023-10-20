@@ -210,7 +210,7 @@ public class Notification {
             intent.setAction(Intent.ACTION_BOOT_COMPLETED);
         }
 
-
+        intent.putExtra("controller", control);
         intent.putExtra("elderlyUserName", elderlyUserName);
         pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
         long repeatInterval = AlarmManager.INTERVAL_FIFTEEN_MINUTES/15;
@@ -219,6 +219,7 @@ public class Notification {
 
 
         System.out.println("RUN_FUNCTION_COPY_MEAL");
+
     }
     public int getReminderId(String mealType, int ReminderNum) {
         String mealInfo;
@@ -302,7 +303,6 @@ public class Notification {
         // Return a default value or handle the case where the conversion fails
         return -1;
     }
-
 
     public String addMinutesToDateString(String inputDate, int minutesToAdd) {
         // Define the date format

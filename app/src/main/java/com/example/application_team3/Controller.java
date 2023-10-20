@@ -271,7 +271,14 @@ public class Controller implements Serializable {
                         mealNextDate = getNextWeekDate(meal.getDate());
                     }
                     if (mealNextDate != null)
-                        database.registerMeal(elderly_username, mealNextDate, meal.getMealType(),meal.getTime(), meal.getNote());
+                        if(mealData.child(mealNextDate).exists()){
+                            if(!mealData.child(mealNextDate).child(meal.getMealType()).exists()){
+                                database.registerMeal(elderly_username, mealNextDate, meal.getMealType(),meal.getTime(), meal.getNote());
+                            }
+                        }else {
+                            database.registerMeal(elderly_username, mealNextDate, meal.getMealType(),meal.getTime(), meal.getNote());
+                        }
+
 
                 }
             }

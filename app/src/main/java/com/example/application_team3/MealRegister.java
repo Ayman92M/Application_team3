@@ -4,9 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -14,7 +17,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 public class MealRegister extends AppCompatActivity {
     String[] mealtype = {"Breakfast", "Lunch", "Dinner", "Snack"};
-    AutoCompleteTextView autoCompleteTextView;
+    Spinner mealPicker;
     Controller control;
     Database db;
     ViewBuilder viewBuilder;
@@ -35,18 +38,23 @@ public class MealRegister extends AppCompatActivity {
             db = control.getDatabase();
             viewBuilder = control.getViewBuilder();
         }
-
-        autoCompleteTextView = findViewById(R.id.auto_complete_text);
+        mealPicker = findViewById(R.id.mealspinner);
         adapterItems = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, mealtype);
-        autoCompleteTextView.setAdapter(adapterItems);
+        adapterItems.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        mealPicker.setAdapter(adapterItems);
 
         TimePicker picker = findViewById(R.id.timepicker1);
         picker.setIs24HourView(true);
+        mealPicker.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                item = mealtype[i];
+            }
 
-        autoCompleteTextView.setOnItemClickListener((adapterView, view, i, l) -> {
-            item = adapterView.getItemAtPosition(i).toString();
-            Toast.makeText(MealRegister.this, "Meal type: " + item, Toast.LENGTH_SHORT).show();
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
+            }
         });
 
 

@@ -51,19 +51,6 @@
         app:layout_constraintTop_toBottomOf="@+id/listView_caregiver_scheduler"
         tools:ignore="MissingConstraints">
 
-
-        <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/bottomAppBar"
-            android:layout_gravity="bottom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/green"
-            android:backgroundTint="@color/green"
-            app:menu="@menu/bottom_navigation_menu"
-            app:menuAlignmentMode="start">
-
-
-        </com.google.android.material.bottomappbar.BottomAppBar>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
