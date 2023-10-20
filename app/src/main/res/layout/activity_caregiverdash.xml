@@ -40,8 +40,10 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:drawableStart="@drawable/baseline_person_add_24"
+            android:drawableTint="@color/white"
             android:gravity="center"
             android:text="New "
+            android:textColor="@color/white"
             android:textSize="24sp" />
 
         <View
@@ -55,8 +57,10 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:drawableLeft="@drawable/baseline_person_add_24"
+            android:drawableTint="@color/white"
             android:gravity="center"
             android:text="Add "
+            android:textColor="@color/white"
             android:textSize="24sp" />
 
         <View
@@ -69,9 +73,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:drawableLeft="@drawable/baseline_settings_24"
+            android:drawableLeft="@drawable/baseline_logout_24"
+            android:drawableTint="@color/white"
             android:gravity="center"
             android:text="Log ut"
+            android:textColor="@color/white"
             android:textSize="24sp" />
 
     </LinearLayout>
@@ -90,6 +96,8 @@
         android:text="TextView"
         android:textSize="34sp"
         android:textStyle="bold"
-        android:background="@color/green"/>
+        android:textColor="@color/white"
+        android:background="@color/green"
+        />
 
 </RelativeLayout>

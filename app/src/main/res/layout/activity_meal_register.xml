@@ -13,7 +13,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="20dp"
-        android:background="@color/grey"
+
         android:gravity="center"
         android:text="@string/meal_creator"
         android:textSize="30sp" />
@@ -28,7 +28,7 @@
         android:gravity="start"
         android:text="@string/choose_meal_type"
         android:textSize="20sp"
-        android:background="@color/grey"/>
+       />
 
     <Spinner
         android:id="@+id/mealspinner"
@@ -47,7 +47,7 @@
         android:gravity="center"
         android:text="@string/pick_a_time_for_this_meal"
         android:textSize="20sp"
-        android:background="@color/grey"/>
+    />
 
     <TimePicker
         android:id="@+id/timepicker1"
@@ -73,7 +73,7 @@
         android:gravity="start"
         android:text="@string/please_enter_a_description_for_this_meal"
         android:textSize="20sp"
-        android:background="@color/grey"/>
+       />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/TextInputEditText_EnterMeal"
@@ -89,7 +89,9 @@
         android:layout_below="@+id/TextInputEditText_EnterMeal"
         android:layout_marginTop="33dp"
         android:text="@string/create_meal_button"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:backgroundTint="@color/green_light"
+        android:textColor="@color/white"/>
 
     <Button
         android:id="@+id/button_back"
@@ -103,7 +105,9 @@
         android:layout_marginTop="172dp"
         android:layout_marginEnd="297dp"
         android:layout_marginBottom="13dp"
-        android:text="@string/back" />
+        android:text="@string/back"
+        android:backgroundTint="@color/green_light"
+        />
 
 
 </RelativeLayout>

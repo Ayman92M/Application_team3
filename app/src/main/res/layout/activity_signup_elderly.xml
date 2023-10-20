@@ -18,7 +18,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <EditText
         android:id="@+id/editTextText2"
@@ -70,7 +71,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextText13"
-        android:autofillHints="postalAddress" />
+        android:autofillHints="postalAddress"
+        android:backgroundTint="@color/green_light"/>
 
     <EditText
         android:id="@+id/editTextText9"
@@ -121,7 +123,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.121"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText14" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextText14"
+        android:backgroundTint="@color/green_light"
+        android:textColor="@color/white"/>
 
     <Button
         android:id="@+id/button_back"
@@ -132,7 +136,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.087"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:backgroundTint="@color/green_light"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

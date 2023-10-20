@@ -21,6 +21,7 @@
 
         <Button
             android:id="@+id/mealHistory"
+            android:textColor="@color/white"
             style="style/widget.MaterialComponents.Button.Icon"
             android:layout_width="165dp"
             android:layout_height="172dp"
@@ -29,7 +30,8 @@
             android:background="@drawable/rounded_corner"
             android:text="Meal History"
             app:icon="@drawable/baseline_history_24"
-            tools:ignore="HardcodedText" />
+            tools:ignore="HardcodedText"
+            android:backgroundTint="@color/green_light"/>
 
         <Button
             android:id="@+id/mealPlanner"
@@ -39,10 +41,11 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="40dp"
             android:background="@drawable/rounded_corner"
-            android:backgroundTint="@color/grey"
+            android:backgroundTint="@color/green_light"
             android:text="Meal Planner"
             app:icon="@drawable/baseline_fastfood_24"
-            tools:ignore="HardcodedText" />
+            tools:ignore="HardcodedText"
+            android:textColor="@color/white"/>
 
         <Button
             android:id="@+id/personalnformation"
@@ -55,7 +58,9 @@
             android:text="Personal Information"
             android:textSize="14sp"
             app:icon="@drawable/baseline_person_24"
-            tools:ignore="HardcodedText" />
+            tools:ignore="HardcodedText"
+            android:backgroundTint="@color/green_light"
+            android:textColor="@color/white"/>
 
         <Button
             android:id="@+id/deleteElderly"
@@ -67,7 +72,9 @@
             android:background="@drawable/rounded_corner"
             android:text="Delete"
             app:icon="@drawable/delete_icon"
-            tools:ignore="HardcodedText" />
+            tools:ignore="HardcodedText"
+            android:backgroundTint="@color/green_light"
+            android:textColor="@color/white"/>
 
 
     </FrameLayout>
@@ -98,7 +105,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.087"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:backgroundTint="@color/green_light"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

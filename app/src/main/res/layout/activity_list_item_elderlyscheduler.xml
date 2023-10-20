@@ -41,8 +41,8 @@
 
     <TextView
         android:id="@+id/meal"
-        android:layout_width="195dp"
-        android:layout_height="57dp"
+        android:layout_width="256dp"
+        android:layout_height="58dp"
         android:text="MEAL"
         android:textColor="@color/white"
         android:textSize="45sp"
