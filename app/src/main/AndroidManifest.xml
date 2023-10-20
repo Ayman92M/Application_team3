@@ -62,7 +62,17 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".AlarmReceiver" />
+        <receiver
+            android:name=".AlarmReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="RUN_FUNCTION_ACTION_CAREGIVER" />
+                <action android:name="RUN_FUNCTION_ACTION_ELDERLY" />
+                <action android:name="RUN_FUNCTION_COPY_MEAL" />
+                <action android:name="MEAL_ACTION" />
+            </intent-filter>
+        </receiver>
 
         <meta-data
             android:name="preloaded_fonts"
