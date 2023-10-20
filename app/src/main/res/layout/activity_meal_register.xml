@@ -11,12 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="4dp"
         android:layout_marginBottom="20dp"
+        android:background="@color/grey"
         android:gravity="center"
         android:text="@string/meal_creator"
-        android:textSize="30sp"
-        android:background="@color/grey"/>
+        android:textSize="30sp" />
 
     <TextView
         android:id="@+id/choose_meal"
@@ -94,13 +94,15 @@
     <Button
         android:id="@+id/button_back"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
+        android:layout_below="@+id/Button_createMeal"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="28dp"
-        android:layout_marginEnd="295dp"
-        android:layout_marginBottom="26dp"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="172dp"
+        android:layout_marginEnd="297dp"
+        android:layout_marginBottom="13dp"
         android:text="@string/back" />
 
 

@@ -7,11 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -38,6 +36,8 @@ public class MealRegister extends AppCompatActivity {
             db = control.getDatabase();
             viewBuilder = control.getViewBuilder();
         }
+        Button back_btn = findViewById(R.id.button_back);
+        back_btn.setOnClickListener(view -> finish());
         mealPicker = findViewById(R.id.mealspinner);
         adapterItems = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, mealtype);
         adapterItems.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
@@ -75,7 +75,6 @@ public class MealRegister extends AppCompatActivity {
             //Toast.makeText(Meal_register.this, elderly_username , Toast.LENGTH_SHORT).show();
             db.registerMeal(elderly_username1, date, item, formattedTime, note);
             viewBuilder.notis("Registered meal", view.getContext());
-
         });
 
     }

@@ -20,6 +20,9 @@ public class SignupElderly extends AppCompatActivity {
         Intent get_info = getIntent();
         control = (Controller) get_info.getSerializableExtra("controller");
 
+        Button back_btn = findViewById(R.id.button_back);
+        back_btn.setOnClickListener(view -> finish());
+
         nameText = this.findViewById(R.id.editTextText2);
         usernameText = this.findViewById(R.id.editTextText9);
         pinText = this.findViewById(R.id.editTextText10);

@@ -31,8 +31,8 @@ public class LoginCaregiver extends AppCompatActivity {
         logUt();
         logIn_button();
 
-        TextView signup_btn = findViewById(R.id.textView_signup);
-        signup_btn.setOnClickListener(view -> control.goToActivity(LoginCaregiver.this, SignupCaregiver.class));
+        //TextView signup_btn = findViewById(R.id.textView_signup);
+        //signup_btn.setOnClickListener(view -> control.goToActivity(LoginCaregiver.this, SignupCaregiver.class));
 
         setRememberMeValues();
     }

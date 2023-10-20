@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.google.android.material.bottomappbar.BottomAppBar;
 
 public class PersonalInfoActivity extends AppCompatActivity {
-    BottomAppBar bottomAppBar;
 
     Controller control;
     private TextView nameText;
@@ -28,12 +27,8 @@ public class PersonalInfoActivity extends AppCompatActivity {
         Intent get_info = getIntent();
         control = (Controller) get_info.getSerializableExtra("controller");
 
-        bottomAppBar = findViewById(R.id.bottomAppBar);
-        bottomAppBar.setOnMenuItemClickListener(item -> {
-            if (item.getItemId()==R.id.bottomNav_back)
-                control.goToActivity(PersonalInfoActivity.this, CaregiverElderlyPageActivity.class);
-            return false;
-        });
+        Button back_btn = findViewById(R.id.button_back);
+        back_btn.setOnClickListener(view -> finish());
 
         nameText = this.findViewById(R.id.editTextText);
         usernameText = this.findViewById(R.id.editTextText9);

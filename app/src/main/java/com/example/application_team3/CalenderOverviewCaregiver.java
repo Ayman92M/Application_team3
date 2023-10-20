@@ -37,6 +37,9 @@ public class CalenderOverviewCaregiver extends AppCompatActivity {
         Intent get_info = getIntent();
         control = (Controller) get_info.getSerializableExtra("controller");
 
+        Button back_btn = findViewById(R.id.button_back);
+        back_btn.setOnClickListener(view -> finish());
+
         Button addMeal_btn = findViewById(R.id.button_AddMeal);
         addMeal_btn.setOnClickListener(view -> control.goToActivity(CalenderOverviewCaregiver.this, MealRegister.class));
 

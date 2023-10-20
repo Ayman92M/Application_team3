@@ -17,7 +17,6 @@ public class CaregiverElderlyPageActivity extends AppCompatActivity {
     Controller control;
     CaregiverEntry user;
     ElderlyEntry elderly;
-    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +29,8 @@ public class CaregiverElderlyPageActivity extends AppCompatActivity {
             elderly = control.getElderlyUser();
         }
 
+        Button back_btn = findViewById(R.id.button_back);
+        back_btn.setOnClickListener(view -> finish());
 
         ( (TextView) findViewById(R.id.elderly_name)).setText("          Elderly " + elderly.getName());
 
