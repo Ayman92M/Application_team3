@@ -37,7 +37,7 @@ public class Notification {
     private Controller control;
     int id;
 
-public void setController(Controller _control){ control = _control; }
+    public void setController(Controller _control){ control = _control; }
     @SuppressLint("ScheduleExactAlarm")
     public void setAlarm(Context context, String mealType, String pid, String elderly_name, String mealDate, long triggerTimeInMillis, long timeUpToMillis) {
 

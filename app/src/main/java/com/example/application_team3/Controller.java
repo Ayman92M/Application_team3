@@ -243,7 +243,7 @@ public class Controller implements Serializable {
                     long timeUpToMillis = getTimeUp(meal.getDate()+ " " + meal.getTime(), ELDERLY_REMIND_AFTER);
 
                     if (meal.getElderlyNotificationID() == null && dateToMillis >= current_time_ToMillis){
-
+                        notification.setController(this);
                         notification.createNotificationChannel(context, meal.getMealType());
                         System.out.println("updateNotification ---> setAlarm for: " + meal.getMealType() + " -> at: " + meal.getDate()+ " " + meal.getTime());
                         notification.setAlarm(context, meal.getMealType(), elderly_username, null, meal.getDate(), dateToMillis, timeUpToMillis);
@@ -295,6 +295,7 @@ public class Controller implements Serializable {
 
                     if(!meal.isHasEaten() && dateToMillisMiss <= current_time_ToMillis && meal.getCaregiverNotificationID() == null){
                         if (textView != null )  textView.setError("miss");
+                        notification.setController(this);
                         notification.createNotificationChannel(context, meal.getMealType());
                         notification.setAlarm(context, meal.getMealType(), elderly_username, elderly_name, meal.getDate(), current_time_ToMillis, current_time_ToMillis);
                         System.out.println("SET Notification for Caregiver: " + meal.getMealType() + " -> at: " + meal.getDate()+ " " + meal.getTime());
