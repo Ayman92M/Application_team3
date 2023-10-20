@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -30,6 +31,8 @@ public class SignupCaregiver extends AppCompatActivity {
             db = control.getDatabase();
         }
 
+        Button back_btn = findViewById(R.id.button_back);
+        back_btn.setOnClickListener(view -> finish());
         signUp_button();
 
     }
@@ -38,13 +41,19 @@ public class SignupCaregiver extends AppCompatActivity {
 
         Button sign_up_btn = findViewById(R.id.button_sign_up);
         sign_up_btn.setOnClickListener(view -> {
-            String name = findViewById(R.id.editTextText_name).toString();
-            String user_name = findViewById(R.id.username).toString();
-            String email = findViewById(R.id.email).toString();
-            String pass = findViewById(R.id.password).toString();
-            String pass2 = findViewById(R.id.rewritepassword).toString();
+            EditText nameEditText = findViewById(R.id.editTextText_name);
+            EditText usernameEditText = findViewById(R.id.username);
+            EditText emailEditText = findViewById(R.id.email);
+            EditText passEditText = findViewById(R.id.password);
+            EditText pass2EditText = findViewById(R.id.rewritepassword);
 
-            signUpCaregiver(name, user_name, email,pass,pass2);
+            String name = nameEditText.getText().toString();
+            String username = usernameEditText.getText().toString();
+            String email = emailEditText.getText().toString();
+            String pass = passEditText.getText().toString();
+            String pass2 = pass2EditText.getText().toString();
+
+            signUpCaregiver(name, username, email,pass,pass2);
 
         });
     }
@@ -52,10 +61,10 @@ public class SignupCaregiver extends AppCompatActivity {
     public void signUpCaregiver(String _name, String _user_name, String _email, String _pass, String _pass2){
 
         if (!userControl.isValidName(_name))
-            viewBuilder.notis("invalid name", SignupCaregiver.this);
+            viewBuilder.notis("invalid name: " + _name, SignupCaregiver.this);
 
         if(!userControl.isValidEmail(_email))
-            viewBuilder.notis("invalid Email", SignupCaregiver.this);
+            viewBuilder.notis("invalid Email: " + _email, SignupCaregiver.this);
 
         if(_pass.matches(_pass2)){
             if(!userControl.isValidPassword(_pass))
@@ -66,7 +75,7 @@ public class SignupCaregiver extends AppCompatActivity {
             viewBuilder.notis("password doesn't match", SignupCaregiver.this);
 
         if (!userControl.isValidUsername(_user_name))
-            viewBuilder.notis("invalid user name", SignupCaregiver.this);
+            viewBuilder.notis("invalid username: " + _user_name, SignupCaregiver.this);
 
         else{
             Task<DataSnapshot> caregiverDB = db.fetchCaregiverDB();

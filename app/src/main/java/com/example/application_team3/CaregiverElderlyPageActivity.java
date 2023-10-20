@@ -2,7 +2,6 @@ package com.example.application_team3;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +14,8 @@ import android.widget.TextView;
 
 public class CaregiverElderlyPageActivity extends AppCompatActivity {
     Controller control;
+    Database db;
+    ViewBuilder vb;
     CaregiverEntry user;
     ElderlyEntry elderly;
     @Override
@@ -24,10 +25,10 @@ public class CaregiverElderlyPageActivity extends AppCompatActivity {
 
         Intent get_info = getIntent();
         control = (Controller) get_info.getSerializableExtra("controller");
-        if (control != null) {
-            user = control.getCaregiverUser();
-            elderly = control.getElderlyUser();
-        }
+        db = control.getDatabase();
+        vb = control.getViewBuilder();
+        user = control.getCaregiverUser();
+        elderly = control.getElderlyUser();
 
         Button back_btn = findViewById(R.id.button_back);
         back_btn.setOnClickListener(view -> finish());
@@ -45,7 +46,6 @@ public class CaregiverElderlyPageActivity extends AppCompatActivity {
 
     }
 
-    @SuppressLint("SetTextI18n")
     private void deleteButtonListener(){
         Button delete_btn = findViewById(R.id.deleteElderly);
 
@@ -54,15 +54,15 @@ public class CaregiverElderlyPageActivity extends AppCompatActivity {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View popupView = inflater.inflate(R.layout.popup_confirm_delete, null);
 
-            final PopupWindow popupWindow = control.getViewBuilder().buildPopup(popupView);
+            final PopupWindow popupWindow = vb.buildPopup(popupView);
             TextView deleteText = popupView.findViewById(R.id.textView_delete);
             deleteText.setText("Remove " + elderly.getName() + "?");
 
             Button removeElderlyBtn = popupView.findViewById(R.id.Button_remove);
 
             removeElderlyBtn.setOnClickListener(v -> {
-                control.getDatabase().removeElderly(user.getPid(), elderly.getPid());
-                control.goToActivity(CaregiverElderlyPageActivity.this, CaregiverDash.class);
+                db.removeElderly(user.getPid(), elderly.getPid());
+                finish();
             });
             // Show the popup at the center of the screen
             popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);

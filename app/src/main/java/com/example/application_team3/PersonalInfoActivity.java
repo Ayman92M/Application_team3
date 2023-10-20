@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.android.material.bottomappbar.BottomAppBar;
-
 public class PersonalInfoActivity extends AppCompatActivity {
 
     Controller control;
@@ -37,13 +35,9 @@ public class PersonalInfoActivity extends AppCompatActivity {
         dateOfBirthText = this.findViewById(R.id.editTextText13);
         addressText = this.findViewById(R.id.editTextText14);
 
-
-
         showData();
 
         edit_button();
-
-
 
     }
 

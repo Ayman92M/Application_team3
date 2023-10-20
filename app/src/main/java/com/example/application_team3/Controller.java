@@ -18,7 +18,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -33,7 +32,6 @@ public class Controller implements Serializable {
     private String activeDate;
 
     final int ELDERLY_REMIND_AFTER = 1; //*45
-    final int ELDERLY_DEADLINE = 3;
     final int CAREGIVER_DEADLINE = 135;
 
     public Controller() {
@@ -193,13 +191,6 @@ public class Controller implements Serializable {
         return date_timeUpToMillis <= current_time_ToMillis;
     }
 
-    public boolean isItToday(String date){
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-
-        return date.equals(sdf.format(calendar.getTime()));
-    }
-
     public String getToday() {
         return new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
     }
@@ -330,9 +321,7 @@ public class Controller implements Serializable {
     }
     private long getTimeUp(String date, int minutesToAdd){
         String timeUp = addMinutesToDateString(date, minutesToAdd);
-
-        long dateToMillisMiss = 0;
-        dateToMillisMiss = convertStringToMillis(timeUp);
+        long dateToMillisMiss = convertStringToMillis(timeUp);
         return dateToMillisMiss;
     }
 

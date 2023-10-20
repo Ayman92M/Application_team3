@@ -30,6 +30,9 @@ public class ElderlyScheduler extends AppCompatActivity {
     ListView listView;
 
     Controller control;
+    Database db;
+    ViewBuilder vb;
+    Notification notification;
 
     TextView chosenDate;
 
@@ -47,9 +50,9 @@ public class ElderlyScheduler extends AppCompatActivity {
         chosenDate = findViewById(R.id.day_and_date);
         Intent get_info = getIntent();
         control = (Controller) get_info.getSerializableExtra("controller");
-        if(control == null){
-            System.out.println("NuLL CONTROLLER");
-        }
+        db = control.getDatabase();
+        vb = control.getViewBuilder();
+        notification = control.getNotification();
 
         Calendar day_calendar = Calendar.getInstance();
         int year = day_calendar.get(Calendar.YEAR);
@@ -57,7 +60,7 @@ public class ElderlyScheduler extends AppCompatActivity {
         int day = day_calendar.get(Calendar.DAY_OF_MONTH);
 
         if(control.getActiveDate() == null){
-            control.setActiveDate(year + "-" + (month + 1) + "-" + day);
+            control.setActiveDate(String.format("%04d-%02d-%02d", year, month + 1, day));
         }
         chosenDate.setText(control.getActiveDate());
         listView = findViewById(R.id.listView_elderly_scheduler);
@@ -97,7 +100,7 @@ public class ElderlyScheduler extends AppCompatActivity {
         notification.runFunctionElderly(this, control.getElderlyUser().getPid(), null);
         List<String> mealStrings = new ArrayList<>();
 
-        Task<DataSnapshot> mealPlanTask = control.getDatabase().fetchMealPlanDate(control.getElderlyUser().getPid(), control.getActiveDate());
+        Task<DataSnapshot> mealPlanTask = db.fetchMealPlanDate(control.getElderlyUser().getPid(), control.getActiveDate());
 
         Tasks.whenAll(mealPlanTask).addOnCompleteListener(task -> {
             DataSnapshot mealsData = mealPlanTask.getResult();
@@ -127,7 +130,7 @@ public class ElderlyScheduler extends AppCompatActivity {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.popup_meal_info_elderly, null);
 
-        final PopupWindow popupWindow = control.getViewBuilder().buildPopup(popupView);
+        final PopupWindow popupWindow = vb.buildPopup(popupView);
 
         // Set a click listener for the close button in the popup
 
@@ -145,8 +148,8 @@ public class ElderlyScheduler extends AppCompatActivity {
         Button bt_falsk = popupView.findViewById(R.id.bt_falsk);
         bt_sant.setOnClickListener(view1 -> {
             ////////////////
-            control.getDatabase().hasEatenMeal(control.getElderlyUser().getPid(), meal.getDate(), meal.getMealType());
-            control.getNotification().cancelAlarm(view1.getContext(), meal.getMealType(), meal.getDate());
+            db.hasEatenMeal(control.getElderlyUser().getPid(), meal.getDate(), meal.getMealType());
+            notification.cancelAlarm(view1.getContext(), meal.getMealType(), meal.getDate());
             mealListView();
         });
 
@@ -170,7 +173,7 @@ public class ElderlyScheduler extends AppCompatActivity {
             @Override
             public void onTick(long millisUntilFinished) {
                 int secondsRemaining = (int) (millisUntilFinished / 1000);
-                cancelButton.setText("Cancel on\n " +String.valueOf(secondsRemaining));
+                cancelButton.setText("Cancel on\n " + secondsRemaining);
             }
 
             @Override

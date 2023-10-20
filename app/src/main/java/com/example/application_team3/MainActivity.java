@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     Controller control;
     SharedPreferences preferences;
     Database db;
-    ViewBuilder viewBuilder;
+    ViewBuilder vb;
     TextView loginText, signUpText;
     EditText usernameText, passwordText;
     CheckBox rememberCheckBox;
@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
         preferences = this.getPreferences(Context.MODE_PRIVATE);
 
         db = control.getDatabase();
-        viewBuilder = control.getViewBuilder();
+        vb = control.getViewBuilder();
 
         loginText = findViewById(R.id.loginText);
         usernameText = findViewById(R.id.usernameText);
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             else {
-                viewBuilder.notis("Invalid username or password", MainActivity.this);
+                vb.notis("Invalid username or password", MainActivity.this);
             }
         });
     }

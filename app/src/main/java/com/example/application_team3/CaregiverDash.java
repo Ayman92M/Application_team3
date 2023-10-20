@@ -25,6 +25,8 @@ import java.util.List;
 public class CaregiverDash extends AppCompatActivity {
     private ListView listView;
     Controller control;
+    Database db;
+    ViewBuilder vb;
     CaregiverEntry user;
     List<String> elderlyStrings;
 
@@ -35,9 +37,10 @@ public class CaregiverDash extends AppCompatActivity {
 
         Intent get_info = getIntent();
         control = (Controller) get_info.getSerializableExtra("controller");
-        if (control != null) {
-            user = control.getCaregiverUser();
-        }
+        db = control.getDatabase();
+        vb = control.getViewBuilder();
+        user = control.getCaregiverUser();
+
         control.setElderlyUser(null);
 
         TextView welcomeText = findViewById(R.id.textView_Welcome);
@@ -58,15 +61,15 @@ public class CaregiverDash extends AppCompatActivity {
 
     }
 
-    public void addElderlyActionListener(View view){
+    private void addElderlyActionListener(View view){
         LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.popup_add_elderly, null);
-        PopupWindow popupWindow = control.getViewBuilder().buildPopup(popupView);
+        PopupWindow popupWindow = vb.buildPopup(popupView);
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
         Button add_btn = popupView.findViewById(R.id.Button_add);
         add_btn.setOnClickListener(v -> {
-            Task<DataSnapshot> elderlyDBTask = control.getDatabase().fetchElderlyDB();
+            Task<DataSnapshot> elderlyDBTask = db.fetchElderlyDB();
 
             Tasks.whenAll(elderlyDBTask).addOnCompleteListener(task -> {
                 EditText usernameText = popupView.findViewById(R.id.textView_username);
@@ -83,12 +86,12 @@ public class CaregiverDash extends AppCompatActivity {
 
                 }
                 else {
-                    control.getViewBuilder().notis("Elderly " + elderly_username + " does not exist", CaregiverDash.this);
+                    vb.notis("Elderly " + elderly_username + " does not exist", CaregiverDash.this);
                 }
             });
         });
     }
-    public void elderlyListActionListener(){
+    private void elderlyListActionListener(){
         String[] elderlyArray = elderlyStrings.toArray(new String[0]);
 
         listView.setOnItemClickListener((parent, view, position, id) -> {
@@ -97,7 +100,7 @@ public class CaregiverDash extends AppCompatActivity {
 
             String[] nameParts = selectedItem.split(", ");
 
-            Task<DataSnapshot> elderlyTask = control.getDatabase().fetchElderly(nameParts[1]);
+            Task<DataSnapshot> elderlyTask = db.fetchElderly(nameParts[1]);
 
             Tasks.whenAll(elderlyTask).addOnCompleteListener(task -> {
                 ElderlyEntry elderly = elderlyTask.getResult().getValue(ElderlyEntry.class);
@@ -108,7 +111,7 @@ public class CaregiverDash extends AppCompatActivity {
     }
 
     private void setupElderlyList(){
-        Task<DataSnapshot> caregiverTask = control.getDatabase().fetchCaregiver(control.getCaregiverUser().getPid());
+        Task<DataSnapshot> caregiverTask = db.fetchCaregiver(control.getCaregiverUser().getPid());
         Tasks.whenAll(caregiverTask).addOnCompleteListener(task -> {
                     control.setCaregiverUser(caregiverTask.getResult().getValue(CaregiverEntry.class));
                     user = control.getCaregiverUser();
@@ -122,7 +125,7 @@ public class CaregiverDash extends AppCompatActivity {
                 String elderlyString = name + ", " + username;
                 elderlyStrings.add(elderlyString);
             });
-            control.getViewBuilder().buildListView(false,
+            vb.buildListView(false,
                     elderlyStrings, this, listView,
                     R.layout.activity_list_item, R.id.textView_username, R.id.textView_list_pid
             );

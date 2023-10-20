@@ -14,11 +14,11 @@ import android.widget.TimePicker;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class MealRegister extends AppCompatActivity {
-    String[] mealtype = {"Breakfast", "Lunch", "Dinner", "Snack"};
+    String[] mealType = {"Breakfast", "Lunch", "Dinner", "Snack"};
     Spinner mealPicker;
     Controller control;
     Database db;
-    ViewBuilder viewBuilder;
+    ViewBuilder vb;
     ArrayAdapter<String> adapterItems;
 
     String item, note;
@@ -34,12 +34,12 @@ public class MealRegister extends AppCompatActivity {
         if(control != null)
         {
             db = control.getDatabase();
-            viewBuilder = control.getViewBuilder();
+            vb = control.getViewBuilder();
         }
         Button back_btn = findViewById(R.id.button_back);
         back_btn.setOnClickListener(view -> finish());
         mealPicker = findViewById(R.id.mealspinner);
-        adapterItems = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, mealtype);
+        adapterItems = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, mealType);
         adapterItems.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         mealPicker.setAdapter(adapterItems);
 
@@ -48,7 +48,7 @@ public class MealRegister extends AppCompatActivity {
         mealPicker.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                item = mealtype[i];
+                item = mealType[i];
             }
 
             @Override
@@ -74,7 +74,7 @@ public class MealRegister extends AppCompatActivity {
 
             //Toast.makeText(Meal_register.this, elderly_username , Toast.LENGTH_SHORT).show();
             db.registerMeal(elderly_username1, date, item, formattedTime, note);
-            viewBuilder.notis("Registered meal", view.getContext());
+            vb.notis("Registered meal", view.getContext());
         });
 
     }

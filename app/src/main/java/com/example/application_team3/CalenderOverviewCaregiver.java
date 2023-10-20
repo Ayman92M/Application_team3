@@ -27,6 +27,8 @@ public class CalenderOverviewCaregiver extends AppCompatActivity {
     String date;
 
     Controller control;
+    Database db;
+    ViewBuilder vb;
 
 
     @Override
@@ -36,6 +38,8 @@ public class CalenderOverviewCaregiver extends AppCompatActivity {
 
         Intent get_info = getIntent();
         control = (Controller) get_info.getSerializableExtra("controller");
+        db = control.getDatabase();
+        vb = control.getViewBuilder();
 
         Button back_btn = findViewById(R.id.button_back);
         back_btn.setOnClickListener(view -> finish());
@@ -69,7 +73,7 @@ public class CalenderOverviewCaregiver extends AppCompatActivity {
     private void mealListView(){
         List<String> mealStrings = new ArrayList<>();
 
-        Task<DataSnapshot> mealPlanTask = control.getDatabase().fetchMealPlanDate(control.getElderlyUser().getPid(), control.getActiveDate());
+        Task<DataSnapshot> mealPlanTask = db.fetchMealPlanDate(control.getElderlyUser().getPid(), control.getActiveDate());
 
         Tasks.whenAll(mealPlanTask).addOnCompleteListener(task -> {
             DataSnapshot mealsData = mealPlanTask.getResult();
@@ -86,7 +90,7 @@ public class CalenderOverviewCaregiver extends AppCompatActivity {
             {
                 mealStrings.add(meal.getMealType() + ", " + meal.getTime() + ", " + meal.isHasEaten() + ", " + meal.getDate());
             }
-            control.getViewBuilder().buildListView(true,
+            vb.buildListView(true,
                     mealStrings, this, listView,
                     R.layout.activity_list_item_caregiverscheduler, R.id.meal, R.id.time
             );
@@ -110,11 +114,11 @@ public class CalenderOverviewCaregiver extends AppCompatActivity {
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
         Button deleteMeal_btn = popupView.findViewById(R.id.deleteMeal);
 
-        deleteMeal_btn.setEnabled(control.isTimeUp(meal.getDate(), meal.getTime(), -720) ? false : true);
+        deleteMeal_btn.setEnabled(!control.isTimeUp(meal.getDate(), meal.getTime(), -720));
 
         deleteMeal_btn.setOnClickListener(view1 -> {
-            control.getDatabase().deleteMeal(control.getElderlyUser().getPid(), meal.getDate(), meal.getMealType());
-            control.goToActivity(CalenderOverviewCaregiver.this, CalenderOverviewCaregiver.class);
+            db.deleteMeal(control.getElderlyUser().getPid(), meal.getDate(), meal.getMealType());
+            recreate();
         });
     }
 }
