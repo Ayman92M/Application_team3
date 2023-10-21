@@ -63,7 +63,7 @@ public class MealRegister extends AppCompatActivity {
         Button create_meal = findViewById(R.id.Button_createMeal);
         create_meal.setOnClickListener(view -> {
             String date = control.getActiveDate();
-            String elderly_username1 = control.getElderlyUser().getPid();
+            String elderly_username1 = control.getElderlyUser().getUsername();
             TextInputEditText _note = findViewById(R.id.TextInputEditText_EnterMeal);
             note = _note.getText().toString();
 

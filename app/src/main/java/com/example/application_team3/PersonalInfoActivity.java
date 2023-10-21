@@ -41,11 +41,17 @@ public class PersonalInfoActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    showData();
+    }
+
     private void showData(){
 
         ElderlyEntry elderly = control.getElderlyUser();
         nameText.setText(elderly.getName());
-        usernameText.setText(elderly.getPid());
+        usernameText.setText(elderly.getUsername());
         pinText.setText(elderly.getPin());
         phoneNoText.setText(elderly.getPhoneNo());
         dateOfBirthText.setText(elderly.getBirthday());

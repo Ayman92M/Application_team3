@@ -65,6 +65,8 @@ public class CaregiverDash extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        System.out.println("Resume");
+        control.setElderlyUser(null);
         setupElderlyList();
     }
 
@@ -85,7 +87,7 @@ public class CaregiverDash extends AppCompatActivity {
 
                 if(elderlyDB.hasChild(elderly_username)){
                     ElderlyEntry elderly = elderlyDB.child(elderly_username).getValue(ElderlyEntry.class);
-                    Task<DataSnapshot> assignTask = control.getDatabase().assignElderly(user.getPid(), user.getName(), elderly.getPid(), elderly.getName());
+                    Task<DataSnapshot> assignTask = control.getDatabase().assignElderly(user.getUsername(), user.getName(), elderly.getUsername(), elderly.getName());
                     Tasks.whenAll(assignTask).addOnCompleteListener(task2 -> {
                         popupWindow.dismiss();
                         setupElderlyList();
@@ -119,7 +121,7 @@ public class CaregiverDash extends AppCompatActivity {
     }
 
     private void setupElderlyList(){
-        Task<DataSnapshot> caregiverTask = db.fetchCaregiver(control.getCaregiverUser().getPid());
+        Task<DataSnapshot> caregiverTask = db.fetchCaregiver(control.getCaregiverUser().getUsername());
         Tasks.whenAll(caregiverTask).addOnCompleteListener(task -> {
             user = caregiverTask.getResult().getValue(CaregiverEntry.class);
             control.setCaregiverUser(user);

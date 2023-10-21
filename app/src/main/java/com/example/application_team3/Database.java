@@ -1,14 +1,9 @@
 package com.example.application_team3;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.android.gms.tasks.Tasks;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -53,25 +48,19 @@ public class Database implements Serializable {
         caregiverRef.child(pid).setValue(caregiver);
     }
     public void updateCaregiver(CaregiverEntry caregiver){
-        caregiverRef.child(caregiver.getPid()).setValue(caregiver);
+        caregiverRef.child(caregiver.getUsername()).setValue(caregiver);
     }
 
-    public Task<Long> registerElderly(String name, String pid, String pin, String phoneNo, String caregiver_name, String caregiver_pid){
+    public void registerElderly(String name, String pid, String pin, String phoneNo, String dateOfBirth, String address, String caregiver_name, String caregiver_pid){
         ElderlyEntry elderly = new ElderlyEntry(name, pid, pin, phoneNo);
+        elderly.setBirthday(dateOfBirth);
+        elderly.setAddress(address);
         elderlyRef.child(pid).setValue(elderly);
-        Task<DataSnapshot> assignTask = assignElderly(caregiver_pid, caregiver_name, pid, name);
-        TaskCompletionSource<Long> elderlySizeSource = new TaskCompletionSource<>();
-        Task<Long> elderlySizeTask = elderlySizeSource.getTask();
-
-        Tasks.whenAll(assignTask).addOnCompleteListener(task -> {
-            DataSnapshot elderlyData = assignTask.getResult();
-            elderlySizeSource.setResult(elderlyData.getChildrenCount());
-        });
-
-        return elderlySizeTask;
+        assignElderly(caregiver_pid, caregiver_name, pid, name);
     }
     public void updateElderly(ElderlyEntry elderly){
-        elderlyRef.child(elderly.getPid()).setValue(elderly);
+        elderlyRef.child(elderly.getUsername()).setValue(elderly);
+
     }
     public void registerMeal(String pid, String date, String mealType, String time, String note){
         MealEntry mealEntry = new MealEntry(date, mealType, time, note, false);
@@ -120,36 +109,6 @@ public class Database implements Serializable {
             else { mealPlanTaskSource.setResult(null); }
         });
         return mealPlanTask;
-    }
-
-    public void listenForMealPlan(String pid){
-        mealPlanRef.child(pid).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-                System.out.println("Database.newMeal: " );
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                System.out.println("Database.changedMeal: " );
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
     }
 
     public Task<Boolean> checkLoginElderly(String pid, String pin){
@@ -288,6 +247,20 @@ public class Database implements Serializable {
     public void removeElderly(String caregiver, String elderly){
         caregiverRef.child(caregiver).child("elderly").child(elderly).removeValue();
         elderlyRef.child(elderly).child("caregivers").child(caregiver).removeValue();
+    }
+
+    public void deleteElderly(String elderly_username){
+
+        Task<List<CaregiverEntry>> caregiverListTask = CaregiverList(elderly_username);
+
+        Tasks.whenAll(caregiverListTask).addOnCompleteListener(task -> {
+            List<CaregiverEntry> caregiverList = caregiverListTask.getResult();
+            for(CaregiverEntry caregiver : caregiverList){
+                removeElderly(caregiver.getUsername(), elderly_username);
+            }
+            elderlyRef.child(elderly_username).removeValue();
+            mealPlanRef.child(elderly_username).removeValue();
+        });
     }
 
 }

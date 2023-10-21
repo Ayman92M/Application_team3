@@ -45,6 +45,13 @@ public class CaregiverElderlyPageActivity extends AppCompatActivity {
         deleteButtonListener();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        elderly = control.getElderlyUser();
+        ( (TextView) findViewById(R.id.elderly_name)).setText("          Elderly " + elderly.getName());
+    }
+
     private void deleteButtonListener(){
         Button delete_btn = findViewById(R.id.deleteElderly);
 
@@ -60,7 +67,7 @@ public class CaregiverElderlyPageActivity extends AppCompatActivity {
             Button removeElderlyBtn = popupView.findViewById(R.id.Button_remove);
 
             removeElderlyBtn.setOnClickListener(v -> {
-                db.removeElderly(user.getPid(), elderly.getPid());
+                db.removeElderly(user.getUsername(), elderly.getUsername());
                 finish();
             });
             // Show the popup at the center of the screen

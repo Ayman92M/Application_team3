@@ -73,7 +73,7 @@ public class CalenderOverviewCaregiver extends AppCompatActivity {
     private void mealListView(){
         List<String> mealStrings = new ArrayList<>();
 
-        Task<DataSnapshot> mealPlanTask = db.fetchMealPlanDate(control.getElderlyUser().getPid(), control.getActiveDate());
+        Task<DataSnapshot> mealPlanTask = db.fetchMealPlanDate(control.getElderlyUser().getUsername(), control.getActiveDate());
 
         Tasks.whenAll(mealPlanTask).addOnCompleteListener(task -> {
             DataSnapshot mealsData = mealPlanTask.getResult();
@@ -117,7 +117,7 @@ public class CalenderOverviewCaregiver extends AppCompatActivity {
         deleteMeal_btn.setEnabled(!control.isTimeUp(meal.getDate(), meal.getTime(), -720));
 
         deleteMeal_btn.setOnClickListener(view1 -> {
-            db.deleteMeal(control.getElderlyUser().getPid(), meal.getDate(), meal.getMealType());
+            db.deleteMeal(control.getElderlyUser().getUsername(), meal.getDate(), meal.getMealType());
             recreate();
         });
     }

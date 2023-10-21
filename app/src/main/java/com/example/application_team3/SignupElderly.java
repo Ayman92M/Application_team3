@@ -11,6 +11,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.DataSnapshot;
 
+import java.util.HashMap;
+import java.util.Objects;
+
 public class SignupElderly extends AppCompatActivity {
 
     Controller control;
@@ -45,7 +48,7 @@ public class SignupElderly extends AppCompatActivity {
             ElderlyEntry elderly = control.getElderlyUser();
 
             nameText.setText(elderly.getName());
-            usernameText.setText(elderly.getPid());
+            usernameText.setText(elderly.getUsername());
             pinText.setText(elderly.getPin());
             phoneNoText.setText(elderly.getPhoneNo());
             dateOfBirthText.setText(elderly.getBirthday());
@@ -62,11 +65,11 @@ public class SignupElderly extends AppCompatActivity {
             String _dateOfBirth = dateOfBirthText.getText().toString();
             String _address = addressText.getText().toString();
 
-            signUpElderly(_name, _username, _pin, _pin2, _phoneNo, _dateOfBirth, _address);
+            checkUserData(_name, _username, _pin, _pin2, _phoneNo, _dateOfBirth, _address);
         });
     }
 
-    public void signUpElderly(String _name, String _username, String _pin, String _pin2, String _phoneNo, String _dateOfBirth, String _address){
+    public void checkUserData(String _name, String _username, String _pin, String _pin2, String _phoneNo, String _dateOfBirth, String _address){
 
         if (!userControl.isValidName(_name))
             vb.notis("invalid name: " + _name, SignupElderly.this);
@@ -87,26 +90,39 @@ public class SignupElderly extends AppCompatActivity {
             Task<DataSnapshot> caregiverDB = db.fetchCaregiverDB();
 
             Tasks.whenAll(caregiverDB).addOnCompleteListener(task -> {
-                if(caregiverDB.getResult().child(_username).exists()){
+                if(caregiverDB.getResult().child(_username).exists() && !Objects.equals(control.getElderlyUser().getUsername(), _username)){
                     vb.notis("User name is already exists, use a different user name", SignupElderly.this);
                 }
                 else {
                     if (userControl.isValidName(_name) &&
-                             _pin.matches(_pin2) && userControl.isValidPin(_pin) ){
+                            _pin.matches(_pin2) && userControl.isValidPin(_pin) ){
                         vb.notis("Success", SignupElderly.this);
-                        Task<Long> registerTask = db.registerElderly(_name, _username, _pin, _phoneNo,control.getCaregiverUser().getName(), control.getCaregiverUser().getPid());
-
-                        Tasks.whenAll(registerTask).addOnCompleteListener(task2 ->{
-                            Long size = registerTask.getResult();
-                            System.out.println("elderlycount = " + size);
-                            finish();
-                            System.out.println("finish -> goToActivity");
-                            control.goToActivity(SignupElderly.this, CaregiverDash.class);
-                        });
-
+                        registerElderly(_name, _username,  _pin, _phoneNo, _dateOfBirth, _address);
+                        finish();
                     }
                 }
             });
         }
     }
+
+    private void registerElderly(String _name, String _username, String _pin, String _phoneNo, String _dateOfBirth, String _address){
+        db.registerElderly(_name, _username, _pin, _phoneNo, _dateOfBirth, _address, control.getCaregiverUser().getName(), control.getCaregiverUser().getUsername());
+        ElderlyEntry elderly = control.getElderlyUser();
+        if(elderly != null){
+            if(!Objects.equals(elderly.getUsername(), _username) || !Objects.equals(elderly.getName(), _name))
+            {
+                db.deleteElderly(elderly.getUsername());
+                HashMap<String, String> caregiversList = elderly.getCaregivers();
+                caregiversList.forEach((username, name) -> db.assignElderly(username, name, _username, _name));
+            }
+            elderly.setName(_name);
+            elderly.setUsername(_username);
+            elderly.setPin(_pin);
+            elderly.setPhoneNo(_phoneNo);
+            elderly.setBirthday(_dateOfBirth);
+            elderly.setAddress(_address);
+            control.setElderlyUser(elderly);
+        }
+    }
+
 }

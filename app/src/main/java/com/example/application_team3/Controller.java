@@ -110,7 +110,7 @@ public class Controller implements Serializable {
                 ElderlyEntry elderly = elderlyTask.getResult().getValue(ElderlyEntry.class);
                 if(elderly != null){
                     setElderlyUser(elderly);
-                    updateNotificationElderly(elderly.getPid(), context);
+                    updateNotificationElderly(elderly.getUsername(), context);
                     goToActivity(context, ElderlyScheduler.class);
                 }
             }

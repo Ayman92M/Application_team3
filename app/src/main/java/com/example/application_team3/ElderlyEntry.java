@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public class ElderlyEntry implements Serializable{
     private String name;
-    private String pid;
+    private String username;
     private String phoneNo;
     private String pin;
     private String birthday;
@@ -14,9 +14,9 @@ public class ElderlyEntry implements Serializable{
     HashMap<String, String> caregivers = new HashMap<>();
 
     private ElderlyEntry() {}
-    public ElderlyEntry(String name, String pid, String pin, String phoneNo) {
+    public ElderlyEntry(String name, String username, String pin, String phoneNo) {
         this.name = name;
-        this.pid = pid;
+        this.username = username;
         this.pin = pin;
         this.phoneNo = phoneNo;
 
@@ -30,12 +30,12 @@ public class ElderlyEntry implements Serializable{
         this.name = name;
     }
 
-    public String getPid() {
-        return pid;
+    public String getUsername() {
+        return username;
     }
 
-    public void setPid(String pid) {
-        this.pid = pid;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPin() {

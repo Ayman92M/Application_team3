@@ -97,10 +97,10 @@ public class ElderlyScheduler extends AppCompatActivity {
 
     private void mealListView(){
         Notification notification = control.getNotification();
-        notification.runFunctionElderly(this, control.getElderlyUser().getPid(), null);
+        notification.runFunctionElderly(this, control.getElderlyUser().getUsername(), null);
         List<String> mealStrings = new ArrayList<>();
 
-        Task<DataSnapshot> mealPlanTask = db.fetchMealPlanDate(control.getElderlyUser().getPid(), control.getActiveDate());
+        Task<DataSnapshot> mealPlanTask = db.fetchMealPlanDate(control.getElderlyUser().getUsername(), control.getActiveDate());
 
         Tasks.whenAll(mealPlanTask).addOnCompleteListener(task -> {
             DataSnapshot mealsData = mealPlanTask.getResult();
@@ -148,7 +148,7 @@ public class ElderlyScheduler extends AppCompatActivity {
         Button bt_falsk = popupView.findViewById(R.id.bt_falsk);
         bt_sant.setOnClickListener(view1 -> {
             ////////////////
-            db.hasEatenMeal(control.getElderlyUser().getPid(), meal.getDate(), meal.getMealType());
+            db.hasEatenMeal(control.getElderlyUser().getUsername(), meal.getDate(), meal.getMealType());
             notification.cancelAlarm(view1.getContext(), meal.getMealType(), meal.getDate());
             mealListView();
         });
