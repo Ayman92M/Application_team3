@@ -16,8 +16,6 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 
-
-
 public class AlarmReceiver extends BroadcastReceiver {
 
 
@@ -36,6 +34,8 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+
+        System.out.println("AlarmReceiver ..... .....");
         control = (Controller) intent.getSerializableExtra("controller");
 
 
@@ -43,15 +43,14 @@ public class AlarmReceiver extends BroadcastReceiver {
 
 
             String meal_type = intent.getStringExtra("mealType");
-            String meal_date = intent.getStringExtra("mealDate");
             String elderlyUserName = intent.getStringExtra("elderlyUserName");
             String elderlyName = intent.getStringExtra("elderlyName");
 
 
             if (elderlyName != null)
-                showNotification(context, intent, elderlyName.toUpperCase() + CAREGIVER_CONTENT, null, meal_type);
+                showNotification(context,  elderlyName.toUpperCase() + CAREGIVER_CONTENT, null, meal_type);
             else
-                showNotification(context, intent, meal_type,  elderlyUserName, ELDERLY_CONTENT);
+                showNotification(context,  meal_type,  elderlyUserName, ELDERLY_CONTENT);
 
 
         }
@@ -92,24 +91,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
 
 
-    public void showNotification(Context context, Intent intent, String textTitle, String elderly, String textContent) {
-
-
-        String ACTION_YES = "Yes";
-        String ACTION_NO = "No";
-
-
-        Intent YesIntent = new Intent(context, MainActivity.class);
-        YesIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingYesIntent =
-                PendingIntent.getActivity(context, 3, YesIntent, PendingIntent.FLAG_IMMUTABLE);
-
-
-        Intent NoIntent = new Intent(context, MainActivity.class);
-        NoIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingNoIntent =
-                PendingIntent.getActivity(context, 2, NoIntent, PendingIntent.FLAG_IMMUTABLE);
-
+    public void showNotification(Context context, String textTitle, String elderly, String textContent) {
 
         NotificationCompat.Builder builder;
         if(elderly != null){

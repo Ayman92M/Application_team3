@@ -94,9 +94,15 @@ public class SignupElderly extends AppCompatActivity {
                     if (userControl.isValidName(_name) &&
                              _pin.matches(_pin2) && userControl.isValidPin(_pin) ){
                         vb.notis("Success", SignupElderly.this);
-                        db.registerElderly(_name, _username, _pin, _phoneNo,control.getCaregiverUser().getName(), control.getCaregiverUser().getPid());
+                        Task<Long> registerTask = db.registerElderly(_name, _username, _pin, _phoneNo,control.getCaregiverUser().getName(), control.getCaregiverUser().getPid());
 
-                        control.goToActivity(SignupElderly.this, CaregiverDash.class);
+                        Tasks.whenAll(registerTask).addOnCompleteListener(task2 ->{
+                            Long size = registerTask.getResult();
+                            System.out.println("elderlycount = " + size);
+                            finish();
+                            System.out.println("finish -> goToActivity");
+                            control.goToActivity(SignupElderly.this, CaregiverDash.class);
+                        });
 
                     }
                 }

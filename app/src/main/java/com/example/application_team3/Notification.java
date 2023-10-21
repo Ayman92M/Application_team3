@@ -1,7 +1,6 @@
 package com.example.application_team3;
 
 
-import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -9,40 +8,31 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
-import androidx.annotation.RequiresApi;
 
-
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 
-public class Notification {
+public class Notification implements Serializable {
 
 
     private static final String CHANNEL_ID = "channel1";
-    private static final String RUN_FUNCTION_ACTION_CAREGIVER = "RUN_FUNCTION_ACTION_CAREGIVER";
-    private static final String RUN_FUNCTION_ACTION_ELDERLY = "RUN_FUNCTION_ACTION_ELDERLY";
-    private AlarmManager alarmManager;
-    private PendingIntent pendingIntent;
-    private Controller control;
+    private static Controller control;
     int id;
 
     public void setController(Controller _control){ control = _control; }
-    @SuppressLint("ScheduleExactAlarm")
-    public void setAlarm(Context context, String mealType, String pid, String elderly_name, String mealDate, long triggerTimeInMillis, long timeUpToMillis) {
+
+    public void setAlarm(Context context, String mealType, String pid, String elderly_name, String mealDate, long triggerTimeInMillis) {
 
 
-        alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
 
         Intent intent = new Intent(context, AlarmReceiver.class);
@@ -62,7 +52,7 @@ public class Notification {
 
 
         id = getMealId(mealType,mealDate);
-        pendingIntent = PendingIntent.getBroadcast(context, id,intent, PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id,intent, PendingIntent.FLAG_IMMUTABLE);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTimeInMillis, pendingIntent);
 
 
@@ -73,7 +63,7 @@ public class Notification {
             for (int i = 1; i < 4; i++) {
                 int id = getReminderId(mealType, i);
                 intent.putExtra("reminderTime", id);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id, intent, PendingIntent.FLAG_IMMUTABLE);
+                pendingIntent = PendingIntent.getBroadcast(context, id, intent, PendingIntent.FLAG_IMMUTABLE);
 
 
                 String reminderTime = addMinutesToDateString(getCurrentTime(), 1*i);
@@ -101,10 +91,7 @@ public class Notification {
         if (elderlyUserName != null)    intent.putExtra("elderlyUserName", elderlyUserName);
         if (elderlyName != null)        intent.putExtra("elderlyName", elderlyName);
 
-
-
-
-        pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
         long repeatInterval = AlarmManager.INTERVAL_FIFTEEN_MINUTES/15;
         long triggerTime = System.currentTimeMillis() + repeatInterval;
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, triggerTime, repeatInterval, pendingIntent);
@@ -121,7 +108,7 @@ public class Notification {
 
         Intent intent = new Intent(context, AlarmReceiver.class);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            intent.setAction(RUN_FUNCTION_ACTION_ELDERLY);
+            intent.setAction("RUN_FUNCTION_ACTION_ELDERLY");
         } else {
             intent.setAction(Intent.ACTION_BOOT_COMPLETED);
         }
@@ -131,7 +118,7 @@ public class Notification {
         if (elderlyName != null)        intent.putExtra("elderlyName", elderlyName);
 
 
-        pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
         long repeatInterval = AlarmManager.INTERVAL_FIFTEEN_MINUTES/15;
         long triggerTime = System.currentTimeMillis() + repeatInterval;
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, triggerTime, repeatInterval, pendingIntent);
@@ -152,10 +139,10 @@ public class Notification {
 
 
         id = getMealId(mealType, mealDate);
-        pendingIntent = PendingIntent.getBroadcast(context, id, intent,PendingIntent.FLAG_IMMUTABLE);
-        if(alarmManager == null) {
-            alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        }
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id, intent,PendingIntent.FLAG_IMMUTABLE);
+
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
         alarmManager.cancel(pendingIntent);
 
 
@@ -166,10 +153,6 @@ public class Notification {
             id = getReminderId(mealType, i);
             pendingIntent = PendingIntent.getBroadcast(context, id, intent,PendingIntent.FLAG_IMMUTABLE);
 
-
-            if(alarmManager == null) {
-                alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            }
             alarmManager.cancel(pendingIntent);
 
 
@@ -212,7 +195,7 @@ public class Notification {
 
         intent.putExtra("controller", control);
         intent.putExtra("elderlyUserName", elderlyUserName);
-        pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
         long repeatInterval = AlarmManager.INTERVAL_FIFTEEN_MINUTES/15;
         long triggerTime = System.currentTimeMillis() + repeatInterval;
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, triggerTime, repeatInterval, pendingIntent);
@@ -240,7 +223,7 @@ public class Notification {
 
 
             mealInfo = mealInfo.replace("-", "");
-            return Integer.valueOf(mealInfo);
+            return Integer.parseInt(mealInfo);
         } catch (NumberFormatException e) {
             // Handle the case where ReminderNum is not a valid integer
             e.printStackTrace(); // or log the error
@@ -272,21 +255,6 @@ public class Notification {
         }
     }
 
-
-
-
-    private boolean isTimeUp(String[] itemParts, int minutesToAdd){
-        String current_time = getCurrentTime();
-        long current_time_ToMillis = convertStringToMillis(current_time);
-
-
-        String date_timeMeal = itemParts[4] + " " + itemParts[1];
-        String date_timeUp = addMinutesToDateString(date_timeMeal, minutesToAdd);
-        long date_timeUpToMillis = convertStringToMillis(date_timeUp);
-
-
-        return date_timeUpToMillis <= current_time_ToMillis;
-    }
     public long convertStringToMillis(String dateString) {
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
@@ -326,14 +294,6 @@ public class Notification {
     }
     public String getCurrentTime(){
         Calendar calendar = Calendar.getInstance();
-
-
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH) + 1; // Months are 0-based, so we add 1
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
-
 
         // Format the date and time into "yyyy-MM-dd HH:mm" format
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());

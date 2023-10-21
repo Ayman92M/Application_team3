@@ -43,7 +43,6 @@ public class CaregiverElderlyPageActivity extends AppCompatActivity {
         personal_info.setOnClickListener(view -> control.goToActivity(CaregiverElderlyPageActivity.this, PersonalInfoActivity.class));
 
         deleteButtonListener();
-
     }
 
     private void deleteButtonListener(){

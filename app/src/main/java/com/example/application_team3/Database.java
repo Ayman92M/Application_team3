@@ -56,10 +56,19 @@ public class Database implements Serializable {
         caregiverRef.child(caregiver.getPid()).setValue(caregiver);
     }
 
-    public void registerElderly(String name, String pid, String pin, String phoneNo, String caregiver_name, String caregiver_pid){
+    public Task<Long> registerElderly(String name, String pid, String pin, String phoneNo, String caregiver_name, String caregiver_pid){
         ElderlyEntry elderly = new ElderlyEntry(name, pid, pin, phoneNo);
         elderlyRef.child(pid).setValue(elderly);
-        assignElderly(caregiver_pid, caregiver_name, pid, name);
+        Task<DataSnapshot> assignTask = assignElderly(caregiver_pid, caregiver_name, pid, name);
+        TaskCompletionSource<Long> elderlySizeSource = new TaskCompletionSource<>();
+        Task<Long> elderlySizeTask = elderlySizeSource.getTask();
+
+        Tasks.whenAll(assignTask).addOnCompleteListener(task -> {
+            DataSnapshot elderlyData = assignTask.getResult();
+            elderlySizeSource.setResult(elderlyData.getChildrenCount());
+        });
+
+        return elderlySizeTask;
     }
     public void updateElderly(ElderlyEntry elderly){
         elderlyRef.child(elderly.getPid()).setValue(elderly);
@@ -240,7 +249,7 @@ public class Database implements Serializable {
             DataSnapshot mealPlanDB = mealPlanTask.getResult();
             MealEntry meal;
             List<MealEntry> mealList = new ArrayList<>();
-            if (mealPlanDB.hasChildren()) {
+            if (mealPlanDB != null && mealPlanDB.hasChildren()) {
                 for(DataSnapshot mealPlans : mealPlanDB.getChildren()){
                     if(mealPlans.hasChildren()){
                         for(DataSnapshot mealPlan : mealPlans.getChildren()){
@@ -259,17 +268,20 @@ public class Database implements Serializable {
     }
     public Task<DataSnapshot> assignElderly(String caregiver_pid, String caregiver_name, String elderly_pid, String elderly_name){
         Task<DataSnapshot> elderlyDBTask = fetchElderlyDB();
-        Task<DataSnapshot> caregiverTask = fetchCaregiver(caregiver_pid);
+
         TaskCompletionSource<DataSnapshot> caregiverListTaskSource = new TaskCompletionSource<>();
         Task<DataSnapshot> caregiverListTask = caregiverListTaskSource.getTask();
-        Tasks.whenAll(elderlyDBTask, caregiverTask).addOnCompleteListener(task -> {
+        Tasks.whenAll(elderlyDBTask).addOnCompleteListener(task -> {
             DataSnapshot elderlyDB = elderlyDBTask.getResult();
-            DataSnapshot caregiver = caregiverTask.getResult();
             if(elderlyDB.child(elderly_pid).exists()){
                 caregiverRef.child(caregiver_pid).child("elderly").child(elderly_pid).setValue(elderly_name);
                 elderlyRef.child(elderly_pid).child("caregivers").child(caregiver_pid).setValue(caregiver_name);
             }
-            caregiverListTaskSource.setResult(caregiver.child("elderly"));
+            Task<DataSnapshot> caregiverTask = fetchCaregiver(caregiver_pid);
+            Tasks.whenAll(caregiverTask).addOnCompleteListener(task2 -> {
+                DataSnapshot caregiver = caregiverTask.getResult();
+                caregiverListTaskSource.setResult(caregiver.child("elderly"));
+            });
         });
         return caregiverListTask;
     }

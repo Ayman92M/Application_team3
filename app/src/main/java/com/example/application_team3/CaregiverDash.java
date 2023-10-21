@@ -59,6 +59,13 @@ public class CaregiverDash extends AppCompatActivity {
         // Show the popup at the center of the screen
         addElderly.setOnClickListener(this::addElderlyActionListener);
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupElderlyList();
     }
 
     private void addElderlyActionListener(View view){
@@ -82,6 +89,7 @@ public class CaregiverDash extends AppCompatActivity {
                     Tasks.whenAll(assignTask).addOnCompleteListener(task2 -> {
                         popupWindow.dismiss();
                         setupElderlyList();
+                        recreate();
                     });
 
                 }
@@ -113,8 +121,8 @@ public class CaregiverDash extends AppCompatActivity {
     private void setupElderlyList(){
         Task<DataSnapshot> caregiverTask = db.fetchCaregiver(control.getCaregiverUser().getPid());
         Tasks.whenAll(caregiverTask).addOnCompleteListener(task -> {
-                    control.setCaregiverUser(caregiverTask.getResult().getValue(CaregiverEntry.class));
-                    user = control.getCaregiverUser();
+            user = caregiverTask.getResult().getValue(CaregiverEntry.class);
+            control.setCaregiverUser(user);
             elderlyStrings.clear();
             HashMap<String, String> elderlyList = user.getElderly();
             elderlyList.forEach((username, name) ->{
