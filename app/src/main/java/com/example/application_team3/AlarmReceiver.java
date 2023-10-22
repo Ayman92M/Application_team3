@@ -94,6 +94,26 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void showNotification(Context context, String textTitle, String elderly, String textContent) {
 
         NotificationCompat.Builder builder;
+        Intent resultIntent = (elderly != null) ?
+                new Intent(context, ElderlyScheduler.class):
+                new Intent(context, CaregiverDash.class);
+
+        resultIntent.putExtra("controller", control);
+        // Create the TaskStackBuilder and add the intent, which inflates the back
+        // stack.
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        stackBuilder.addNextIntentWithParentStack(resultIntent);
+        // Get the PendingIntent containing the entire back stack.
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(0,
+                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        builder = new NotificationCompat.Builder(context, CHANNEL_ID);
+        builder.setContentIntent(resultPendingIntent);
+        builder.setSmallIcon(R.drawable.notification_icon);
+        builder.setContentTitle(textTitle);
+        builder.setContentText(textContent);
+        builder.setAutoCancel(true);
+        /*
         if(elderly != null){
             // Create an Intent for the activity you want to start.
             Intent resultIntent = new Intent(context, ElderlyScheduler.class);
@@ -132,9 +152,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             builder.setContentText(textContent);
             builder.setAutoCancel(true);
         }
-
-
-
+        */
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
         if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
@@ -150,8 +168,5 @@ public class AlarmReceiver extends BroadcastReceiver {
         notificationManager.notify(NOTIFICATION_ID, builder.build());
 
     }
-
-
-
 
 }

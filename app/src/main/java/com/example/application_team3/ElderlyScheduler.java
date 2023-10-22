@@ -22,9 +22,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.DataSnapshot;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class ElderlyScheduler extends AppCompatActivity {
     ListView listView;
@@ -146,6 +148,12 @@ public class ElderlyScheduler extends AppCompatActivity {
 
         Button bt_sant = popupView.findViewById(R.id.bt_sant);
         Button bt_falsk = popupView.findViewById(R.id.bt_falsk);
+
+        if(!isItToday(meal.getDate())){
+            bt_sant.setEnabled(false);
+            bt_falsk.setEnabled(false);
+        }
+
         bt_sant.setOnClickListener(view1 -> {
             ////////////////
             db.hasEatenMeal(control.getElderlyUser().getUsername(), meal.getDate(), meal.getMealType());
@@ -207,5 +215,12 @@ public class ElderlyScheduler extends AppCompatActivity {
             e.printStackTrace();
             Toast.makeText(this, "Call error", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public boolean isItToday(String date){
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+        return date.equals(sdf.format(calendar.getTime()));
     }
 }
