@@ -43,6 +43,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             String meal_type = intent.getStringExtra("mealType");
             String elderlyUserName = intent.getStringExtra("elderlyUserName");
             String elderlyName = intent.getStringExtra("elderlyName");
+            String reminderNum = intent.getStringExtra("reminderNum");
 
             if (elderlyName != null)
                 showNotification(context,  elderlyName.toUpperCase() + CAREGIVER_CONTENT, null, meal_type);
@@ -116,16 +117,17 @@ public class AlarmReceiver extends BroadcastReceiver {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        notificationManager.notify(getNotificationId(textTitle, textContent), builder.build());
+        notificationManager.notify(getNotificationId(), builder.build());
 
     }
 
-    public int getNotificationId(String mealType, String textContent){
+    public int getNotificationId() {
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("HHmm", Locale.getDefault());
-        return Integer.valueOf(sdf.format(calendar.getTime())) + getNotifyId(mealType,textContent);
+        SimpleDateFormat sdf = new SimpleDateFormat("HHmmssSSS", Locale.getDefault());
+        return Integer.parseInt(sdf.format(calendar.getTime()));
     }
 
+    /*
     public int getNotifyId(String mealType, String textContent) {
 
         if("Breakfast".equals(mealType) || "Breakfast".equals(textContent)){
@@ -142,5 +144,5 @@ public class AlarmReceiver extends BroadcastReceiver {
             //throw new IllegalArgumentException("Ogiltig måltidstyp: " + mealType);
         }
     }
-
+    */
 }

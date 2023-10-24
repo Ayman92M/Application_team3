@@ -31,12 +31,8 @@ public class Notification implements Serializable {
 
     public void setAlarm(Context context, String mealType, String pid, String elderly_name, String mealDate, long triggerTimeInMillis) {
 
-
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-
-
         Intent intent = new Intent(context, AlarmReceiver.class);
-
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             intent.setAction("MEAL_ACTION");
@@ -55,20 +51,17 @@ public class Notification implements Serializable {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id,intent, PendingIntent.FLAG_IMMUTABLE);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTimeInMillis, pendingIntent);
 
-
-        //System.out.println("-------> setAlarm for: " + mealType + " -> ID: " + id);
-
-
         if(elderly_name == null)
             for (int i = 1; i < 4; i++) {
                 int id = getReminderId(mealType, i);
+
+                intent.putExtra("reminderNum", i);
+
                 pendingIntent = PendingIntent.getBroadcast(context, id, intent, PendingIntent.FLAG_IMMUTABLE);
-
-                String reminderTime = addMinutesToDateString(getCurrentTime(), 1*i);
-                long reminderTimeToMillis = convertStringToMillis(reminderTime);
-
+                long reminderTimeToMillis = convertStringToMillis(addMinutesToDateString(getCurrentTime(), 1*i));
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, reminderTimeToMillis, pendingIntent);
-                System.out.println("-------> SET Reminder "+ id + " for : " + mealType);
+
+                System.out.println("-------> SET Reminder "+ i + " for : " + mealType + " after "+ 1*i + " min");
             }
     }
     public void runFunctionCaregiver(Context context, String elderlyUserName, String elderlyName) {
@@ -137,9 +130,7 @@ public class Notification implements Serializable {
 
         id = getMealId(mealType, mealDate);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id, intent,PendingIntent.FLAG_IMMUTABLE);
-
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-
         alarmManager.cancel(pendingIntent);
 
 
