@@ -62,13 +62,10 @@ public class Notification implements Serializable {
         if(elderly_name == null)
             for (int i = 1; i < 4; i++) {
                 int id = getReminderId(mealType, i);
-                intent.putExtra("reminderTime", id);
                 pendingIntent = PendingIntent.getBroadcast(context, id, intent, PendingIntent.FLAG_IMMUTABLE);
-
 
                 String reminderTime = addMinutesToDateString(getCurrentTime(), 1*i);
                 long reminderTimeToMillis = convertStringToMillis(reminderTime);
-
 
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, reminderTimeToMillis, pendingIntent);
                 System.out.println("-------> SET Reminder "+ id + " for : " + mealType);
