@@ -22,7 +22,6 @@ import java.util.Locale;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
-
     private static final String ELDERLY_CONTENT = "Eat your meal!";
     private static final String CAREGIVER_CONTENT = " has miss a meal!";
     private static final String RUN_FUNCTION_ACTION_CAREGIVER = "RUN_FUNCTION_ACTION_CAREGIVER";
@@ -43,7 +42,6 @@ public class AlarmReceiver extends BroadcastReceiver {
             String meal_type = intent.getStringExtra("mealType");
             String elderlyUserName = intent.getStringExtra("elderlyUserName");
             String elderlyName = intent.getStringExtra("elderlyName");
-            String reminderNum = intent.getStringExtra("reminderNum");
 
             if (elderlyName != null)
                 showNotification(context,  elderlyName.toUpperCase() + CAREGIVER_CONTENT, null, meal_type);
@@ -67,7 +65,6 @@ public class AlarmReceiver extends BroadcastReceiver {
             String elderlyUserName = intent.getStringExtra("elderlyUserName");
             System.out.println("AlarmReceiver_ACTION_ELDERLY --> updateNotification for: " + elderlyUserName);
             control.updateNotificationElderly(elderlyUserName, context);
-
 
         }
 
@@ -127,22 +124,4 @@ public class AlarmReceiver extends BroadcastReceiver {
         return Integer.parseInt(sdf.format(calendar.getTime()));
     }
 
-    /*
-    public int getNotifyId(String mealType, String textContent) {
-
-        if("Breakfast".equals(mealType) || "Breakfast".equals(textContent)){
-            return 1;
-        }
-        else if ("Lunch".equals(mealType) || "Lunch".equals(textContent)) {
-            return 2;
-        } else if ("Dinner".equals(mealType) || "Dinner".equals(textContent)) {
-            return 3;
-        } else if ("Snack".equals(mealType) || "Snack".equals(textContent)) {
-            return 4;
-        } else {
-            return 5;
-            //throw new IllegalArgumentException("Ogiltig måltidstyp: " + mealType);
-        }
-    }
-    */
 }

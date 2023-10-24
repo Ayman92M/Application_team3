@@ -55,22 +55,17 @@ public class Notification implements Serializable {
             for (int i = 1; i < 4; i++) {
                 int id = getReminderId(mealType, i);
 
-                intent.putExtra("reminderNum", i);
-
                 pendingIntent = PendingIntent.getBroadcast(context, id, intent, PendingIntent.FLAG_IMMUTABLE);
                 long reminderTimeToMillis = convertStringToMillis(addMinutesToDateString(getCurrentTime(), 1*i));
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, reminderTimeToMillis, pendingIntent);
-
                 System.out.println("-------> SET Reminder "+ i + " for : " + mealType + " after "+ 1*i + " min");
             }
     }
     public void runFunctionCaregiver(Context context, String elderlyUserName, String elderlyName) {
 
-
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-
-
         Intent intent = new Intent(context, AlarmReceiver.class);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             intent.setAction("RUN_FUNCTION_ACTION_CAREGIVER");
         } else {
@@ -86,17 +81,14 @@ public class Notification implements Serializable {
         long triggerTime = System.currentTimeMillis() + repeatInterval;
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, triggerTime, repeatInterval, pendingIntent);
 
-
         createNotificationChannel(context, "RUN_FUNCTION_ACTION_CAREGIVER");
         System.out.println("RUN_FUNCTION_ACTION_CAREGIVER");
     }
     public void runFunctionElderly(Context context, String elderlyUserName, String elderlyName) {
 
-
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-
-
         Intent intent = new Intent(context, AlarmReceiver.class);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             intent.setAction("RUN_FUNCTION_ACTION_ELDERLY");
         } else {
@@ -107,18 +99,16 @@ public class Notification implements Serializable {
         if (elderlyUserName != null)    intent.putExtra("elderlyUserName", elderlyUserName);
         if (elderlyName != null)        intent.putExtra("elderlyName", elderlyName);
 
-
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
         long repeatInterval = AlarmManager.INTERVAL_FIFTEEN_MINUTES/15;
         long triggerTime = System.currentTimeMillis() + repeatInterval;
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, triggerTime, repeatInterval, pendingIntent);
 
-
         createNotificationChannel(context, "RUN_FUNCTION_ACTION_ELDERLY");
         System.out.println("RUN_FUNCTION_ACTION_ELDERLY");
+
     }
     public void cancelAlarm(Context context, String mealType, String mealDate) {
-
 
         Intent intent = new Intent(context, AlarmReceiver.class);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -127,54 +117,40 @@ public class Notification implements Serializable {
             intent.setAction(Intent.ACTION_BOOT_COMPLETED);
         }
 
-
         id = getMealId(mealType, mealDate);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id, intent,PendingIntent.FLAG_IMMUTABLE);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
-
-
-        Toast.makeText(context, "Alarm canceled for: " + "mealId: "+ id, Toast.LENGTH_SHORT).show();
-
+        System.out.println("Alarm canceled for: " + "mealId: "+ id);
 
         for (int i = 1; i < 4; i++) {
             id = getReminderId(mealType, i);
             pendingIntent = PendingIntent.getBroadcast(context, id, intent,PendingIntent.FLAG_IMMUTABLE);
-
             alarmManager.cancel(pendingIntent);
-
-
-            Toast.makeText(context, "Alarm canceled for: " + "mealId: "+ id, Toast.LENGTH_SHORT).show();
+            System.out.println("Alarm canceled for: " + "mealId: ");
         }
-
-
-
 
     }
     public void createNotificationChannel(Context context, String mealType) {
 
-
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-
 
             int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel notificationChannel =
-                    new NotificationChannel(CHANNEL_ID, "1", importance);
+                    new NotificationChannel(CHANNEL_ID, mealType, importance);
             notificationChannel.setDescription(mealType + " description");
             notificationChannel.enableVibration(true);
-
 
             NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(notificationChannel);
         }
     }
 
-
     public void runCopyMeal(Context context, String elderlyUserName){
+
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-
-
         Intent intent = new Intent(context, AlarmReceiver.class);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             intent.setAction("RUN_FUNCTION_COPY_MEAL");
         } else {
@@ -188,15 +164,13 @@ public class Notification implements Serializable {
         long triggerTime = System.currentTimeMillis() + repeatInterval;
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, triggerTime, repeatInterval, pendingIntent);
 
-
         System.out.println("RUN_FUNCTION_COPY_MEAL");
 
     }
     public int getReminderId(String mealType, int ReminderNum) {
+
         String mealInfo;
         try {
-
-
             if ("Breakfast".equals(mealType)) {
                 mealInfo = "1"+ReminderNum;
             } else if ("Lunch".equals(mealType)) {
@@ -209,7 +183,6 @@ public class Notification implements Serializable {
                 throw new IllegalArgumentException("Ogiltig måltidstyp: " + mealType);
             }
 
-
             mealInfo = mealInfo.replace("-", "");
             return Integer.parseInt(mealInfo);
         } catch (NumberFormatException e) {
@@ -218,7 +191,9 @@ public class Notification implements Serializable {
             return -1; // or some default value
         }
     }
+
     public int getMealId(String mealType, String date) {
+
         Integer id;
         String mealInfo;
         if("Breakfast".equals(mealType)){
@@ -255,25 +230,20 @@ public class Notification implements Serializable {
             // Handle the ParseException if needed
         }
 
-
-        // Return a default value or handle the case where the conversion fails
         return -1;
     }
 
     public String addMinutesToDateString(String inputDate, int minutesToAdd) {
-        // Define the date format
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
         try {
             // Parse the input date string
             Date date = dateFormat.parse(inputDate);
-
-
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(date);
             calendar.add(Calendar.MINUTE, minutesToAdd);
-            //System.out.println(inputDate +" + " + minutesToAdd + " --> " + dateFormat.format(calendar.getTime()) );
+
             return dateFormat.format(calendar.getTime());
         } catch (ParseException e) {
             e.printStackTrace(); // Handle the exception according to your needs
@@ -281,9 +251,8 @@ public class Notification implements Serializable {
         }
     }
     public String getCurrentTime(){
-        Calendar calendar = Calendar.getInstance();
 
-        // Format the date and time into "yyyy-MM-dd HH:mm" format
+        Calendar calendar = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault());
         return sdf.format(calendar.getTime());
     }
