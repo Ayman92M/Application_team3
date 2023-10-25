@@ -13,21 +13,20 @@ import android.widget.TimePicker;
 
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.lang.reflect.Array;
+
 public class MealRegister extends AppCompatActivity {
-    String[] mealType = {"Breakfast", "Lunch", "Dinner", "Snack"};
     Spinner mealPicker;
     Controller control;
     Database db;
     ViewBuilder vb;
-    ArrayAdapter<String> adapterItems;
-
+    ArrayAdapter<CharSequence> adapterItems;
     String item, note;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meal_register);
-
 
         Intent get_info = getIntent();
         control = (Controller) get_info.getSerializableExtra("controller");
@@ -38,17 +37,19 @@ public class MealRegister extends AppCompatActivity {
         }
         Button back_btn = findViewById(R.id.button_back);
         back_btn.setOnClickListener(view -> finish());
+
         mealPicker = findViewById(R.id.mealspinner);
-        adapterItems = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, mealType);
+        adapterItems = ArrayAdapter.createFromResource(this, R.array.meal_type_array, android.R.layout.simple_spinner_dropdown_item);
         adapterItems.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         mealPicker.setAdapter(adapterItems);
 
         TimePicker picker = findViewById(R.id.timepicker1);
         picker.setIs24HourView(true);
+
         mealPicker.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                item = mealType[i];
+                item = mealPicker.getSelectedItem().toString();
             }
 
             @Override
@@ -56,8 +57,6 @@ public class MealRegister extends AppCompatActivity {
 
             }
         });
-
-
 
 
         Button create_meal = findViewById(R.id.Button_createMeal);

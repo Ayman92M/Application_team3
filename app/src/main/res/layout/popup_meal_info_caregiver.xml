@@ -49,7 +49,7 @@
             android:layout_height="66dp"
             android:layout_marginLeft="330dp"
             android:backgroundTint="@color/red"
-            android:text="X"
+            android:text="@string/x"
             android:textSize="28dp"/>
 
         <Button
@@ -62,7 +62,7 @@
 
             android:layout_marginBottom="202dp"
             android:backgroundTint="@color/red"
-            android:text="DELETE"
+            android:text="@string/delete"
             app:icon="@drawable/delete_icon" />
 
 
