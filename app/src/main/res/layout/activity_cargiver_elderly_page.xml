@@ -13,7 +13,7 @@
         android:layout_height="531dp"
         android:layout_marginTop="28dp"
         android:layout_marginBottom="4dp"
-        android:background="@color/cardview_dark_background"
+        android:background="@color/grey"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/elderly_name"
@@ -21,60 +21,70 @@
 
         <Button
             android:id="@+id/mealHistory"
-            android:textColor="@color/white"
             style="style/widget.MaterialComponents.Button.Icon"
-            android:layout_width="165dp"
-            android:layout_height="172dp"
-            android:layout_marginStart="195dp"
-            android:layout_marginTop="40dp"
+            android:layout_width="346dp"
+            android:layout_height="72dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="130dp"
             android:background="@drawable/rounded_corner"
+            android:backgroundTint="@color/green_light"
             android:text="@string/meal_history"
+            android:textColor="@color/white"
             app:icon="@drawable/baseline_history_24"
-            tools:ignore="HardcodedText"
-            android:backgroundTint="@color/green_light"/>
+            tools:ignore="HardcodedText" />
 
         <Button
             android:id="@+id/mealPlanner"
             style="style/widget.MaterialComponents.Button.Icon"
-            android:layout_width="165dp"
-            android:layout_height="172dp"
+            android:layout_width="346dp"
+            android:layout_height="72dp"
             android:layout_marginStart="15dp"
             android:layout_marginTop="40dp"
             android:background="@drawable/rounded_corner"
             android:backgroundTint="@color/green_light"
             android:text="@string/meal_planner"
+            android:textColor="@color/white"
             app:icon="@drawable/baseline_fastfood_24"
-            tools:ignore="HardcodedText"
-            android:textColor="@color/white"/>
+            tools:ignore="HardcodedText" />
 
         <Button
             android:id="@+id/personalnformation"
             style="style/widget.MaterialComponents.Button.Icon"
-            android:layout_width="165dp"
-            android:layout_height="172dp"
+            android:layout_width="346dp"
+            android:layout_height="72dp"
             android:layout_marginStart="15dp"
-            android:layout_marginTop="300dp"
+            android:layout_marginTop="220dp"
             android:background="@drawable/rounded_corner"
+            android:backgroundTint="@color/green_light"
             android:text="@string/personal_information"
+            android:textColor="@color/white"
             android:textSize="14sp"
             app:icon="@drawable/baseline_person_24"
-            tools:ignore="HardcodedText"
-            android:backgroundTint="@color/green_light"
-            android:textColor="@color/white"/>
+            tools:ignore="HardcodedText" />
 
         <Button
             android:id="@+id/deleteElderly"
             style="style/widget.MaterialComponents.Button.Icon"
-            android:layout_width="165dp"
-            android:layout_height="172dp"
-            android:layout_marginStart="195dp"
-            android:layout_marginTop="300dp"
+            android:layout_width="346dp"
+            android:layout_height="72dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="310dp"
             android:background="@drawable/rounded_corner"
-            android:text="@string/delete"
-            app:icon="@drawable/delete_icon"
-            tools:ignore="HardcodedText"
             android:backgroundTint="@color/green_light"
-            android:textColor="@color/white"/>
+            android:text="@string/remove"
+            android:textColor="@color/white"
+            app:icon="@drawable/delete_icon"
+            tools:ignore="HardcodedText" />
+
+        <Button
+            android:id="@+id/button_back"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_marginTop="460dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginBottom="24dp"
+            android:backgroundTint="@color/green_light"
+            android:text="@string/back" />
 
 
     </FrameLayout>
@@ -95,18 +105,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="HardcodedText" />
-
-    <Button
-        android:id="@+id/button_back"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_marginBottom="24dp"
-        android:text="@string/back"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.087"
-        app:layout_constraintStart_toStartOf="parent"
-        android:backgroundTint="@color/green_light"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
