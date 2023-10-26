@@ -36,6 +36,8 @@ public class CalenderOverviewCaregiver extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calender_overview_caregiver);
 
+
+
         Intent get_info = getIntent();
         control = (Controller) get_info.getSerializableExtra("controller");
         db = control.getDatabase();
@@ -54,6 +56,13 @@ public class CalenderOverviewCaregiver extends AppCompatActivity {
             listView = findViewById(R.id.listView_caregiver_scheduler);
             getTodayList();
         });
+        getTodayList();
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         getTodayList();
     }
 
@@ -137,7 +146,6 @@ public class CalenderOverviewCaregiver extends AppCompatActivity {
 
         deleteMeal_btn.setOnClickListener(view1 -> {
             db.deleteMeal(control.getElderlyUser().getUsername(), meal.getDate(), meal.getMealType());
-            recreate();
         });
     }
 }
