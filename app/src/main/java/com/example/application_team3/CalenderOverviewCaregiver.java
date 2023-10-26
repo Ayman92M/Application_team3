@@ -88,7 +88,8 @@ public class CalenderOverviewCaregiver extends AppCompatActivity {
             control.sortMealByTime(mealList);
             for(MealEntry meal : mealList)
             {
-                mealStrings.add(meal.getMealType() + ", " + meal.getTime() + ", " + meal.isHasEaten() + ", " + meal.getDate());
+                String meal_type = getMeal(meal.getMealType());
+                mealStrings.add(meal_type + ", " + meal.getTime() + ", " + meal.isHasEaten() + ", " + meal.getDate());
             }
             vb.buildListView(true,
                     mealStrings, this, listView,
@@ -96,6 +97,23 @@ public class CalenderOverviewCaregiver extends AppCompatActivity {
             );
             listView.setOnItemClickListener((parent, view, position, id) -> mealInfo_caregiver(view, mealList.get(position)));
         });
+    }
+
+    public String getMeal(String meal){
+        String meal_type = meal;
+        if(meal_type.equals("Breakfast")) {
+            return meal_type = getString(R.string.Breakfast);
+        }
+        else if(meal_type.equals("Lunch")) {
+            return meal_type = getString(R.string.Lunch);
+        }
+        else if(meal_type.equals("Dinner")) {
+            return meal_type = getString(R.string.Dinner);
+        }
+        else if(meal_type.equals("Snack")) {
+            return meal_type = getString(R.string.Snack);
+        }
+        return meal_type;
     }
 
 

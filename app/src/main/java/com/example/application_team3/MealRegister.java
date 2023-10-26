@@ -72,7 +72,22 @@ public class MealRegister extends AppCompatActivity {
             String formattedTime = hourString + ":" + minuteString;
 
             //Toast.makeText(Meal_register.this, elderly_username , Toast.LENGTH_SHORT).show();
-            db.registerMeal(elderly_username1, date, item, formattedTime, note);
+            String meal_type = null;
+            if(item.equals("Frukost") ) {
+                meal_type = "Breakfast";
+            }
+            else if(item.equals("Lunch")) {
+                meal_type = "Lunch";
+            }
+            else if(item.equals("Middag")) {
+                meal_type = "Dinner";
+            }
+            else if(item.equals("Mellanmål")) {
+                meal_type = "Snack";
+            }
+            else meal_type = item;
+
+            db.registerMeal(elderly_username1, date, meal_type, formattedTime, note);
             vb.notis("Registered meal", view.getContext());
         });
 

@@ -1,8 +1,5 @@
 package com.example.application_team3;
 
-import android.view.View;
-import android.widget.EditText;
-
 public class UserAccountControl {
     // Definiera reguljärt uttryck för e-postadress
     private final String EMAIL_REGEX =
@@ -11,7 +8,7 @@ public class UserAccountControl {
             "^(?=.*[a-zåäö])(?=.*[A-ZÅÄÖ])(?=.*[0-9]).{8,}$";
 
     private final String USERNAME_REGEX =
-            "^[a-zA-Z0-9_-]{3,20}$";
+            "^[a-z0-9_-]{3,20}$";
 
     private final String NAME_REGEX =
             "^[a-zA-ZåäöÅÄÖ]{3,20}(\\s[a-zA-ZåäöÅÄÖ]{3,20})?$";

@@ -33,7 +33,7 @@ public class CaregiverElderlyPageActivity extends AppCompatActivity {
         Button back_btn = findViewById(R.id.button_back);
         back_btn.setOnClickListener(view -> finish());
 
-        ( (TextView) findViewById(R.id.elderly_name)).setText("          Elderly " + elderly.getName());
+        ( (TextView) findViewById(R.id.elderly_name)).setText("       " + getString(R.string.care_client) + " " + elderly.getName());
 
 
         Button meal_reg = findViewById(R.id.mealPlanner);
@@ -49,7 +49,7 @@ public class CaregiverElderlyPageActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         elderly = control.getElderlyUser();
-        ( (TextView) findViewById(R.id.elderly_name)).setText("          Elderly " + elderly.getName());
+        ( (TextView) findViewById(R.id.elderly_name)).setText("       " + getString(R.string.care_client) + " " + elderly.getName());
     }
 
     private void deleteButtonListener(){
@@ -62,7 +62,7 @@ public class CaregiverElderlyPageActivity extends AppCompatActivity {
 
             final PopupWindow popupWindow = vb.buildPopup(popupView);
             TextView deleteText = popupView.findViewById(R.id.textView_delete);
-            deleteText.setText("Remove " + elderly.getName() + "?");
+            deleteText.setText(getString(R.string.remove) + " " + getString(R.string.care_client) + " " + elderly.getName() + "?");
 
             Button removeElderlyBtn = popupView.findViewById(R.id.Button_remove);
 

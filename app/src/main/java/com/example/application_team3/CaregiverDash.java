@@ -44,11 +44,10 @@ public class CaregiverDash extends AppCompatActivity {
         control.setElderlyUser(null);
 
         TextView welcomeText = findViewById(R.id.textView_Welcome);
-        welcomeText.setText("Welcome " + user.getName());
+        welcomeText.setText(getString(R.string.welcome) + " " + user.getName());
         listView = findViewById(R.id.listView);
         elderlyStrings = new ArrayList<>();
         setupElderlyList();
-
         TextView logout = findViewById(R.id.TextView_logut);
         logout.setOnClickListener(view -> control.logout(CaregiverDash.this));
 
@@ -67,7 +66,14 @@ public class CaregiverDash extends AppCompatActivity {
         super.onResume();
         System.out.println("Resume");
         control.setElderlyUser(null);
-        setupElderlyList();
+        Task<DataSnapshot> caregiverTask = db.fetchCaregiver(user.getUsername());
+
+        Tasks.whenAll(caregiverTask).addOnCompleteListener(task ->{
+            DataSnapshot caregiverData = caregiverTask.getResult();
+            control.setCaregiverUser(caregiverData.getValue(CaregiverEntry.class));
+            user = control.getCaregiverUser();
+            setupElderlyList();
+        });
     }
 
     private void addElderlyActionListener(View view){
