@@ -140,8 +140,10 @@ public class SignupElderly extends AppCompatActivity {
         else
             vb.notis("password doesn't match", SignupElderly.this);
 
-        if (!userControl.isValidUsername(_username))
+        if (!userControl.isValidUsername(_username)) {
             vb.notis("invalid username: " + _username, SignupElderly.this);
+            usernameText.setText(usernameText.getText().toString().toLowerCase());
+        }
 
         else{
             Task<DataSnapshot> caregiverDB = db.fetchCaregiverDB();
