@@ -67,7 +67,14 @@ public class CaregiverDash extends AppCompatActivity {
         super.onResume();
         System.out.println("Resume");
         control.setElderlyUser(null);
-        setupElderlyList();
+        Task<DataSnapshot> caregiverTask = db.fetchCaregiver(user.getUsername());
+
+        Tasks.whenAll(caregiverTask).addOnCompleteListener(task ->{
+            DataSnapshot caregiverData = caregiverTask.getResult();
+            control.setCaregiverUser(caregiverData.getValue(CaregiverEntry.class));
+            user = control.getCaregiverUser();
+            setupElderlyList();
+        });
     }
 
     private void addElderlyActionListener(View view){

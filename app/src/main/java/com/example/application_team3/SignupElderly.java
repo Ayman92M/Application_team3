@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -21,6 +23,8 @@ public class SignupElderly extends AppCompatActivity {
     ViewBuilder vb;
     private final UserAccountControl userControl = new UserAccountControl();
     EditText nameText, usernameText, pinText, pin2Text, phoneNoText, dateOfBirthText, addressText;
+
+    String usernameHint;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +47,9 @@ public class SignupElderly extends AppCompatActivity {
         dateOfBirthText = findViewById(R.id.editTextText13);
         addressText = findViewById(R.id.editTextText14);
 
+        usernameHint = "";
+        usernameText.setText(usernameHint);
+
         if(control.getElderlyUser() != null)
         {
             ElderlyEntry elderly = control.getElderlyUser();
@@ -54,6 +61,56 @@ public class SignupElderly extends AppCompatActivity {
             dateOfBirthText.setText(elderly.getBirthday());
             addressText.setText(elderly.getAddress());
         }
+
+        nameText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(charSequence.length() >= 1 && usernameText.getText().toString().equals(usernameHint)) {
+                    usernameText.setText("");
+                    usernameHint = "";
+                    if (charSequence.length() < 3) {
+                        for (int j = 0; j < charSequence.length(); j++) {
+                            usernameHint += charSequence.charAt(j);
+                        }
+                    }
+                    else{
+                        for(int j = 0; j < 3; j++){
+                            usernameHint += charSequence.charAt(j);
+                        }
+                    }
+
+                    Task<DataSnapshot> elderlyDBTask = db.fetchElderlyDB();
+
+                    Tasks.whenAll(elderlyDBTask).addOnCompleteListener(task -> {
+                        DataSnapshot elderlyDB = elderlyDBTask.getResult();
+                        int number = 100;
+                        String usernameCheck = usernameHint + number;
+                        while (elderlyDB.hasChild(usernameCheck)) {
+                            number += 1;
+                            usernameCheck = usernameHint + number;
+                        }
+                        usernameHint += number;
+                        usernameHint = usernameHint.toLowerCase();
+                        usernameText.setText(usernameHint);
+                    });
+                }
+                else if(charSequence.length() == 0 && usernameText.getText().toString().length() < 1){
+                    usernameHint = "";
+                    usernameText.setText(usernameHint);
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
         Button button_signup_elderly = findViewById(R.id.button11);
         button_signup_elderly.setOnClickListener(view -> {
