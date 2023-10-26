@@ -155,14 +155,14 @@ public class ElderlyScheduler extends AppCompatActivity {
         }
 
         bt_sant.setOnClickListener(view1 -> {
-            ////////////////
+
             db.hasEatenMeal(control.getElderlyUser().getUsername(), meal.getDate(), meal.getMealType());
             notification.cancelAlarm(view1.getContext(), meal.getMealType(), meal.getDate());
             mealListView();
         });
 
         bt_falsk.setOnClickListener(view1 -> {
-            ///////////////////
+
 
         });
 
