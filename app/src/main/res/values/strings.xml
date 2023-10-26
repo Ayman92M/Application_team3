@@ -65,6 +65,8 @@
     <string name="Dinner">Dinner</string>
     <string name="Snack">Snack</string>
 
+    <string name="welcome">Welcome</string>
+
     <string-array name="meal_type_array">
         <item>@string/Breakfast</item>
         <item>@string/Lunch</item>
@@ -75,9 +77,11 @@
     <string name="select_language">Select Language</string>
     <string name="Swedish">Swedish</string>
     <string name="English">English</string>
+    <string name="meal_planner">Meal Planner</string>
+    <string name="meal_history">Meal History</string>
+    <string name="confirm_pin">Confirm PIN</string>
 
     <string-array name="language_array">
-        <item>@string/select_language</item>
         <item>@string/English</item>
         <item>@string/Swedish</item>
     </string-array>

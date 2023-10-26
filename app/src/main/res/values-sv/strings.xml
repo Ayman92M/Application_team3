@@ -63,6 +63,8 @@
     <string name="Snack">Mellanmål</string>
     <string name="Breakfast">Frukost</string>
 
+    <string name="welcome">Välkommen</string>
+
     <string-array name="meal_type_array">
         <item>@string/Breakfast</item>
         <item>@string/Lunch</item>
@@ -75,9 +77,12 @@
     <string name="English">Engelska</string>
 
     <string-array name="language_array">
-        <item>@string/select_language</item>
         <item>@string/English</item>
         <item>@string/Swedish</item>
     </string-array>
+    <string name="meal_planner">Måltids Planeraren</string>
+    <string name="meal_history">Måltids Historik</string>
+    <string name="confirm_pin">Bekräfta PIN</string>
+
 
 </resources>

@@ -44,11 +44,10 @@ public class CaregiverDash extends AppCompatActivity {
         control.setElderlyUser(null);
 
         TextView welcomeText = findViewById(R.id.textView_Welcome);
-        welcomeText.setText("Welcome " + user.getName());
+        welcomeText.setText(getString(R.string.welcome) + " " + user.getName());
         listView = findViewById(R.id.listView);
         elderlyStrings = new ArrayList<>();
         setupElderlyList();
-
         TextView logout = findViewById(R.id.TextView_logut);
         logout.setOnClickListener(view -> control.logout(CaregiverDash.this));
 

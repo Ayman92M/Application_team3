@@ -106,7 +106,7 @@
         android:layout_height="61dp"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="Confirm PIN"
+        android:hint="@string/confirm_pin"
         android:inputType="numberPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
