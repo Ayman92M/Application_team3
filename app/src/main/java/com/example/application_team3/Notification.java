@@ -29,7 +29,7 @@ public class Notification implements Serializable {
 
     public void setController(Controller _control){ control = _control; }
 
-    public void setAlarm(Context context, String mealType, String pid, String elderly_name, String mealDate, long triggerTimeInMillis) {
+    public void setAlarm(Context context, String mealType, String username, String elderly_name, String mealDate, long triggerTimeInMillis) {
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlarmReceiver.class);
@@ -43,7 +43,7 @@ public class Notification implements Serializable {
         intent.putExtra("controller", control);
         intent.putExtra("mealType", mealType);
         intent.putExtra("mealDate", mealDate);
-        intent.putExtra("elderlyUserName", pid);
+        intent.putExtra("elderlyUserName", username);
         intent.putExtra("elderlyName", elderly_name);
 
 
