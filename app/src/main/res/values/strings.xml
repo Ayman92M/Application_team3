@@ -8,13 +8,13 @@
     <string name="new_user">New User</string>
     <string name="sign_up">Sign Up</string>
     <string name="choose_language">Choose Language</string>
-    <string name="sv">Svenska</string>
+    <string name="sv">Swedish</string>
     <string name="en">English</string>
     <string name="list">List</string>
     <string name="rememberme">Remember Me</string>
-    <string name="elderly">Elderly</string>
+    <string name="care_client">Care client</string>
+    <string name="elderly">Care client</string>
     <string name="caregiver">Caregiver</string>
-
     <string name="select_item">Select Meal</string>
     <string name="meal_creator">Meal Creator</string>
     <string name="pick_a_time_for_this_meal">Pick a time for this meal!</string>
@@ -27,11 +27,11 @@
     <string name="name">Name</string>
     <string name="personal_information">Personal Information</string>
     <string name="address">Address</string>
-    <string name="user_name_info">User name</string>
+    <string name="user_name_info">Username</string>
     <string name="pin">PIN</string>
     <string name="edit">Edit</string>
-    <string name="forward"><![CDATA[>>]]></string>
-    <string name="back"><![CDATA[<<]]></string>
+    <string name="forward" translatable="false"><![CDATA[>>]]></string>
+    <string name="back" translatable="false"><![CDATA[<<]]></string>
     <string name="week">Week</string>
     <string name="calender_week">Week</string>
     <string name="monday">Monday</string>
@@ -42,5 +42,45 @@
     <string name="saturday">Saturday</string>
     <string name="sunday">Sunday</string>
     <string name="date">Date</string>
+    <string name="add_meal">Add Meal</string>
+    <string name="register_new">New</string>
+    <string name="add">Add</string>
+    <string name="log_out">Log out</string>
+    <string name="day_and_date">Day and Date</string>
+    <string name="sos">SOS</string>
+    <string name="cancel">Cancel</string>
+    <string name="log_in_caregiver">Log In</string>
+    <string name="register_new_care_client">Register new care client</string>
+    <string name="enter_care_taker_username">Enter care client username</string>
+    <string name="remove_care_client">Remove care client?</string>
+    <string name="remove">Remove</string>
+    <string name="delete">DELETE</string>
+    <string name="x">X</string>
+    <string name="done">DONE</string>
+    <string name="not_yet">NOT YET</string>
+
+
+    <string name="Breakfast">Breakfast</string>
+    <string name="Lunch">Lunch</string>
+    <string name="Dinner">Dinner</string>
+    <string name="Snack">Snack</string>
+
+    <string-array name="meal_type_array">
+        <item>@string/Breakfast</item>
+        <item>@string/Lunch</item>
+        <item>@string/Dinner</item>
+        <item>@string/Snack</item>
+    </string-array>
+
+    <string name="select_language">Select Language</string>
+    <string name="Swedish">Swedish</string>
+    <string name="English">English</string>
+
+    <string-array name="language_array">
+        <item>@string/select_language</item>
+        <item>@string/English</item>
+        <item>@string/Swedish</item>
+    </string-array>
 
 </resources>
+

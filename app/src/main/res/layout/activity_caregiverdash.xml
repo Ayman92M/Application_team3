@@ -42,7 +42,7 @@
             android:drawableStart="@drawable/baseline_person_add_24"
             android:drawableTint="@color/white"
             android:gravity="center"
-            android:text="New "
+            android:text="@string/register_new"
             android:textColor="@color/white"
             android:textSize="24sp" />
 
@@ -59,7 +59,7 @@
             android:drawableLeft="@drawable/baseline_person_add_24"
             android:drawableTint="@color/white"
             android:gravity="center"
-            android:text="Add "
+            android:text="@string/add"
             android:textColor="@color/white"
             android:textSize="24sp" />
 
@@ -76,7 +76,7 @@
             android:drawableLeft="@drawable/baseline_logout_24"
             android:drawableTint="@color/white"
             android:gravity="center"
-            android:text="Log ut"
+            android:text="@string/log_out"
             android:textColor="@color/white"
             android:textSize="24sp" />
 
