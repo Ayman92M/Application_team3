@@ -8,7 +8,6 @@ import android.os.Build;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -99,7 +98,7 @@ public class Controller implements Serializable {
         }
     }
 
-    public void logInElderly(String username, String password, Context context){
+    public void elderlyLogIn(String username, String password, Context context){
         UserAccountControl userControl = new UserAccountControl();
         if (!userControl.isValidUsername(username) || !userControl.isValidPin(password))
             viewBuilder.notis("invalid user name or Pin", context);
@@ -216,7 +215,7 @@ public class Controller implements Serializable {
     }
 
     public void updateNotificationElderly(String elderly_username, Context context){
-
+        notification.setController(this);
         Task<DataSnapshot> mealPlanTask = database.fetchMealPlanDate(elderly_username, getToday());
         Tasks.whenAll(mealPlanTask).addOnCompleteListener(task -> {
             DataSnapshot mealsData = mealPlanTask.getResult();
@@ -242,7 +241,7 @@ public class Controller implements Serializable {
     }
 
     public void copyMealElderly(String elderly_username){
-
+        notification.setController(this);
         Task<DataSnapshot> mealPlanTask = database.fetchMealPlanDate(elderly_username, getToday());
         Tasks.whenAll(mealPlanTask).addOnCompleteListener(task -> {
             DataSnapshot mealsData = mealPlanTask.getResult();
@@ -274,7 +273,7 @@ public class Controller implements Serializable {
     }
 
     public void updateNotificationCaregiver(String elderly_username, String elderly_name, TextView textView, Context context){
-
+        notification.setController(this);
         String current_time = getCurrentTime();
         long current_time_ToMillis = convertStringToMillis(current_time);
 

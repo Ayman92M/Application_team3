@@ -35,6 +35,7 @@ public class ElderlyScheduler extends AppCompatActivity {
     Database db;
     ViewBuilder vb;
     Notification notification;
+    ElderlyEntry user;
 
     TextView chosenDate;
 
@@ -55,6 +56,7 @@ public class ElderlyScheduler extends AppCompatActivity {
         db = control.getDatabase();
         vb = control.getViewBuilder();
         notification = control.getNotification();
+        user = control.getElderlyUser();
 
         Calendar day_calendar = Calendar.getInstance();
         int year = day_calendar.get(Calendar.YEAR);
@@ -99,10 +101,10 @@ public class ElderlyScheduler extends AppCompatActivity {
 
     private void mealListView(){
         Notification notification = control.getNotification();
-        notification.runFunctionElderly(this, control.getElderlyUser().getUsername(), null);
+        notification.runFunctionElderly(this, user.getUsername(), null);
         List<String> mealStrings = new ArrayList<>();
 
-        Task<DataSnapshot> mealPlanTask = db.fetchMealPlanDate(control.getElderlyUser().getUsername(), control.getActiveDate());
+        Task<DataSnapshot> mealPlanTask = db.fetchMealPlanDate(user.getUsername(), control.getActiveDate());
 
         Tasks.whenAll(mealPlanTask).addOnCompleteListener(task -> {
             DataSnapshot mealsData = mealPlanTask.getResult();
@@ -158,7 +160,7 @@ public class ElderlyScheduler extends AppCompatActivity {
 
         bt_sant.setOnClickListener(view1 -> {
             ////////////////
-            db.hasEatenMeal(control.getElderlyUser().getUsername(), meal.getDate(), meal.getMealType());
+            db.hasEatenMeal(user.getUsername(), meal.getDate(), meal.getMealType());
             notification.cancelAlarm(view1.getContext(), meal.getMealType(), meal.getDate());
             mealListView();
         });

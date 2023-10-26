@@ -4,30 +4,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.os.LocaleListCompat;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
+import android.text.InputType;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.RemoteViews;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
-
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -127,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
                     control.caregiverLogIn(username, password, MainActivity.this);
                 }
                 else {
-                    control.logInElderly(username, password, MainActivity.this);
+                    control.elderlyLogIn(username, password, MainActivity.this);
                 }
             }
             else {
@@ -140,10 +132,12 @@ public class MainActivity extends AppCompatActivity {
         if(!userTypeSwitch.isChecked()){
             signUpText.setVisibility(View.GONE);
             userTypeSwitch.setText(R.string.care_client);
+            passwordText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
         }
         else {
             signUpText.setVisibility(View.VISIBLE);
             userTypeSwitch.setText(R.string.caregiver);
+            passwordText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         }
         isCaregiver = userTypeSwitch.isChecked();
     }
