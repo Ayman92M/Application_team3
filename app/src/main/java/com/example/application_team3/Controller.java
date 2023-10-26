@@ -8,6 +8,7 @@ import android.os.Build;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -116,7 +117,6 @@ public class Controller implements Serializable {
             }
             else
                 viewBuilder.notis("False", context);
-
         });
 
     }

@@ -83,6 +83,8 @@
     <string name="meal_planner">Måltids Planeraren</string>
     <string name="meal_history">Måltids Historik</string>
     <string name="confirm_pin">Bekräfta PIN</string>
+    <string name="eat_your_meal">Ät din måltid!</string>
+    <string name="has_miss_a_meal">" har missat en måltid!"</string>
 
 
 </resources>

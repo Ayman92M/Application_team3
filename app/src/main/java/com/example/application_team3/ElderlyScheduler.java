@@ -137,9 +137,9 @@ public class ElderlyScheduler extends AppCompatActivity {
         final PopupWindow popupWindow = vb.buildPopup(popupView);
 
         // Set a click listener for the close button in the popup
-
+        String _meal = getMeal(meal.getMealType());
         TextView meal_type = popupView.findViewById(R.id.meal_info);
-        meal_type.setText("     " + meal.getMealType());
+        meal_type.setText("     " + _meal);
 
         TextView note = popupView.findViewById(R.id.textView7);
         note.setText(" " + meal.getTime());

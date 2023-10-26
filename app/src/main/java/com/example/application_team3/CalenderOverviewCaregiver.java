@@ -124,8 +124,9 @@ public class CalenderOverviewCaregiver extends AppCompatActivity {
         View popupView = inflater.inflate(R.layout.popup_meal_info_caregiver, null);
         final PopupWindow popupWindow = control.getViewBuilder().buildPopup(popupView);
 
+        String _meal = getMeal(meal.getMealType());
         TextView meal_type = popupView.findViewById(R.id.meal_info);
-        meal_type.setText("     " + meal.getMealType());
+        meal_type.setText("     " + _meal);
         TextView note = popupView.findViewById(R.id.textView7);
         note.setText(" " + meal.getNote());
 

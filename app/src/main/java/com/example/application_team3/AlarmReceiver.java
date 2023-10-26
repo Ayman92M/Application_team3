@@ -9,6 +9,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 
 
 import androidx.core.app.ActivityCompat;
@@ -22,8 +23,7 @@ import java.util.Locale;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
-    private static final String ELDERLY_CONTENT = "Eat your meal!";
-    private static final String CAREGIVER_CONTENT = " has miss a meal!";
+    
     private static final String RUN_FUNCTION_ACTION_CAREGIVER = "RUN_FUNCTION_ACTION_CAREGIVER";
     private static final String RUN_FUNCTION_ACTION_ELDERLY = "RUN_FUNCTION_ACTION_ELDERLY";
     private static final String MEAL_ACTION = "MEAL_ACTION";
@@ -34,6 +34,9 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
+        String ELDERLY_CONTENT = context.getString(R.string.eat_your_meal);
+        String CAREGIVER_CONTENT = context.getString(R.string.has_miss_a_meal);
+
         System.out.println("AlarmReceiver ..... .....");
         control = (Controller) intent.getSerializableExtra("controller");
 
@@ -43,6 +46,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             String elderlyUserName = intent.getStringExtra("elderlyUserName");
             String elderlyName = intent.getStringExtra("elderlyName");
 
+            meal_type = getMeal(meal_type, context);
             if (elderlyName != null)
                 showNotification(context,  elderlyName.toUpperCase() + CAREGIVER_CONTENT, null, meal_type);
             else
@@ -88,6 +92,8 @@ public class AlarmReceiver extends BroadcastReceiver {
                 new Intent(context, CaregiverDash.class);
 
         resultIntent.putExtra("controller", control);
+
+
         // Create the TaskStackBuilder and add the intent, which inflates the back
         // stack.
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
@@ -124,4 +130,20 @@ public class AlarmReceiver extends BroadcastReceiver {
         return Integer.parseInt(sdf.format(calendar.getTime()));
     }
 
+    public String getMeal(String meal, Context context){
+        String meal_type = meal;
+        if(meal_type.equals("Breakfast")) {
+            return meal_type = context.getString(R.string.Breakfast);
+        }
+        else if(meal_type.equals("Lunch")) {
+            return meal_type = context.getString(R.string.Lunch);
+        }
+        else if(meal_type.equals("Dinner")) {
+            return meal_type = context.getString(R.string.Dinner);
+        }
+        else if(meal_type.equals("Snack")) {
+            return meal_type = context.getString(R.string.Snack);
+        }
+        return meal_type;
+    }
 }

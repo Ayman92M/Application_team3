@@ -80,6 +80,8 @@
     <string name="meal_planner">Meal Planner</string>
     <string name="meal_history">Meal History</string>
     <string name="confirm_pin">Confirm PIN</string>
+    <string name="eat_your_meal">Eat your meal!</string>
+    <string name="has_miss_a_meal">" has miss a meal!"</string>
 
     <string-array name="language_array">
         <item>@string/English</item>
