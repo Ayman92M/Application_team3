@@ -3,6 +3,7 @@ package com.example.application_team3;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.android.gms.tasks.Tasks;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -20,10 +21,14 @@ public class Database implements Serializable {
     DatabaseReference mealPlanRef;
 
     public Database() {
-        rootNode = FirebaseDatabase.getInstance();
-        caregiverRef = rootNode.getReference("Caregiver");
-        elderlyRef = rootNode.getReference("Elderly");
-        mealPlanRef = rootNode.getReference("Meal-Plan");
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+        auth.signInAnonymously().addOnCompleteListener(task -> {
+            rootNode = FirebaseDatabase.getInstance();
+            caregiverRef = rootNode.getReference("Caregiver");
+            elderlyRef = rootNode.getReference("Elderly");
+            mealPlanRef = rootNode.getReference("Meal-Plan");
+        });
     }
 
     public Task<DataSnapshot> fetchCaregiverDB(){
