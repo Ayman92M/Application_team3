@@ -29,7 +29,7 @@ public class Notification implements Serializable {
 
     public void setController(Controller _control){ control = _control; }
 
-    public void setAlarm(Context context, String mealType, String username, String elderly_name, String mealDate, long triggerTimeInMillis) {
+    public void setAlarm(Context context, String mealType, String username, String elderly_name, String mealDate, String mealTime, long triggerTimeInMillis) {
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, AlarmReceiver.class);
@@ -56,7 +56,7 @@ public class Notification implements Serializable {
                 int id = getReminderId(mealType, i);
 
                 pendingIntent = PendingIntent.getBroadcast(context, id, intent, PendingIntent.FLAG_IMMUTABLE);
-                long reminderTimeToMillis = convertStringToMillis(addMinutesToDateString(getCurrentTime(), 1*i));
+                long reminderTimeToMillis = convertStringToMillis(addMinutesToDateString(mealDate + " "+ mealTime, 1*i));
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, reminderTimeToMillis, pendingIntent);
                 System.out.println("-------> SET Reminder "+ i + " for : " + mealType + " after "+ 1*i + " min");
             }

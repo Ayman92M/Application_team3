@@ -232,7 +232,7 @@ public class Controller implements Serializable {
                     if (meal.getElderlyNotificationID() == null && dateToMillis >= current_time_ToMillis){
                         notification.createNotificationChannel(context, meal.getMealType());
                         System.out.println("updateNotification ---> setAlarm for: " + meal.getMealType() + " -> at: " + meal.getDate()+ " " + meal.getTime());
-                        notification.setAlarm(context, meal.getMealType(), elderly_username, null, meal.getDate(), dateToMillis);
+                        notification.setAlarm(context, meal.getMealType(), elderly_username, null, meal.getDate(), meal.getTime(), dateToMillis);
                         meal.setElderlyNotificationID(meal.getDate()+meal.getTime());
                         database.updateMeal(elderly_username, meal);
                     }
@@ -289,7 +289,7 @@ public class Controller implements Serializable {
                     if(!meal.isHasEaten() && dateToMillisMiss <= current_time_ToMillis && meal.getCaregiverNotificationID() == null){
                         if (textView != null )  textView.setError("miss");
                         notification.createNotificationChannel(context, meal.getMealType());
-                        notification.setAlarm(context, meal.getMealType(), elderly_username, elderly_name, meal.getDate(), current_time_ToMillis);
+                        notification.setAlarm(context, meal.getMealType(), elderly_username, elderly_name, meal.getDate(), meal.getTime(), current_time_ToMillis);
                         System.out.println("SET Notification for Caregiver: " + meal.getMealType() + " -> at: " + meal.getDate()+ " " + meal.getTime());
                         meal.setCaregiverNotificationID(meal.getDate()+meal.getTime());
                         database.updateMeal(elderly_username, meal);
