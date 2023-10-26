@@ -146,8 +146,4 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
         return meal_type;
     }
-
-
-
-
 }
