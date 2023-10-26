@@ -1,6 +1,8 @@
 package com.example.application_team3;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.os.LocaleListCompat;
 
 import android.app.Activity;
 import android.content.Context;
@@ -80,21 +82,18 @@ public class MainActivity extends AppCompatActivity {
         adapterItems = ArrayAdapter.createFromResource(this, R.array.language_array, android.R.layout.simple_spinner_dropdown_item);
         adapterItems.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         languageSpinner.setAdapter(adapterItems);
-
-        languageSpinner.setSelection(0);
         languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String selectedLang = adapterView.getItemAtPosition(i).toString();
                 String langCode = null;
 
-                if(selectedLang.equals("Swedish")) {
+                if(selectedLang.equals("Swedish") || selectedLang.equals("Svenska")) {
                     langCode = "sv";
                 }
-                else if(selectedLang.equals("English")){
+                else if(selectedLang.equals("English") || selectedLang.equals("Engelska")){
                     langCode = "en";
                 }
-                System.out.println("langCode: " + langCode + " currentLanguageCode: " + currentLanguageCode);
 
                 if(langCode != null) {
                     set_language(langCode);
@@ -182,19 +181,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void set_language(String languageCode) {
 
-        Locale locale = new Locale(languageCode);
-        Locale.setDefault(locale);
+        LocaleListCompat appLocale = LocaleListCompat.forLanguageTags(languageCode);
+        // Call this on the main thread as it may require Activity.restart()
+        AppCompatDelegate.setApplicationLocales(appLocale);
 
-        Resources resources = getResources();
-        Configuration config = new Configuration(resources.getConfiguration());
-        config.setLocale(locale);
-
-        resources.updateConfiguration(config, resources.getDisplayMetrics());
-
-        currentLanguageCode = languageCode;
-
-        System.out.println("locale: " + currentLanguageCode);
-        //recreate();
     }
 
 }
