@@ -143,7 +143,7 @@ public class CaregiverDash extends AppCompatActivity {
             });
             vb.buildListView(false,
                     elderlyStrings, this, listView,
-                    R.layout.activity_list_item, R.id.textView_username, R.id.textView_list_pid
+                    R.layout.activity_list_item, R.id.textView_username, R.id.textView_list_username
             );
             elderlyListActionListener();
         });
