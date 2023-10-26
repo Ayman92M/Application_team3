@@ -10,13 +10,15 @@
         android:id="@+id/language_spinner"
         android:layout_width="150dp"
         android:layout_height="50dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+
         android:entries="@array/language_array"
         android:spinnerMode="dropdown"
-
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.327">
+        app:layout_constraintVertical_bias="0.36">
 
     </Spinner>
 

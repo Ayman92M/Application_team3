@@ -144,7 +144,7 @@ public class ElderlyScheduler extends AppCompatActivity {
         meal_type.setText("     " + _meal);
 
         TextView note = popupView.findViewById(R.id.textView7);
-        note.setText(" " + meal.getTime());
+        note.setText(" " + meal.getNote());
 
         // Show the popup at the center of the screen
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
@@ -163,11 +163,12 @@ public class ElderlyScheduler extends AppCompatActivity {
             db.hasEatenMeal(user.getUsername(), meal.getDate(), meal.getMealType());
             notification.cancelAlarm(view1.getContext(), meal.getMealType(), meal.getDate());
             mealListView();
+            popupWindow.dismiss();
         });
 
         bt_falsk.setOnClickListener(view1 -> {
             ///////////////////
-
+            popupWindow.dismiss();
         });
 
     }

@@ -146,6 +146,8 @@ public class CalenderOverviewCaregiver extends AppCompatActivity {
 
         deleteMeal_btn.setOnClickListener(view1 -> {
             db.deleteMeal(control.getElderlyUser().getUsername(), meal.getDate(), meal.getMealType());
+            getTodayList();
+            popupWindow.dismiss();
         });
     }
 }
